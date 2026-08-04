@@ -1,0 +1,299 @@
+{%- liquid
+  assign bst = block.settings
+  assign class_border = ''
+  if bst.bd_top != 'none'
+    assign class_border = class_border | append: ' ' | append: bst.bd_top
+  endif
+  if bst.bd_bottom != 'none'
+    assign class_border = class_border | append: ' ' | append: bst.bd_bottom
+  endif
+  if bst.bd_left != 'none'
+    assign class_border = class_border | append: ' ' | append: bst.bd_left
+  endif
+  if bst.bd_right != 'none'
+    assign class_border = class_border | append: ' ' | append: bst.bd_right
+  endif 
+ -%}
+<div class="theme-blocks-item icon-block{% if bst.enable_size_xs %} enable-size-xs{% endif %}" style="--color-icon: {{ bst.icon_color }}; --color-icon-hover: {{ bst.icon_color_hover }}; --bg-icon-hover: {{ bst.background_color_hover }};--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;--color-border: {{ bst.border_color }}" {{ block.shopify_attributes }}>
+  {% if bst.link != blank %}
+    <a href="{{ bst.link }}">
+  {% endif %}
+  <div class="icon-block-wrapper d-flex align-items-center justify-content-center {{ class_border }}{% if bst.hover_effect %} hover-effect{% endif %}" style="--width-bg: {{ bst.background_size }}px;{% if bst.enable_size_xs %}--width-bg-xs: {{ bst.background_size_xs }}px;{% endif %} border-radius: {{ bst.border_radius }}px; background-color: {{ bst.background_color }};">
+    <div class="icon-content" style="--width-icon: {{ bst.icon_size }}px;{% if bst.enable_size_xs %}--width-icon-xs: {{ bst.icon_size_xs }}px;{% endif %}">
+      {%- if bst.icon != blank -%}
+        {% render 'nov-aspect-image', image: bst.icon, aspect: bst.aspect, class: 'no-ef' %}
+      {%- elsif bst.icon_svg != blank -%}
+        {{ bst.icon_svg }}
+      {%- endif -%}
+    </div>
+  </div>
+  {% if bst.link != blank %}
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Icon",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Icon"
+    },
+    {
+      "type": "html",
+      "id": "icon_svg",
+      "label": "Icon SVG",
+      "info": "Replace fill and stroke color with 'currentColor' to use custom color",
+      "default": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z\"/></svg>"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#444444",
+      "visible_if": "{{ block.settings.icon_svg != blank }}"
+    },
+    {
+      "type": "color",
+      "id": "icon_color_hover",
+      "label": "Icon color hover",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.icon_svg != blank }}"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "aspect",
+      "label": "Aspect ratio",
+      "default": "auto",
+      "options": [
+        {"value": "auto", "label": "auto"},
+        {"value": "11", "label": "1/1"},
+        {"value": "34", "label": "3/4"},
+        {"value": "43", "label": "4/3"}
+      ],
+      "visible_if": "{{ block.settings.icon_svg == blank }}"
+    },
+    {
+      "type": "number",
+      "id": "background_size",
+      "label": "Background size",
+      "default": 50,
+      "info": "Unit: px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "alpha": true,
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "color",
+      "id": "background_color_hover",
+      "label": "Background color hover",
+      "alpha": true,
+      "default": "#000000"
+    },
+    {
+      "type": "number",
+      "id": "border_radius",
+      "label": "Border radius",
+      "default": 10,
+      "info": "Unit: px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Show border"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#000000",
+      "alpha": true,
+      "visible_if": "{{ block.settings.show_border }}"
+    },
+    {
+      "type": "select",
+      "id": "bd_top",
+      "label": "Border top",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "bd-t", "label": "All screens" },
+        { "value": "bd-xl-t", "label": "Large laptop" },
+        { "value": "bd-lg-t", "label": "Laptop" },
+        { "value": "bd-md-t", "label": "Tablet" },
+        { "value": "bd-sm-t", "label": "Large Mobile" },
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "bd_bottom",
+      "label": "Border bottom",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "bd-b", "label": "All screens" },
+        { "value": "bd-xl-b", "label": "Large laptop" },
+        { "value": "bd-lg-b", "label": "Laptop" },
+        { "value": "bd-md-b", "label": "Tablet" },
+        { "value": "bd-sm-b", "label": "Large Mobile" },
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "bd_left",
+      "label": "Border left",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "bd-l", "label": "All screens" },
+        { "value": "bd-xl-l", "label": "Large laptop" },
+        { "value": "bd-lg-l", "label": "Laptop" },
+        { "value": "bd-md-l", "label": "Tablet" },
+        { "value": "bd-sm-l", "label": "Large Mobile" },
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "bd_right",
+      "label": "Border right",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "bd-r", "label": "All screens" },
+        { "value": "bd-xl-r", "label": "Large laptop" },
+        { "value": "bd-lg-r", "label": "Laptop" },
+        { "value": "bd-md-r", "label": "Tablet" },
+        { "value": "bd-sm-r", "label": "Large Mobile" },
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_effect",
+      "label": "Hover effect",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Style Mobile 575px ↓"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_size_xs",
+      "label": "Enable style mobile (icon size, background size)",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "icon_size_xs",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 20,
+      "visible_if": "{{ block.settings.enable_size_xs }}"
+    },
+    {
+      "type": "range",
+      "id": "background_size_xs",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Background size",
+      "default": 20,
+      "visible_if": "{{ block.settings.enable_size_xs }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Top (px)"
+    },
+    {
+      "type": "number",
+      "id": "mt_xl",
+      "label": "Large laptop",
+      "default": 0,
+      "info": "Breakpoint 1200px"
+    },
+    {
+      "type": "number",
+      "id": "mt_lg",
+      "label": "Laptop",
+      "default": 0,
+      "info": "Breakpoint 992px"
+    },
+    {
+      "type": "number",
+      "id": "mt_md",
+      "label": "Tablet",
+      "default": 0,
+      "info": "Breakpoint 768px"
+    },
+    {
+      "type": "number",
+      "id": "mt_sm",
+      "label": "Mobile",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Spacing Bottom (px)"
+    },
+    {
+      "type": "number",
+      "id": "mb_xl",
+      "label": "Large laptop",
+      "default": 0,
+      "info": "Breakpoint 1200px"
+    },
+    {
+      "type": "number",
+      "id": "mb_lg",
+      "label": "Laptop",
+      "default": 0,
+      "info": "Breakpoint 992px"
+    },
+    {
+      "type": "number",
+      "id": "mb_md",
+      "label": "Tablet",
+      "default": 0,
+      "info": "Breakpoint 768px"
+    },
+    {
+      "type": "number",
+      "id": "mb_sm",
+      "label": "Mobile",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon",
+      "category": "Basic"
+    }
+  ]
+}
+{% endschema %}

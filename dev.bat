@@ -1,0 +1,1 @@
+shopify theme dev --live-reload hot-reload

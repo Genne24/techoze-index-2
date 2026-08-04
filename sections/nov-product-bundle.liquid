@@ -1,0 +1,437 @@
+{%- liquid 
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position
+  if section.settings.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+
+  if sst.product_list != blank
+    assign bundle_products = sst.product_list
+  elsif sst.collection != blank
+    assign bundle_products = collections[sst.collection].products
+  endif
+  assign product_limit = sst.limit
+-%}
+
+{% style %}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} .nov-bundle-box {
+    top: 30px;
+  }
+{% endstyle %}
+
+<div class="{{ bg_class_full }} position-relative section-product-bundle" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="nov-product-bundle"
+  data-min-items="{{ sst.min_items }}"
+  data-max-items="{{ sst.max_items }}"
+  data-prevent-duplicate="{{ sst.prevent_duplicate }}"
+  data-allow-qty="{{ sst.allow_qty_change }}"
+  data-qty-increment="{{ sst.qty_increment | default: 1 }}"
+  data-qty-min="{{ sst.qty_min | default: 1 }}">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      {% render 'heading-section', sub_position: sst.subheading_position %}
+      
+      <div class="row align-items-start">
+        <!-- Left Side: Product Grid -->
+        <div class="col-lg-8 col-md-7 nov-bundle-left">
+          <div class="row spacing-{{ sst.spacing }} spacing-sm-15">
+            {% if bundle_products != blank %}
+              {% for product in bundle_products limit: product_limit %}
+                {% assign current_variant = product.selected_or_first_available_variant %}
+                {% assign available = current_variant.available %}
+                {% assign option_color_swatch = settings.option_color_swatch | downcase %}
+                {% assign product_option = nil %}
+                {% assign index = 0 %}
+                {% assign position = 0 %}
+                
+                {% for option in product.options_with_values %}
+                  {% assign option_name = option.name | downcase %}
+                  {% if option_color_swatch contains option_name %}
+                    {% assign product_option = option %}
+                    {% assign index = forloop.index0 %}
+                    {% assign position = forloop.index | minus: 1 %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+                
+                <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-lg-3 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %} mb-30">
+                  <div class="item-product{% if settings.show_border_product %} h_bd{% endif %}{% if settings.show_background_product %} bg{% endif %}{% if settings.product_shadow %} bgshadow{% endif %} duration-300"
+                    data-product-id="{{ product.id }}"
+                    data-product-handle="{{ product.handle }}"
+                    data-variant-id="{{ current_variant.id }}"
+                    data-product-title="{{ product.title | escape }}"
+                    data-variant-title="{% unless current_variant.title contains 'Default' %}{{ current_variant.title | escape }}{% endunless %}"
+                    data-price="{{ current_variant.price }}"
+                    data-formatted-price="{{ current_variant.price | money }}"
+                    data-image="{{ current_variant.featured_image | default: product.featured_image | image_url: width: 300 }}"
+                    data-json-product='{{ product | json | escape }}'>
+                    
+                    <div class="inner-top">
+                      <div class="product-top thumbnail-container{% if settings.show_second_image_product and product.images.size > 1 %} has-multiimage{% endif %} relative">
+                        {% assign img_url = product.featured_image %}
+                        <div class="card_media relative overflow-hidden" style="aspect-ratio: {{ settings.aspect_product_image }}">
+                          <img class="product__thumbnail"
+                            src="{{ img_url | image_url: width: 360 }}"
+                            srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w"
+                            sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, 25vw"
+                            alt="{{ img_url.alt | escape }}"
+                            width="{{ img_url.width }}"
+                            height="{{ img_url.height }}"
+                            loading="lazy"
+                            style="height: auto;">
+                          {% if settings.show_second_image_product and product.images.size > 1 %}
+                            <img class="product__thumbnail-second"
+                              src="{{ product.images[1] | image_url: width: 360 }}"
+                              alt="{{ product.images[1].alt | escape }}"
+                              loading="lazy"
+                              style="height: auto;">
+                          {% endif %}
+                          <a href="{{ product.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+                        </div>
+                        
+                        {% if settings.badge_enable %}
+                          {% render 'nov-product-badge', product: product, current_variant: current_variant %}
+                        {% endif %}
+
+                        <div class="button--top">
+                          {% if settings.wishlist_enable %}
+                            {% render 'nov-wishlist', id: product.id, handle: product.handle %}
+                          {% endif %}
+                          {% if settings.quickview_enable %}
+                            {% render 'nov-quickview', id: product.variants.first.id, handle: product.handle %}
+                          {% endif %}
+                        </div>
+                      </div>
+                      
+                      <div class="product__info">
+                        {% if settings.product_type and product.type != blank %}
+                          <div class="product__type">{{ product.type | link_to_type }}</div>
+                        {% elsif product.vendor != blank %}
+                          <div class="product__type">{{ product.vendor | link_to_vendor }}</div>
+                        {% endif %}
+                        
+                        <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
+                        
+                        {% if settings.review_enable %}
+                          <div class="product__review">
+                            <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+                          </div>
+                        {% endif %}
+                        
+                        <div class="product__price price-box price-st d-flex align-items-center mb-10">
+                          {% render 'nov-product-price', product: product %}
+                        </div>
+                        
+                        {% if available and product_option != nil %}
+                          {% render 'item-swatch', product: product, option_color_swatch: option_color_swatch, downcased_option: option_name, product_option: product_option, index: index %}
+                        {% endif %}
+
+                        <!-- Add to bundle button -->
+                        <div class="nov-add-bundle-wrap mt-15">
+                          {% if available %}
+                            <button class="btn btn-add-to-bundle w-100" type="button">
+                              <span>Add to bundle</span>
+                            </button>
+                          {% else %}
+                            <button class="btn btn-add-to-bundle disabled w-100" type="button" disabled="disabled">
+                              <span>{{ 'products.product.sold_out' | t }}</span>
+                            </button>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              {% assign limit_num = sst.limit %}
+              {% for i in (1..limit_num) %}
+                <div class="sp-item item col-lg-4 col-md-6 col-12 mb-30">
+                  <div class="item-product">
+                    <div class="inner-top">
+                      <div class="product-top thumbnail-container">
+                        {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                      <div class="product__info">
+                        <div class="product__title"><a href="#">Example Product Title</a></div>
+                        <div class="product__price price-box price-st">$99.00</div>
+                        <div class="nov-add-bundle-wrap mt-15">
+                          <button class="btn btn-add-to-bundle w-100" type="button">
+                            <span>Add to bundle</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Right Side: Sticky Bundle Box -->
+        <div class="col-lg-4 col-md-5 nov-bundle-right">
+          <div class="nov-bundle-box sticky-top">
+            <div class="nov-bundle-header">
+              <h3 class="bundle-title">Your bundle</h3>
+              <p class="bundle-subtitle">Add at least <span class="min-items-num">{{ sst.min_items }}</span> products to proceed and Save 30%</p>
+              <div class="bundle-progress-bar">
+                <div class="bundle-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="nov-bundle-items" data-max="{{ sst.max_items }}">
+              {% assign max_num = sst.max_items %}
+              {% for i in (1..max_num) %}
+                <div class="nov-bundle-item item-placeholder" data-slot="{{ i }}">
+                  <div class="placeholder-thumb"></div>
+                  <div class="placeholder-details">
+                    <div class="placeholder-line line-title"></div>
+                    <div class="placeholder-line line-sub"></div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="nov-bundle-footer">
+              <div class="bundle-total-row d-flex align-items-center justify-content-between">
+                <span class="total-label">Total</span>
+                <span class="total-price">$0.00 USD</span>
+              </div>
+              <button class="btn btn-bundle-add-to-cart w-100 disabled" type="button" disabled="disabled">
+                <span class="btn-text">Add to cart</span>
+                <span class="load"></span>
+              </button>
+              <div class="bundle-note text-center mt-10">Discounts will be applied at checkout.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product bundle",
+  "class": "section-product-bundle",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.system"]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Product bundle</p>"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#222222"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sub heading",
+      "default": "<p>Build your own bundle and save</p>"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Sub heading color",
+      "default": "#666666"
+    },
+    {
+      "type": "select",
+      "id": "subheading_position",
+      "label": "Sub heading position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Products",
+      "info": "Replaces collection when selected."
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Maximum products to show",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "grid_number",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Number of columns on desktop",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "grid_mobile",
+      "label": "Number of columns on mobile",
+      "default": "12",
+      "options": [
+        {
+          "value": "12",
+          "label": "1 column"
+        },
+        {
+          "value": "6",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Discount"
+    },
+    {
+      "type": "range",
+      "id": "min_items",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Minimum items to require",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "max_items",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Maximum items",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "prevent_duplicate",
+      "label": "Prevent duplicate products in the bundle",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_qty_change",
+      "label": "Allow quantity change for each product",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quantity rules"
+    },
+    {
+      "type": "number",
+      "id": "qty_increment",
+      "label": "Increment",
+      "default": 1
+    },
+    {
+      "type": "number",
+      "id": "qty_min",
+      "label": "Minimum",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Section Layout"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "Standard"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "label": "Spacing between products",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Design Option"
+    },
+    {
+      "type": "checkbox",
+      "id": "ss_bg_enable",
+      "label": "Enable background",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "distance_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Top margin",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "distance_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Bottom margin",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product bundle",
+      "category": "Collection"
+    } 
+  ]
+}
+{% endschema %}

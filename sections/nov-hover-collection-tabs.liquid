@@ -1,0 +1,681 @@
+{%- liquid
+  assign sst = section.settings
+
+  if sst.ss_bg_enable
+    assign bg = " bg"
+  endif
+  if sst.class_section != blank
+    assign class_section = sst.class_section | prepend: ' '
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: sst.background_position | append: class_section
+  if sst.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+
+{%- style -%}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} .nov-hover-tabs-section {
+    --sub-font-size-desktop: {{ sst.sub_font_size_desktop }}px;
+    --sub-font-size-mobile: {{ sst.sub_font_size_mobile }}px;
+    --sub-font-weight: {{ sst.sub_font_weight }};
+
+    --tab-font-size-desktop: {{ sst.tab_font_size_desktop }}px;
+    --tab-font-size-tablet: {{ sst.tab_font_size_tablet }}px;
+    --tab-font-size-mobile: {{ sst.tab_font_size_mobile }}px;
+    --tab-font-weight: {{ sst.tab_font_weight }};
+
+    --desc-font-size-desktop: {{ sst.desc_font_size_desktop }}px;
+    --desc-font-size-mobile: {{ sst.desc_font_size_mobile }}px;
+    --desc-font-weight: {{ sst.desc_font_weight }};
+
+    --banner-corner-radius: {{ sst.banner_corner_radius }}px;
+  } 
+{%- endstyle -%}
+
+<div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }} position-relative nov-hover-tabs-section">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      <div class="row align-items-center spacing-15">
+        <div class="col-12 col-lg-6 order-2 order-lg-1 nov-hover-tabs-left">
+          {%- if sst.title != blank -%}
+            <div class="nov-hover-tabs-title mb-20{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 0;"{% endif %}>{{ sst.title }}</div>
+          {%- endif -%}
+
+          <div class="nov-hover-tabs-list{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 1;"{% endif %}>
+            {%- for block in section.blocks -%}
+              {%- assign collection = block.settings.collection -%}
+              {%- assign tab_title = block.settings.tab_title | default: collection.title -%}
+              {%- assign button_link = block.settings.button_link | default: collection.url | default: '#' -%}
+              {%- if tab_title != blank -%}
+                <div class="nov-hover-tabs-item{% if forloop.first %} active{% endif %} relative d-inline-flex align-items-center" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                  <span class="nov-hover-tabs-icon" aria-hidden="true">
+                    <svg fill="currentColor" width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <polygon fill-rule="evenodd" points="17.586 13 3 13 3 11 17.586 11 11.293 4.707 12.707 3.293 21.414 12 12.707 20.707 11.293 19.293"/>
+                    </svg>
+                  </span>
+                  <span class="nov-hover-tabs-title-text">{{ tab_title }}</span>
+                  <a href="{{ button_link }}" class="link absolute t-0 l-0 w-100 h-100" aria-label="{{ tab_title }}"></a>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <!-- Products Container (List 4 Products per Collection) -->
+          <div class="nov-hover-tabs-products-container mb-35{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 2;"{% endif %}>
+            {%- for block in section.blocks -%}
+              {%- assign collection = block.settings.collection -%}
+              <div class="nov-hover-tabs-products-block{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}">
+                <div class="nov-hover-tabs-products-grid d-flex align-items-center gap-11">
+                  {%- if collection != blank and collection.products.size > 0 -%}
+                    {%- for product in collection.products limit: 4 -%}
+                      <div class="nov-hover-tabs-product-card relative">
+                        <div class="product-card-image overflow-hidden">
+                          {%- if product.featured_media != blank -%}
+                            {% render 'nov-imgset', image: product.featured_media.preview_image %}
+                          {%- else -%}
+                            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                          {%- endif -%}
+                        </div>
+                        <a href="{{ product.url }}" class="product-card-inner d-block w-100 h-100 absolute t-0 l-0"></a>
+                      </div>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- for i in (1..4) -%}
+                      <div class="nov-hover-tabs-product-card">
+                        <div class="product-card-inner d-block">
+                          <div class="product-card-image position-relative overflow-hidden">
+                            {%- capture placeholder_index -%}{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
+                            {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                          </div>
+                          <div class="product-card-info text-left">
+                            <div class="product-card-title text-truncate font-500">Product Title {{ i }}</div>
+                            <div class="product-card-price font-600">$99.00</div>
+                          </div>
+                        </div>
+                      </div>
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <!-- Dynamically Displayed Description and Button Link -->
+          <div class="nov-hover-tabs-info-container relative{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 3;"{% endif %}>
+            {%- for block in section.blocks -%}
+              {%- assign collection = block.settings.collection -%}
+              {%- assign button_link = block.settings.button_link | default: collection.url -%}
+              <div class="nov-hover-tabs-info-block{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}">
+                {%- if block.settings.description != blank -%}
+                  <div class="nov-hover-tabs-desc">{{ block.settings.description }}</div>
+                {%- endif -%}
+                {%- if button_link != blank -%}
+                  <a href="{{ button_link }}" class="btn {{ section.settings.button_size }} {{ section.settings.button_type_color }} btn-alternate">
+                    <span>{{ block.settings.button_label }}</span>
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="col-12 col-lg-6 order-1 order-lg-2 nov-hover-tabs-right">
+          <div class="nov-hover-tabs-banner-wrapper" style="--banner-ratio: {{ section.settings.banner_ratio }}">
+            {%- for block in section.blocks -%}
+              <div class="nov-hover-tabs-banner-item{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}">
+                {%- if block.settings.banner_image != blank -%}
+                  {% render 'nov-imgset', image: block.settings.banner_image %}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg w-100 h-100' }}
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initHoverTabs(container) {
+      if (!container) return;
+      const tabItems = container.querySelectorAll('.nov-hover-tabs-item');
+      const productBlocks = container.querySelectorAll('.nov-hover-tabs-products-block');
+      const infoBlocks = container.querySelectorAll('.nov-hover-tabs-info-block');
+      const bannerItems = container.querySelectorAll('.nov-hover-tabs-banner-item');
+
+      function switchActive(index) {
+        tabItems.forEach((item, i) => {
+          if (i == index) item.classList.add('active');
+          else item.classList.remove('active');
+        });
+        productBlocks.forEach((item, i) => {
+          if (i == index) {
+            item.classList.add('active');
+            const cards = item.querySelectorAll('.nov-hover-tabs-product-card');
+            cards.forEach((c) => c.classList.remove('active'));
+          } else {
+            item.classList.remove('active');
+          }
+        });
+        infoBlocks.forEach((item, i) => {
+          if (i == index) item.classList.add('active');
+          else item.classList.remove('active');
+        });
+        bannerItems.forEach((item, i) => {
+          if (i == index) item.classList.add('active');
+          else item.classList.remove('active');
+        });
+      }
+
+      tabItems.forEach((item) => {
+        item.addEventListener('mouseenter', function() {
+          const index = this.getAttribute('data-index');
+          switchActive(index);
+        });
+      });
+
+      const productCards = container.querySelectorAll('.nov-hover-tabs-product-card');
+      productCards.forEach((card) => {
+        card.addEventListener('mouseenter', function() {
+          const parentBlock = this.closest('.nov-hover-tabs-products-block');
+          if (parentBlock) {
+            parentBlock.querySelectorAll('.nov-hover-tabs-product-card').forEach(c => c.classList.remove('active'));
+          }
+          this.classList.add('active');
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('#shopify-section-{{ section.id }}');
+      initHoverTabs(container);
+    });
+
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === '{{ section.id }}') {
+        const container = document.querySelector('#shopify-section-{{ section.id }}');
+        initHoverTabs(container);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+  {
+    "name": "Hover Collection Tabs",
+    "class": "section-hover-collection-tabs",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "header",
+        "content": "Title Settings"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Shop by Collection"
+      },
+      {
+        "type": "range",
+        "id": "sub_font_size_desktop",
+        "label": "Title Font Size (Desktop)",
+        "min": 10,
+        "max": 40,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "sub_font_size_mobile",
+        "label": "Title Font Size (Mobile)",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "default": 12,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "sub_font_weight",
+        "label": "Title Font Weight",
+        "default": "600",
+        "options": [
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Tabs Settings"
+      },
+      {
+        "type": "range",
+        "id": "tab_font_size_desktop",
+        "label": "Tab Font Size (Desktop)",
+        "min": 16,
+        "max": 60,
+        "step": 1,
+        "default": 36,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "tab_font_size_tablet",
+        "label": "Tab Font Size (Tablet)",
+        "min": 16,
+        "max": 60,
+        "step": 1,
+        "default": 26,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "tab_font_size_mobile",
+        "label": "Tab Font Size (Mobile)",
+        "min": 14,
+        "max": 40,
+        "step": 1,
+        "default": 24,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "tab_font_weight",
+        "label": "Tab Font Weight",
+        "default": "700",
+        "options": [
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Description Settings"
+      },
+      {
+        "type": "range",
+        "id": "desc_font_size_desktop",
+        "label": "Description Font Size (Desktop)",
+        "min": 12,
+        "max": 24,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "desc_font_size_mobile",
+        "label": "Description Font Size (Mobile)",
+        "min": 10,
+        "max": 20,
+        "step": 1,
+        "default": 12,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "desc_font_weight",
+        "label": "Description Font Weight",
+        "default": "400",
+        "options": [
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Button Settings"
+      },
+      {
+        "type": "select",
+        "id": "button_size",
+        "label": "Button size",
+        "options": [
+          { "value": "btn-normal", "label": "Normal" },
+          { "value": "btn-medium", "label": "Medium" },
+          { "value": "btn-large", "label": "Large" }
+        ],
+        "default": "btn-normal"
+      },
+      {
+        "type": "select",
+        "id": "button_type_color",
+        "label": "Button type color",
+        "options": [
+            { "value": "btn-primary", "label": "Primary" },
+            { "value": "btn-secondary", "label": "Secondary" }
+        ],
+        "default": "btn-primary"
+      },
+      {
+        "type": "header",
+        "content": "Banner Image Settings"
+      },
+      {
+        "type": "select",
+        "id": "banner_ratio",
+        "label": "Banner Aspect Ratio",
+        "default": "4/3",
+        "options": [
+          { "value": "1/1", "label": "Square (1:1)" },
+          { "value": "4/3", "label": "Classic Landscape (4:3)" },
+          { "value": "16/9", "label": "Widescreen (16:9)" },
+          { "value": "3/4", "label": "Portrait (3:4)" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "banner_corner_radius",
+        "label": "Banner Corner Radius",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 20,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Section Style Settings"
+      },
+      {
+        "type": "text",
+        "id": "class_section",
+        "label": "Class Section CSS"
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_section",
+        "label": "Color section",
+        "default": "background-1"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable Section Background"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background Image Size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Custom Background Size",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Custom Size value",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background Image Position",
+        "default": "center center",
+        "options": [
+          { "value": "top left", "label": "Top left" },
+          { "value": "top center", "label": "Top center" },
+          { "value": "top right", "label": "Top right" },
+          { "value": "center left", "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right", "label": "Center right" },
+          { "value": "bottom left", "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right", "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}" 
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 1,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background (xxl)",
+        "default": 100,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background (xl)",
+        "default": 100,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background (lg)",
+        "default": 100,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background (md)",
+        "default": 100,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background (sm)",
+        "default": 100,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background (xs)",
+        "default": 100,
+        "unit": "%",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      { "type": "number", "id": "distance_top_xl", "label": "Large laptop", "default": 30 },
+      { "type": "number", "id": "distance_top_lg", "label": "Laptop", "default": 30 },
+      { "type": "number", "id": "distance_top_md", "label": "Tablet", "default": 30 },
+      { "type": "number", "id": "distance_top_sm", "label": "Mobile", "default": 30 },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      { "type": "number", "id": "distance_bottom_xl", "label": "Large laptop", "default": 30 },
+      { "type": "number", "id": "distance_bottom_lg", "label": "Laptop", "default": 30 },
+      { "type": "number", "id": "distance_bottom_md", "label": "Tablet", "default": 30 },
+      { "type": "number", "id": "distance_bottom_sm", "label": "Mobile", "default": 30 }
+    ],
+    "blocks": [
+      {
+        "type": "collection_item",
+        "name": "Collection Item",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "text",
+            "id": "tab_title",
+            "label": "Tab Title (Optional)",
+            "default": "Headphones"
+          },
+          {
+            "type": "image_picker",
+            "id": "banner_image",
+            "label": "Banner Image"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description Text",
+            "default": "Precisely engineered for immersive sound and lasting all-day comfort."
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button Link"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button Label",
+            "default": "SHOP COLLECTION"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Hover Collection Tabs",
+        "blocks": [
+          {
+            "type": "collection_item",
+            "settings": {
+              "tab_title": "Headphones",
+              "description": "Precisely engineered for immersive sound and lasting all-day comfort."
+            }
+          },
+          {
+            "type": "collection_item",
+            "settings": {
+              "tab_title": "Portable Speakers",
+              "description": "Fill any room with rich, 360-degree sound from a compact, rugged form factor."
+            }
+          },
+          {
+            "type": "collection_item",
+            "settings": {
+              "tab_title": "Smartwatch",
+              "description": "Stay connected and track your wellness with elegant, responsive intelligence on your wrist."
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

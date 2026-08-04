@@ -1,0 +1,75 @@
+{%- assign bst = block.settings -%}
+<div class="item-lookbook position-absolute grid--view-items d-flex" style="top: {{ bst.pin_position_top }}%; left: {{ bst.pin_position_left }}%">
+  <span class="number-lookbook">
+    <span class="position-relative d-flex align-items-center justify-content-center font-300">+</span>
+  </span>
+  <div class="content-lookbook position-absolute">
+    {%- assign product = bst.product -%}
+    <div class="lookbook-item-product d-flex align-items-center text-left">
+      <div class="product__info">
+        <div class="product__title"><a href="{{ product.url }}">{{ product.title }}</a></div>
+        {% if settings.review_enable %}
+          <div class="AirReviews-Widget AirReviews-Widget--Stars mt-5" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+        {% endif %}
+        <div class="price-box mt-5">
+          {% if product.compare_at_price_min > product.price_min %}
+            <div class="price-sale d-flex flex-wrap align-items-center">
+              <span class="special-price" data-price-grid>{{ product.variants[0].price | money }}</span>
+              <span class="old-price" data-compare-price-grid>{{ product.variants[0].compare_at_price | money }}</span>
+            </div>
+          {% else %}
+            <div class="price-regular">
+              <span data-price-grid>{{ product.variants[0].price | money }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="thumbnail-container{% if product.images.size > 1 %} has-multiimage{% endif %}">
+        <a href="{{ product.url }}">
+          {% assign image_url = product.featured_image %}
+          <img src="{{ image_url | image_url: width: 1 }}" data-src="{{ image_url | image_url: width: 200 }}" class="product__thumbnail lazyload img-fluid" alt="{{ image_url.alt | default: 'image' }}" width="200" height="200">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Lookbook Item",
+    "tag": null,
+    "settings": [
+      {
+        "type": "product",
+        "id": "product",
+        "label": "Select Pin Product",
+      },
+      {
+        "type": "range",
+        "id": "pin_position_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Top",
+        "default": 5,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "pin_position_left",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Left",
+        "default": 5,
+        "unit": "%"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Lookbook Item"
+      }
+    ]
+  }
+  {% endschema %}
+  

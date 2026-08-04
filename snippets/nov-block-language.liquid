@@ -1,0 +1,26 @@
+{% if settings.show_language_flag %}
+  {% assign class = 'nov-language flag' %}
+{% else %}
+  {% assign class = 'nov-language' %}
+{% endif %}
+{%- form 'localization', id: id, class: class -%}
+  <div class="position-relative">
+    <div class="nov_ud_btn w-100 text-left d-flex align-items-center duration-300">
+      <span>{{ localization.language.endonym_name | capitalize }}</span>
+      {% render 'icon-chevron-down' %}
+    </div>
+    <div class="nov_ud_dropdown w-100">
+      {%- for language in localization.available_languages -%}
+        <div class="item font-500 pointer d-flex align-items-center{% if language.iso_code == localization.language.iso_code %} active{% endif %}" data-value="{{ language.iso_code }}">
+          {% assign flag_icon_id = 'lang_flag_' | append: forloop.index %}
+          {% assign flag = settings[flag_icon_id] %}
+          {% if flag != blank and settings.show_language_flag %}
+            <span class="flag-icon"><img src="{{ flag | image_url: width: 32 }}" alt="{{ language.endonym_name }}" width="32" height="16"></span>
+          {% endif %}
+          {{ language.endonym_name | capitalize }}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+{%- endform -%}

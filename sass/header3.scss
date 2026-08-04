@@ -1,0 +1,52 @@
+@use "sass:math";
+@use "sass:list";
+@use "mixin" as *;
+[class*="direcback"] {
+  cursor: pointer;
+}
+.site-nav--btn {
+  margin-inline-end: 3rem;
+}
+.search__btn-overlay {
+  span {
+    margin-inline-start: 8px;
+  }
+}
+@media (max-width: 1440px) {
+	.site-nav .site-nav__link--main {
+		padding-inline: 12px;
+	}
+	#header-sticky .site-nav__link--main {
+		padding-inline: 10px;
+	}
+}
+@media (min-width: 768px) {
+  .site-nav--btn {
+    .icon {
+      width: 18px;
+      height: 12px;
+      span {
+        width: 18px;
+      }
+      &::before, &::after {
+        transform: translate(0, -50%);
+        left: initial;
+        right: 0;
+      }
+      &:before {
+        width: 14px;
+      }
+      &:after {
+        width: 10px;
+      }
+    }
+    .text {
+      margin-inline-start: 10px;
+    }
+    &:hover .icon {
+      &:before, &:after {
+        background-color: var(--color-hover);
+      }
+    }
+  }
+}

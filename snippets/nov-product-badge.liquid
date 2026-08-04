@@ -1,0 +1,32 @@
+<div class="product__badge {{ settings.badge_position }}">
+  {% if settings.badge_new %}
+    {% assign date_created = product.created_at | date:'%s' %}
+    {% assign date_now = 'now' | date:'%s' %}
+    {% assign difference = date_now | minus: date_created %}
+    {% assign date_end = settings.time_newproduct | times: 86400 %}
+    {% if difference < date_end and settings.show_badge_new_product %}
+      <div class="badge badge-new">{{ 'products.badges.new' | t }}</div>
+    {% endif %}
+  {% endif %}
+
+  {% if settings.badge_discount %}
+    {% assign first_variant = product.variants.first %}
+    {% if first_variant.compare_at_price > first_variant.price and settings.badge_discount %}
+      <span class="badge badge-discount">-{{ first_variant.compare_at_price | minus: first_variant.price | times: 100.0 | divided_by: first_variant.compare_at_price | round | append: '%' }}</span>
+    {% endif %}
+  {% endif %}
+
+  {% if settings.badge_status %}
+    {% if current_variant.inventory_policy == 'continue' %}
+      <span class="badge badge-status">{{ 'products.badges.pre_order' | t }}</span>
+    {% elsif current_variant.inventory_policy == 'deny' and current_variant.available == false %}
+      <span class="badge badge-status">{{ 'products.badges.sold_out' | t }}</span>
+    {% endif %}
+  {% endif %}
+
+  {% if settings.badge_custom %}
+    {% if product.metafields.custom.limited_stock == true %}
+      <span class="badge badge-custom">{{ 'products.badges.limited_stock' | t }}</span>
+    {% endif %}
+  {% endif %}
+</div>

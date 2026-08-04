@@ -1,0 +1,17 @@
+<div id="ProductPrice-{{ section.id }}" class="product-single__price price-st d-flex flex-wrap align-items-center {{ mb }}">
+  {% if current_variant.compare_at_price > current_variant.price %}
+    <span class="product-price__price product-price__sale product-price__sale--single">
+      <span itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+        {{ current_variant.price | money }}
+      </span>
+    </span>
+    <s>{{ current_variant.compare_at_price | money }}</s>
+    <span class="product-price__badge">-{{ current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price | round: 4 }}%</span>
+  {% else %}
+    <span class="product-price__price">
+      <span itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+        {{ current_variant.price | money }}
+      </span>
+    </span>
+  {% endif %}
+</div>

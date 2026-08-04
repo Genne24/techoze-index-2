@@ -1,0 +1,5 @@
+mix-manifest.json
+package.json
+node_modules
+package-lock.json
+.gitattributes

@@ -1,0 +1,600 @@
+{%- liquid
+  assign sst = section.settings
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  if section.settings.class_section != blank
+    assign class_section = section.settings.class_section | prepend: ' '
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position | append: class_section
+  if sst.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+{%- style -%}
+  {% render 'nov-section-style' %}
+  {% if sst.background_gradient != blank %}
+    #shopify-section-{{ section.id }} .distance.bg:before {
+      background: {{ sst.background_gradient }};
+    }
+  {% endif %}
+{%- endstyle -%}
+
+<div class="custom-section position-relative{{ bg_class_full }}">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      {% if sst.pattern_1 != blank %}
+        <div class="pattern-section pattern-1 position-absolute d-none{% if sst.pattern_fullscreen1 %} pattern-fullscreen{% endif %} {{ sst.pattern_respon }} {{ sst.pattern_position1 }} {{ sst.pattern_animate1 }}" style="--horizontal: {{ sst.pattern_horizontal1 }}%;--vertical: {{ sst.pattern_vertical1 }}%;--width: {{ sst.pattern_width1 }}%;">
+          {% render 'nov-aspect-image', image: sst.pattern_1, class: 'no-ef' %}
+        </div>
+      {% endif %}
+      {% if sst.pattern_2 != blank %}
+        <div class="pattern-section pattern-2 position-absolute d-none {{ sst.pattern_respon }} {{ sst.pattern_position2 }} {{ sst.pattern_animate2 }}" style="--horizontal: {{ sst.pattern_horizontal2 }}%;--vertical: {{ sst.pattern_vertical2 }}%;--width: {{ sst.pattern_width2 }}%;">
+          {% render 'nov-aspect-image', image: sst.pattern_2, class: 'no-ef' %}
+        </div>
+      {% endif %}
+      {% if sst.pattern_3 != blank %}
+        <div class="pattern-section pattern-3 position-absolute d-none {{ sst.pattern_respon }} {{ sst.pattern_position3 }} {{ sst.pattern_animate3 }}" style="--horizontal: {{ sst.pattern_horizontal3 }}%;--vertical: {{ sst.pattern_vertical3 }}%;--width: {{ sst.pattern_width3 }}%;">
+          {% render 'nov-aspect-image', image: sst.pattern_3, class: 'no-ef' %}
+        </div>
+      {% endif %}
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Custom Section",
+    "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+    "disabled_on": {
+      "groups": ["custom.system"]
+    },
+    "settings": [
+      {
+        "type": "header",
+        "content": "Pattern Responsive",
+        "info": "Start display from"
+      },
+      {
+        "type": "select",
+        "id": "pattern_respon",
+        "label": "Pattern responsive",
+        "options": [
+          {
+            "value": "d-xxl-block",
+            "label": "Desktop"
+          },
+          {
+            "value": "d-xl-block",
+            "label": "Large laptop"
+          },
+          {
+            "value": "d-lg-block",
+            "label": "Laptop"
+          },
+          {
+            "value": "d-md-block",
+            "label": "Tablet"
+          },
+          {
+            "value": "d-sm-block",
+            "label": "Large mobile"
+          },
+          {
+            "value": "d-block",
+            "label": "All screen"
+          }
+        ],
+        "default": "d-block"
+      },
+      {
+
+        "type": "header",
+        "content": "Pattern Section 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "pattern_1",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "pattern_animate1",
+        "label": "Animate",
+        "default": "pattern-animate-1",
+        "options": [
+          { "value": "pattern-animate-1", "label": "Animate 1" },
+          { "value": "pattern-animate-2", "label": "Animate 2" },
+          { "value": "pattern-animate-none", "label": "None" }
+        ],
+        "visible_if": "{{ section.settings.pattern_1 != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "pattern_fullscreen1",
+        "label": "Full screen"
+      },
+      {
+        "type": "select",
+        "id": "pattern_position1",
+        "label": "Position",
+        "default": "left-top",
+        "options": [
+          { "value": "left-top", "label": "Left top" },
+          { "value": "left-center", "label": "Left center" },
+          { "value": "left-bottom", "label": "Left bottom" },
+          { "value": "right-top", "label": "Right top" },
+          { "value": "right-center", "label": "Right center" },
+          { "value": "right-bottom", "label": "Right bottom" },
+          { "value": "top-center", "label": "Top center" },
+          { "value": "center-center", "label": "Middle center" },
+          { "value": "bottom-center", "label": "Bottom center" }
+        ],
+        "visible_if": "{{ section.settings.pattern_1 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_horizontal1",
+        "min": -30,
+        "max": 60,
+        "step": 1,
+        "label": "Position horizontal",
+        "default": 5,
+        "unit": "%",
+        "visible_if": "{{ section.settings.pattern_1 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_vertical1",
+        "min": -30,
+        "max": 60,
+        "step": 1,
+        "label": "Position vertical",
+        "default": 0,
+        "unit": "%",
+        "visible_if": "{{ section.settings.pattern_1 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_width1",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Width",
+        "unit": "%",
+        "default": 20,
+        "visible_if": "{{ section.settings.pattern_1 != blank }}"
+      },
+      {
+        "type": "header",
+        "content": "Pattern Section 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "pattern_2",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "pattern_animate2",
+        "label": "Animate",
+        "default": "pattern-animate-1",
+        "options": [
+          { "value": "pattern-animate-1", "label": "Animate 1" },
+          { "value": "pattern-animate-2", "label": "Animate 2" },
+          { "value": "pattern-animate-none", "label": "None" }
+        ],
+        "visible_if": "{{ section.settings.pattern_2 != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "pattern_position2",
+        "label": "Position",
+        "default": "left-top",
+        "options": [
+          { "value": "left-top", "label": "Left top" },
+          { "value": "left-center", "label": "Left center" },
+          { "value": "left-bottom", "label": "Left bottom" },
+          { "value": "right-top", "label": "Right top" },
+          { "value": "right-center", "label": "Right center" },
+          { "value": "right-bottom", "label": "Right bottom" },
+          { "value": "top-center", "label": "Top center" },
+          { "value": "center-center", "label": "Middle center" },
+          { "value": "bottom-center", "label": "Bottom center" }
+        ],
+        "visible_if": "{{ section.settings.pattern_2 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_horizontal2",
+        "min": -30,
+        "max": 60,
+        "step": 1,
+        "label": "Position horizontal",
+        "default": 5,
+        "unit": "%",
+        "visible_if": "{{ section.settings.pattern_2 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_vertical2",
+        "min": -30,
+        "max": 60,
+        "step": 1,
+        "label": "Position vertical",
+        "default": 0,
+        "unit": "%",
+        "visible_if": "{{ section.settings.pattern_2 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_width2",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Width",
+        "unit": "%",
+        "default": 20,
+        "visible_if": "{{ section.settings.pattern_2 != blank }}"
+      },
+      {
+        "type": "header",
+        "content": "Pattern Section 3"
+      },
+      {
+        "type": "image_picker",
+        "id": "pattern_3",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "pattern_animate3",
+        "label": "Animate",
+        "default": "pattern-animate-1",
+        "options": [
+          { "value": "pattern-animate-1", "label": "Animate 1" },
+          { "value": "pattern-animate-2", "label": "Animate 2" },
+          { "value": "pattern-animate-none", "label": "None" }
+        ],
+        "visible_if": "{{ section.settings.pattern_3 != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "pattern_position3",
+        "label": "Position",
+        "default": "left-top",
+        "options": [
+          { "value": "left-top", "label": "Left top" },
+          { "value": "left-center", "label": "Left center" },
+          { "value": "left-bottom", "label": "Left bottom" },
+          { "value": "right-top", "label": "Right top" },
+          { "value": "right-center", "label": "Right center" },
+          { "value": "right-bottom", "label": "Right bottom" },
+          { "value": "top-center", "label": "Top center" },
+          { "value": "center-center", "label": "Middle center" },
+          { "value": "bottom-center", "label": "Bottom center" }
+        ],
+        "visible_if": "{{ section.settings.pattern_3 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_horizontal3",
+        "min": -30,
+        "max": 60,
+        "step": 1,
+        "label": "Position horizontal",
+        "default": 5,
+        "unit": "%",
+        "visible_if": "{{ section.settings.pattern_3 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_vertical3",
+        "min": -30,
+        "max": 60,
+        "step": 1,
+        "label": "Position vertical",
+        "default": 0,
+        "unit": "%",
+        "visible_if": "{{ section.settings.pattern_3 != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "pattern_width3",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Width",
+        "unit": "%",
+        "default": 20,
+        "visible_if": "{{ section.settings.pattern_3 != blank }}"
+      },
+      {
+        "type":  "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Show animated",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "class_section",
+        "label": "Class"
+      },
+      {
+        "type":  "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors",
+        "default": "#ffffff",
+        "alpha": true,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "color_background",
+        "id": "background_gradient",
+        "label": "Background gradient",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background image size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable background image size custom",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Background image size custom",
+        "info": "Replace base background size, unit % or px",
+        "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background image position",
+        "default": "center center",
+        "options": [
+          { "value": "top left", "label": "Top left" },
+          { "value": "top center", "label": "Top center" },
+          { "value": "top right", "label": "Top right" },
+          { "value": "center left", "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right", "label": "Center right" },
+          { "value": "bottom left", "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right", "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.background_image != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full" },
+          { "value": "contain", "label": "Contain"}
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background size contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 0.5,
+        "default": 1,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_size == 'contain' }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1441px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 575px ↓",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Section"
+      }
+    ]
+  }
+{% endschema %}

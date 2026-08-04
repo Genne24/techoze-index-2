@@ -1,0 +1,155 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Header 6",
+  "type": "header",
+  "sections": {
+    "nov_custom_section_WcmW9A": {
+      "type": "nov-custom-section",
+      "blocks": {
+        "text_KpRxKJ": {
+          "type": "text",
+          "name": "Text",
+          "settings": {
+            "text": "<p>LIMITED TIME OFFER: COSMETIC SALE YOU CAN'T RESIST FREE SHIPPING AND RETURNS</p>",
+            "color": "#1c1c1c",
+            "color_link": "#000000",
+            "color_link_hover": "#000000",
+            "alignment": "center",
+            "responsive_alignment": false,
+            "alignment_xl": "left",
+            "alignment_lg": "left",
+            "alignment_md": "left",
+            "alignment_sm": "left",
+            "font_family": "f_df",
+            "font_weight": "font-500",
+            "text_transform": "none",
+            "letter_spacing": 0,
+            "line_height": 1,
+            "max_w": 960,
+            "font_size_xxl": 10,
+            "font_size_xl": 10,
+            "font_size_lg": 10,
+            "font_size_md": 10,
+            "font_size_sm": 10,
+            "font_size_xs": 10,
+            "show_seemore": false,
+            "bg_seemore": "#fff",
+            "height_seemore": 160,
+            "see_more_label": "See more",
+            "see_less_label": "See less",
+            "show_seemore_icon": false,
+            "show_line": false,
+            "mt_xxl": 0,
+            "mt_xl": 0,
+            "mt_lg": 0,
+            "mt_md": 0,
+            "mt_sm": 0,
+            "mb_xxl": 0,
+            "mb_xl": 0,
+            "mb_lg": 0,
+            "mb_md": 0,
+            "mb_sm": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_KpRxKJ"
+      ],
+      "name": "Custom Section",
+      "settings": {
+        "pattern_respon": "d-block",
+        "pattern_animate1": "pattern-animate-1",
+        "pattern_fullscreen1": false,
+        "pattern_position1": "left-top",
+        "pattern_horizontal1": 5,
+        "pattern_vertical1": 0,
+        "pattern_width1": 20,
+        "pattern_animate2": "pattern-animate-1",
+        "pattern_position2": "left-top",
+        "pattern_horizontal2": 5,
+        "pattern_vertical2": 0,
+        "pattern_width2": 20,
+        "pattern_animate3": "pattern-animate-1",
+        "pattern_position3": "left-top",
+        "pattern_horizontal3": 5,
+        "pattern_vertical3": 0,
+        "pattern_width3": 20,
+        "animate": true,
+        "container": "container",
+        "class_section": "",
+        "ss_bg_enable": true,
+        "background_color": "#fcf7ee",
+        "background_gradient": "",
+        "background_img_size": "cover",
+        "enable_background_img_size_custom": false,
+        "background_img_size_custom": "",
+        "background_img_position": "center center",
+        "background_corner": 0,
+        "background_position": "bg-center",
+        "background_size": "full",
+        "background_padding_horizontal": 1,
+        "height_background_xxl": 100,
+        "height_background_xl": 100,
+        "height_background_lg": 100,
+        "height_background_md": 100,
+        "height_background_sm": 100,
+        "height_background_xs": 100,
+        "distance_top_xl": 16,
+        "distance_top_lg": 16,
+        "distance_top_md": 16,
+        "distance_top_sm": 16,
+        "distance_bottom_xl": 16,
+        "distance_bottom_lg": 16,
+        "distance_bottom_md": 16,
+        "distance_bottom_sm": 16
+      }
+    },
+    "header": {
+      "type": "nov-header-6",
+      "custom_css": [],
+      "settings": {
+        "logo": "shopify://shop_images/logo-black.png",
+        "w_logo": 120,
+        "w_logo_lg": 120,
+        "w_logo_md": 120,
+        "wm_logo": 100,
+        "container": "container",
+        "header_bg": "#ffffff",
+        "header_color": "",
+        "stickymenu": true,
+        "stickymenu_sm": true,
+        "address": "Store Locations",
+        "address_link": "shopify://pages/page-store-locations",
+        "phone": "+(123) - 456 - 7890",
+        "header_top_text_icon": "shopify://shop_images/icon-fire.png",
+        "header_top_text": "Limited Time Offer! -35% on Selected Items!",
+        "show_social": true,
+        "account_icon": "rbb-icon-human-user-11",
+        "account_svg": true,
+        "wishlist": "rbb-icon-rating-start-outline-2",
+        "wishlist_svg": true,
+        "cart_type": "bag",
+        "cart": "3",
+        "cart_svg": true,
+        "main_linklist": "main-menu",
+        "color_menu": "background-1",
+        "menu_fs": 14,
+        "menu_fw": "500",
+        "menu_ff": "f_df"
+      }
+    }
+  },
+  "order": [
+    "nov_custom_section_WcmW9A",
+    "header"
+  ]
+}

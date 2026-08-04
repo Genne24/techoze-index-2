@@ -1,0 +1,315 @@
+{%- assign bst = block.settings -%}
+{% style %}
+  @media (min-width: 1200px) {
+    #group-{{ block.id }} {
+      padding-top: {{ bst.pt_xl }}px;
+      padding-bottom: {{ bst.pb_xl }}px;
+    }
+  }
+  @media (min-width: 992px) and (max-width: 1199px) {
+    #group-{{ block.id }} {
+      padding-top: {{ bst.pt_lg }}px;
+      padding-bottom: {{ bst.pb_lg }}px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    #group-{{ block.id }} {
+      padding-top: {{ bst.pt_md }}px;
+      padding-bottom: {{ bst.pb_md }}px;
+    }
+  }
+  @media(max-width: 767px) {
+    #group-{{ block.id }} {
+      padding-top: {{ bst.pt_sm }}px;
+      padding-bottom: {{ bst.pb_sm }}px;
+    }
+  }
+  #group-{{ block.id }} {
+    --spacing: {{ bst.row_spacing }}px;
+    --spacing-lg: {{ bst.row_spacing_lg }}px;
+    --spacing-md: {{ bst.row_spacing_md }}px;
+    {% if bst.show_style %}
+      border-radius: {{ bst.corner_radius }}px;
+      background-color: {{ bst.bg_color }};
+    {% endif %}
+  }
+  {% if bst.sticky_content != 'row-sticky-none' %}
+    #group-{{ block.id }} .row-block >.col-block {
+      top: {{ bst.sticky_top }}%;
+    }
+  {% endif %}
+{% endstyle %}
+<div id="group-{{ block.id }}" class="group-block sp-{{ bst.row_spacing }}{% if bst.show_style %} group-style overflow_hidden{% endif %}{% if bst.hover_effect %} hover-effect{% endif %}" style="--bg-hover: {{ bst.bg_hover }};--text-hover: {{ bst.text_hover }};">
+  <div class="row-block row spacing-{{ bst.row_spacing }} spacing-lg-{{ bst.row_spacing_lg }} spacing-md-{{ bst.row_spacing_md }}{% if bst.sticky_content != 'row-sticky-none' %} {{ bst.sticky_content }} align-items-start{% else %} align-items-{{ bst.align }}{% endif %} justify-content-{{ bst.justify }}{% if bst.direction_reverse %} {{ bst.direction_row }}{% endif %}" {{ block.shopify_attributes }}>
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+  {% schema %}
+  {
+    "name": "Group",
+    "blocks": [
+      { 
+        "type": "_col" 
+      }
+    ],
+    "tag": null,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+        "type": "range",
+        "id": "row_spacing",
+        "label": "Spacing",
+        "default": 30,
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "row_spacing_lg",
+        "label": "Spacing tablet 1200px ↓",
+        "default": 30,
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "row_spacing_md",
+        "label": "Spacing tablet 991px ↓",
+        "default": 30,
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "align",
+        "label": "Align",
+        "options": [
+          {
+            "value": "start",
+            "label": "Start"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "end",
+            "label": "End"
+          },
+          {
+            "value": "stretch",
+            "label": "Stretch"
+          }
+        ],
+        "default": "start"
+      },
+      {
+        "type": "select",
+        "id": "justify",
+        "label": "Justify",
+        "options": [
+          {
+            "value": "start",
+            "label": "Start"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "end",
+            "label": "End"
+          },
+          {
+            "value": "between",
+            "label": "Between"
+          }
+        ],
+        "default": "start"
+      },
+      {
+        "type": "header",
+        "content": "Reverse"
+      },
+      {
+        "type": "checkbox",
+        "id": "direction_reverse",
+        "label": "Enable reeverse",
+        "info": "Start reverse from"
+      },
+      {
+        "type": "select",
+        "id": "direction_row",
+        "label": "Direction",
+        "options": [
+          { "value": "flex-row-reverse", "label": "All screen" },
+          { "value": "flex-xl-row-reverse", "label": "Large laptop" },
+          { "value": "flex-lg-row-reverse", "label": "Laptop" },
+          { "value": "flex-md-row-reverse", "label": "Tablet" },
+          { "value": "flex-sm-row-reverse", "label": "Mobile" }
+        ],
+        "default": "flex-row-reverse",
+        "visible_if": "{{ block.settings.direction_reverse }}"
+      },
+      {
+        "type": "header",
+        "content": "Sticky Content",
+        "info": "Start sticky display from"
+      },
+      {
+        "type": "select",
+        "id": "sticky_content",
+        "label": "Sticky",
+        "options": [
+          { "value": "row-sticky-none", "label": "None" },
+          { "value": "row-sticky", "label": "All screen" },
+          { "value": "row-sticky-xl", "label": "Large laptop" },
+          { "value": "row-sticky-lg", "label": "Laptop" },
+          { "value": "row-sticky-md", "label": "Tablet" },
+          { "value": "row-sticky-sm", "label": "Mobile" }
+        ],
+        "default": "row-sticky-none",
+      },
+      {
+        "type": "range",
+        "id": "sticky_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "label": "Top",
+        "default": 0,
+        "visible_if": "{{ block.settings.sticky_content != 'row-sticky-none' }}"
+      },
+      {
+        "type": "header",
+        "content": "Style Group"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_style",
+        "label": "Show style",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "alpha": true,
+        "label": "Background color",
+        "default": "#fff",
+        "visible_if": "{{ block.settings.show_style }}"
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Corner radius",
+        "default": 0,
+        "visible_if": "{{ block.settings.show_style }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "hover_effect",
+        "label": "Hover effect"
+      },
+      {
+        "type": "color",
+        "id": "bg_hover",
+        "alpha": true,
+        "label": "Background color hover",
+        "default": "#FFFFFF",
+        "visible_if": "{{ block.settings.hover_effect }}"
+      },
+      {
+        "type": "color",
+        "id": "text_hover",
+        "alpha": true,
+        "label": "Text color hover",
+        "default": "#000000",
+        "visible_if": "{{ block.settings.hover_effect }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "pt_xl",
+        "label": "Large laptop",
+        "default": 0,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "pt_lg",
+        "label": "Laptop",
+        "default": 0,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "pt_md",
+        "label": "Tablet",
+        "default": 0,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "pt_sm",
+        "label": "Mobile",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "pb_xl",
+        "label": "Large laptop",
+        "default": 0,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "pb_lg",
+        "label": "Laptop",
+        "default": 0,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "pb_md",
+        "label": "Tablet",
+        "default": 0,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "pb_sm",
+        "label": "Mobile",
+        "default": 0
+      }
+    ],
+    "presets": [
+      {
+        "name": "Group",
+        "category": "Layout"
+      }
+    ]
+  }
+  {% endschema %}
+  

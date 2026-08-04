@@ -1,0 +1,574 @@
+{%- liquid
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position
+  if sst.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+{%- style -%}
+  {% render 'nov-section-style' %}
+  #shopify-section-{{ section.id }} .ifl-item {
+    --color-border: {{ sst.border_color }};
+  }
+{%- endstyle -%}
+
+<div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }} position-relative">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-40' %}
+      <div class="ifl-wrapper data-act-parent" style="--ifl-img-width: {{ sst.image_width }}px; --ifl-img-ratio: {{ sst.image_ratio }}; --ifl-img-rotation: {{ sst.image_rotation }}deg;--ifl-img-br: {{ sst.image_br }}px">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign bst = block.settings
+              assign item_url = bst.item_url
+              if item_url == blank
+                assign item_url = '#'
+              endif
+            -%}
+  
+            <div
+              class="ifl-item position-relative d-sm-flex align-items-center justify-content-between pt-30 pb-30 nov_btn_act nov_item_act{% if forloop.first %} act{% endif %}{% unless forloop.last %} bd-b{% endunless %}"
+              data-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              
+              <div class="ifl-item__inner">
+                <a
+                  href="{{ item_url }}"
+                  class="ifl-item__name fs-24 fs-lg-20 fs-md-18 fs-sm-16 font-600 color-title"
+                  {% if bst.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+                  <span class="ifl-item__title">{{ bst.title | default: block.type }}</span>
+                </a>
+              </div>
+
+              {%- if bst.image != blank -%}
+                <div class="ifl-item__thumb position-absolute center-center" aria-hidden="true">
+                  {{
+                    bst.image
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '200, 300, 400, 600',
+                      class: 'ifl-item__img img-fluid'
+                  }}
+                </div>
+              {%- elsif sst.show_placeholder_image -%}
+                <div class="ifl-item__thumb ifl-item__thumb--placeholder" aria-hidden="true">
+                  {{ 'product-1' | placeholder_svg_tag: 'ifl-item__img placeholder-svg' }}
+                </div>
+              {%- endif -%}
+  
+              {%- if sst.show_explore_link -%}
+                <a
+                  href="{{ item_url }}"
+                  class="ifl-item__link fs-12 font-500 link d-inline-flex align-items-center mt-xs-5"
+                  aria-label="{{ bst.title }}"
+                  {% if bst.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+                  <span>{{ sst.explore_text | default: 'Explore More' }}</span>
+                  <i class="zmdi zmdi-long-arrow-right"></i>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Interactive Feature List",
+  "class": "section-interactive-feature-list",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.system"]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Everything Your Skin Needs</p>"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#222222",
+      "visible_if": "{{ section.settings.heading != blank }}"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sub heading",
+      "default": "<p>Exceptional quality. Ethical factories. Radical Transparency.</p>"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Sub heading color",
+      "default": "#666666",
+      "visible_if": "{{ section.settings.subheading != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "subheading_position",
+      "label": "Sub heading position",
+      "default": "bottom",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "visible_if": "{{ section.settings.subheading != blank }}"
+    },
+    {
+      "type": "richtext",
+      "id": "descheading",
+      "label": "Description",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+    },
+    {
+      "type": "color",
+      "id": "descheading_color",
+      "label": "Description color",
+      "default": "#666666",
+      "visible_if": "{{ section.settings.descheading != blank }}"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "List Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_explore_link",
+      "label": "Show explore link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "explore_text",
+      "label": "Explore link text",
+      "default": "Explore More",
+      "visible_if": "{{ section.settings.show_explore_link }}"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_placeholder_image",
+      "label": "Show placeholder if no image",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image width",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "default": "auto",
+      "options": [
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "4/5", "label": "Portrait (4:5)" },
+        { "value": "3/4", "label": "Portrait (3:4)" },
+        { "value": "16/9", "label": "Landscape (16:9)" },
+        { "value": "auto", "label": "Auto" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_rotation",
+      "label": "Image rotation",
+      "min": -15,
+      "max": 15,
+      "step": 1,
+      "default": -4,
+      "unit": "°"
+    },
+    {
+      "type": "range",
+      "id": "image_br",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Border Color"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "alpha": true,
+      "label": "Border color",
+      "default": "#d2d2d2"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Show animated",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container",
+      "default": "container",
+      "options": [
+        { "value": "container", "label": "Container" },
+        { "value": "container-fluid", "label": "Container fluid" },
+        { "value": "container-full", "label": "Container full width" }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_section",
+      "label": "Color section",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "Section Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "ss_bg_enable",
+      "label": "Enable"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colors",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "select",
+      "id": "background_img_size",
+      "label": "Background image size",
+      "default": "cover",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" }
+      ],
+      "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_background_img_size_custom",
+      "label": "Enable background image size custom",
+      "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+    },
+    {
+      "type": "text",
+      "id": "background_img_size_custom",
+      "label": "Background image size custom",
+      "info": "Replace base background size, unit % or px",
+      "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+    },
+    {
+      "type": "select",
+      "id": "background_img_position",
+      "label": "Background image position",
+      "default": "center center",
+      "options": [
+        { "value": "top left", "label": "Top left" },
+        { "value": "top center", "label": "Top center" },
+        { "value": "top right", "label": "Top right" },
+        { "value": "center left", "label": "Center left" },
+        { "value": "center center", "label": "Center middle" },
+        { "value": "center right", "label": "Center right" },
+        { "value": "bottom left", "label": "Bottom left" },
+        { "value": "bottom center", "label": "Bottom center" },
+        { "value": "bottom right", "label": "Bottom right" }
+      ],
+      "visible_if": "{{ section.settings.background_image != blank }}"
+    },
+    {
+      "type": "range",
+      "id": "background_corner",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "label": "Corner background",
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "default": "bg-center",
+      "options": [
+        { "value": "bg-top", "label": "Top" },
+        { "value": "bg-center", "label": "Center" },
+        { "value": "bg-bottom", "label": "Bottom" }
+      ],
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "select",
+      "id": "background_size",
+      "label": "Background size",
+      "default": "full",
+      "options": [
+        { "value": "full", "label": "Full" },
+        { "value": "contain", "label": "Contain" }
+      ],
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "background_padding_horizontal",
+      "label": "Background size contain padding horizontal",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 1,
+      "unit": "%",
+      "info": "Breakpoint 1200px ↑",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "height_background_xxl",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Height background",
+      "default": 100,
+      "unit": "%",
+      "info": "Breakpoint 1441px ↑",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "height_background_xl",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Height background",
+      "default": 100,
+      "unit": "%",
+      "info": "Breakpoint 1200px ↑",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "height_background_lg",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Height background",
+      "default": 100,
+      "unit": "%",
+      "info": "Breakpoint 992px ↑",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "height_background_md",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Height background",
+      "default": 100,
+      "unit": "%",
+      "info": "Breakpoint 768px ↑",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "height_background_sm",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Height background",
+      "default": 100,
+      "unit": "%",
+      "info": "Breakpoint 576px ↑",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "height_background_xs",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Height background",
+      "default": 100,
+      "unit": "%",
+      "info": "Breakpoint 575px ↓",
+      "visible_if": "{{ section.settings.ss_bg_enable }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Top (px)"
+    },
+    {
+      "type": "number",
+      "id": "distance_top_xl",
+      "label": "Large laptop",
+      "default": 30,
+      "info": "Breakpoint 1200px"
+    },
+    {
+      "type": "number",
+      "id": "distance_top_lg",
+      "label": "Laptop",
+      "default": 30,
+      "info": "Breakpoint 992px"
+    },
+    {
+      "type": "number",
+      "id": "distance_top_md",
+      "label": "Tablet",
+      "default": 30,
+      "info": "Breakpoint 768px"
+    },
+    {
+      "type": "number",
+      "id": "distance_top_sm",
+      "label": "Mobile",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Spacing Bottom (px)"
+    },
+    {
+      "type": "number",
+      "id": "distance_bottom_xl",
+      "label": "Large laptop",
+      "default": 30,
+      "info": "Breakpoint 1200px"
+    },
+    {
+      "type": "number",
+      "id": "distance_bottom_lg",
+      "label": "Laptop",
+      "default": 30,
+      "info": "Breakpoint 992px"
+    },
+    {
+      "type": "number",
+      "id": "distance_bottom_md",
+      "label": "Tablet",
+      "default": 30,
+      "info": "Breakpoint 768px"
+    },
+    {
+      "type": "number",
+      "id": "distance_bottom_sm",
+      "label": "Mobile",
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "Silk-Infused Hair Treatment"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "item_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vinova Interactive Feature List",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Silk-Infused Hair Treatment"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Pure Argan Nourishment"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Botanical Scalp Support"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Daily Hair Cleansing Ritual"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Intensive Moisture Hair Elixir"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

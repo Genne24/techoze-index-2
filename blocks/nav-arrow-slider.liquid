@@ -1,0 +1,32 @@
+<div class="nav-slider d-flex {{ block.settings.arrow_color }}">
+  <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
+  <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
+</div>
+{% schema %}
+  {
+    "name": "Nav Arrow Slider",
+    "tag": null,
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Use this when a section contains sliders."
+      },
+      {
+        "type": "select",
+        "id": "arrow_color",
+        "label": "Arrow color",
+        "default": "arrow_on_light",
+        "options": [
+          {"value": "arrow_on_light","label": "Arrow on light background"},
+          {"value": "arrow_on_dark","label": "Arrow on dark background"}
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Nav Arrow Slider"
+      }
+    ]
+  }
+{% endschema %}
+  

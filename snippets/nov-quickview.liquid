@@ -1,0 +1,8 @@
+<div class="productQuickView d-none d-md-block relative z-2">
+	<a class="btnProductQuickview" href="#" data-url="/products/{{ handle }}?view=quick_view" data-product-url="/products/{{ handle }}" data-handle="{{ handle }}" data-pid="{{ id }}">
+		<i class="{{ settings.quickview_icon }}" style="font-size: {{ settings.quickview_icon_fz | append: 'px' }};"></i>
+		{% if settings.tooltip_enable %}
+		  <span class="btn-tootip {{ position }}">{{ 'products.product.quickview' | t }}</span>
+		{% endif %}
+	</a>
+</div>

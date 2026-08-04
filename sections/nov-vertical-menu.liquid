@@ -1,0 +1,496 @@
+{%- liquid 
+  assign sst                = section.settings
+  assign vertical_menu      = sst.vertical_menu
+  assign vertical_menu_name = sst.vertical_menu_name
+  assign limit              = sst.vertical_menu_limit | default: 7
+  assign show_icons_arrow   = sst.show_icons_arrow
+  assign color              = sst.vertical_menu_color
+  assign seemore_icon       = sst.vertical_menu_seemore_icon
+
+-%}
+
+<div class="system-vertical-menu color-{{ color }}">
+  <div class="btn-vertical d-flex align-items-center font-500">
+    <div class="icon">
+      <span></span>
+    </div>
+    <div class="label">{{ vertical_menu_name }}</div>
+  </div>
+  {% render 'vertical-menu', vertical_menu: vertical_menu, limit: limit, show_icons_arrow: show_icons_arrow, seemore_icon: seemore_icon %}
+</div>
+
+{% schema %}
+  {
+    "name": "Vinova Vertical Menu",
+    "class": "section-vertical-menu",
+    "limit": 1,
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+    "settings": [
+      {
+        "type": "header",
+        "content": "Vertical Menu"
+      },
+      {
+        "type": "text",
+        "id": "vertical_menu_name",
+        "label": "Vertical menu name",
+        "default": "Shop by Categories"
+      },
+      {
+        "type": "link_list",
+        "id": "vertical_menu",
+        "label": "Vertical menu"
+      },
+      {
+        "type": "range",
+        "id": "vertical_menu_limit",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "label": "Limit",
+        "default": 7
+      },
+      {
+        "type": "image_picker",
+        "id": "vertical_menu_seemore_icon",
+        "label": "Button see more icon"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_icons_arrow",
+        "label": "Show icons arrow",
+        "default": true,
+        "info": "Only show on desktop and when the menu has more than 2 levels"
+      },
+      {
+        "type": "color_scheme",
+        "id": "vertical_menu_color",
+        "label": "Vertical menu color",
+        "default": "background-1"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "megamenu",
+        "name": "Megamenu Item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Menu item name",
+            "info": "Menu item of main-menu. Menu item has dropdown megamenu.[Instructions for creating mega menus](https://shopifymate.com/documentation/guide/main-menu.html)"
+          },
+          {
+            "type": "select",
+            "id": "type_width",
+            "label": "Type width",
+            "default": "full",
+            "options": [
+              {"value": "full", "label": "Full width"},
+              {"value": "custom", "label": "Custom width"},
+            ]
+          },
+          {
+            "type": "number",
+            "id": "custom_width",
+            "label": "Custom width",
+            "default": 1170,
+            "info": "Unit: px",
+            "visible_if": "{{ block.settings.type_width == 'custom' }}"
+          },
+          {
+            "type": "image_picker",
+            "id": "icon_menu",
+            "label": "Icon menu"
+          },
+          {
+            "type": "image_picker",
+            "id": "img_bg",
+            "label": "Background image for block"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_menu_enable",
+            "label": "Enable navigation"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_title",
+            "label": "Show title",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "novmenu_xl",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-3",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "select",
+            "id": "submenu_xl",
+            "label": "Width fisrt children menu on megamenu large laptop 1200px ↑",
+            "default": "col-xl-3",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Block Banner"
+          },
+          {
+            "type": "number",
+            "id": "banner_br",
+            "label": "Border radius (px)",
+            "default": 5
+          },
+          {
+            "type": "header",
+            "content": "Block Banner 1"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_banner_enable1",
+            "label": "Enable Banner 1"
+          },
+          {
+            "type": "select",
+            "id": "banner_xl_1",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-4",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner1",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link1",
+            "label": "Banner Link"
+          },
+          {
+            "type": "richtext",
+            "id": "novmenu_banner_text1",
+            "label": "Text"
+          },
+          {
+            "type": "color_scheme",
+            "id": "novmenu_banner_text_color1",
+            "label": "Text color",
+            "default": "background-1"
+          },
+          {
+            "type": "text",
+            "id": "class_bn1",
+            "label": "Banner class"
+          },
+          {
+            "type": "header",
+            "content": "Block Banner 2"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_banner_enable2",
+            "label": "Enable Banner 2"
+          },
+          {
+            "type": "select",
+            "id": "banner_xl_2",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-4",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner2",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link2",
+            "label": "Banner link"
+          },
+          {
+            "type": "richtext",
+            "id": "novmenu_banner_text2",
+            "label": "Text"
+          },
+          {
+            "type": "color_scheme",
+            "id": "novmenu_banner_text_color2",
+            "label": "Text color",
+            "default": "background-1"
+          },
+          {
+            "type": "text",
+            "id": "class_bn2",
+            "label": "Banner class"
+          },
+          {
+            "type": "header",
+            "content": "Block Banner 3"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_banner_enable3",
+            "label": "Enable banner 3"
+          },
+          {
+            "type": "select",
+            "id": "banner_xl_3",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-4",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner3",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link3",
+            "label": "Banner link"
+          },
+          {
+            "type": "richtext",
+            "id": "novmenu_banner_text3",
+            "label": "Text"
+          },
+          {
+            "type": "color_scheme",
+            "id": "novmenu_banner_text_color3",
+            "label": "Text color",
+            "default": "background-1"
+          },
+          {
+            "type": "text",
+            "id": "class_bn3",
+            "label": "Banner class"
+          },
+          {
+            "type": "header",
+            "content": "Block Collection List"
+          },
+          {
+            "type": "checkbox",
+            "id": "collection_enable",
+            "label": "Enable block collection"
+          },
+          {
+            "type": "select",
+            "id": "collection_xl",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-3",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "text",
+            "id": "name_collec_1",
+            "label": "Title collection 1",
+            "default": "Best Sellers"
+          },
+          {
+            "type": "url",
+            "id": "link_1",
+            "label": "Link collection 1"
+          },
+          {
+            "type": "text",
+            "id": "name_collec_2",
+            "label": "Title collection 2",
+            "default": "New Arrival"
+          },
+          {
+            "type": "url",
+            "id": "link_2",
+            "label": "Link collection 2"
+          },
+          {
+            "type": "text",
+            "id": "name_collec_3",
+            "label": "Title collection 3",
+            "default": "Top Trending"
+          },
+          {
+            "type": "url",
+            "id": "link_3",
+            "label": "Link collection 3"
+          },
+          {
+            "type": "text",
+            "id": "name_collec_4",
+            "label": "Title collection 4",
+            "default": "Top Trending"
+          },
+          {
+            "type": "url",
+            "id": "link_4",
+            "label": "Link collection 4"
+          },
+          {
+            "type": "text",
+            "id": "name_collec_5",
+            "label": "Title collection 5",
+            "default": "Denim Collection"
+          },
+          {
+            "type": "url",
+            "id": "link_5",
+            "label": "Link collection 5"
+          },
+          {
+            "type": "header",
+            "content": "Block Product Slider"
+          },
+          {
+            "type": "checkbox",
+            "id": "product_enable",
+            "label": "Enable product"
+          },
+          {
+            "type": "select",
+            "id": "product_xl",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-4",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ]
+          },
+          {
+            "type": "text",
+            "id": "title_product",
+            "label": "Title product",
+            "default": "Featured Product"
+          },
+          {
+            "type": "product_list",
+            "id": "product_list",
+            "label": "Product list"
+          },
+          {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Auto play",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "icon_menu",
+        "name": "Icon Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Menu item name",
+            "info": "Menu item of main-menu. Menu item has dropdown megamenu."
+          },
+          {
+            "type": "image_picker",
+            "id": "icon_menu",
+            "label": "Icon Menu"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Vertical Menu",
+        "category": "Menu"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,993 @@
+{%- liquid
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  if section.settings.class_section != blank
+    assign class_section = section.settings.class_section | prepend: ' '
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position | append: class_section
+  if section.settings.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+
+{%- style -%}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} {
+    {% if sst.enable_border %}
+    --pss-border-style: {{ sst.ss_border_style }};
+    --pss-border-color: {{ sst.card_border_color }};
+    --pss-border-width: {{ sst.card_border_width | append: 'px' }};
+    {% endif %}
+    --pss-border-radius: {{ sst.card_border_radius | append: 'px' }};
+    --pss-card-bg: {{ sst.card_bg_color }};
+    --pss-watermark-size-xxl: {{ sst.watermark_font_size_xxl | divided_by: 10.0 | append: 'rem'}};
+    --pss-watermark-size-xl: {{ sst.watermark_font_size_xl | divided_by: 10.0 | append: 'rem'}};
+    --pss-watermark-size-lg: {{ sst.watermark_font_size_lg | divided_by: 10.0 | append: 'rem'}};
+    --pss-watermark-size-md: {{ sst.watermark_font_size_md | divided_by: 10.0 | append: 'rem'}};
+    --pss-watermark-size-sm: {{ sst.watermark_font_size_sm | divided_by: 10.0 | append: 'rem'}};
+    --pss-watermark-size-xs: {{ sst.watermark_font_size_xs | divided_by: 10.0 | append: 'rem'}};
+    --pss-watermark-weight: {{ sst.watermark_font_weight }};
+    --pss-watermark-color: {{ sst.watermark_color }};
+    --pss-title-size: {{ sst.title_font_size | divided_by: 10.0 | append: 'rem'}};
+    --pss-title-weight: {{ sst.title_font_weight }};
+    --pss-title-color: {{ sst.title_color }};
+    --pss-price-sale-size: {{ sst.price_sale_size | divided_by: 10.0 | append: 'rem'}};
+    --pss-price-compare-size: {{ sst.price_compare_size | divided_by: 10.0 | append: 'rem'}};
+    {% if sst.countdown_enable %}
+    --pss-countdown-bg: {{ sst.countdown_bg }};
+    --pss-countdown-border: {{ sst.countdown_border }};
+    --pss-countdown-number: {{ sst.countdown_number }};
+    --pss-countdown-text: {{ sst.countdown_text }};
+    --pss-countdown-radius: {{ sst.cd_border_radius | append: 'px' }};
+    {% endif %}
+  }
+  #shopify-section-{{ section.id }} .pss-content-col {
+    position: relative;
+  }
+  #shopify-section-{{ section.id }} .pss-content-item {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+  #shopify-section-{{ section.id }} .pss-content-item.active {
+    position: relative;
+    top: auto;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+{%- endstyle -%}
+
+<div class="{{ bg_class_full }}" data-section-id="{{ section.id }}">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 1;"{% endif %}>
+      {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-40' %}
+
+      <div class="pss-card">
+        {%- comment -%}── LEFT: Thumbnail Slick ──{%- endcomment -%}
+        <div class="pss-thumb-col">
+          <div data-section-id="{{ section.id }}" class="thumb-slick-left" data-section-type="nov-slick">
+            <div class="nov-slick-carousel slider1"
+              data-autoplay="false" 
+              data-speed="500"
+              data-row="1"
+              data-row_mobile="5"
+              data-items_xxl="5"
+              data-items_lg="5"
+              data-items_xs="5"
+              data-loop="true"
+              data-dots="false"
+              data-nav="false"
+              data-center="true"
+              data-centerpadding="120px"
+              data-centerpadding_xl="96px"
+              data-centerpadding_lg="0px"
+              data-centerpadding_md="0px"
+              data-centerpadding_sm="100px"
+              data-oneslider="1"
+              data-focusOnSelect="true"
+              data-swipe="false"
+              data-vertical="true"
+              data-vertical_lg="false"
+              data-navfor="{{ section.id | prepend: '#' | append: '-2' }}"
+              id="{{ section.id }}">
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign product = block.settings.product
+                  assign thumb_img = block.settings.thumbnail_image
+                  if thumb_img == blank and product != blank
+                    assign thumb_img = product.featured_image
+                  endif
+                -%}
+                <div class="pss-thumb-item" {{ block.shopify_attributes }}>
+                  {%- if thumb_img != blank -%}
+                    {% render 'nov-imgset', image: thumb_img %}
+                  {%- else -%}
+                    {%- capture current -%}{% cycle 1, 2, 3, 4, 5 %}{%- endcapture -%}
+                    {{- 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' -}}
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+        <div class="pss-groups d-flex">
+          <div class="pss-content-col relative overflow-hidden d-flex flex-column justify-content-center flex-1">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign product = block.settings.product
+                assign option_color_swatch = settings.option_color_swatch | downcase
+                for option in product.options_with_values
+                    assign option_name = option.name | downcase
+                    if option_color_swatch contains option_name
+                      assign product_option = option
+                      assign index = forloop.index0
+                      assign position = forloop.index | minus: 1
+                      break
+                    else 
+                      assign position = 0
+                    endif
+                endfor
+                assign option_count = product.options | size
+                assign downcased_option = product.options_with_values[0].name | downcase
+                assign available = product.variants.first.available
+                assign current_variant = product.selected_or_first_available_variant
+                assign swatch_color = false
+                if settings.use_color_swatch and option_count == 1 and option_color_swatch contains downcased_option
+                assign swatch_color = true
+                endif
+                assign image = block.settings.image
+                if image == blank and product != blank
+                  assign image = current_variant.featured_image | default: product.featured_image
+                endif
+              -%}
+              <div class="pss-content-item sp-item text-center{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                <div class="item-product item {{ settings.quickadd_type | prepend: 'type-quick-add-' }} duration-300 mb-0" data-product-id="product-{{ product.id }}" data-json-product='{"variants": {{ product.variants | json | escape }},"media": {{ product.media | json }}}'>
+                  <div class="pss-content-inner d-flex align-items-center flex-column relative z-2">
+                    <div class="card_media relative overflow-hidden d-none">
+                      <img class="product__thumbnail"
+                        src="{{ image | image_url: width: 260 }}"
+                        srcset="{{ image | image_url: width: 360 }} 360w, {{ image | image_url: width: 540 }} 540w, {{ image | image_url: width: 720 }} 720w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1080 }} 1080w, {{ image | image_url: width: 1400 }} 1400w"
+                        sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+                        alt="{{ image.alt }}"
+                        width="{{ image.width }}"
+                        height="{{ image.height }}"
+                        loading="lazy"
+                        style="height: auto;">
+                    </div>
+                    <div class="pss-watermark{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 0;"{% endif %}>{{ block.settings.watermark_text | default: 'SALE OFF' }}</div>
+                    <div class="product__title {{ settings.title_product_line }}{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 1;"{% endif %}><a href="{{ product.url }}">{{ product.title }}</a></div>
+                    {% if settings.review_enable %}
+                      <div class="product__review">{{ settings.review_code }}</div>
+                    {% endif %}
+                    {% if settings.price_enable %}
+                      <div class="product__price price-box price-st d-flex align-items-center{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 2;"{% endif %}>
+                        {% render 'nov-product-price', product: product %}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.countdown_enable %}
+                      <div class="countdownfree text-center d-flex justify-content-center{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 1;"{% endif %} data-countdown="{{ block.settings.countdown_timeend }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
+                    {% endif %}
+                    <div class="button--bot d-flex align-items-center gap-10{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: 2;"{% endif %}>
+                      {% if settings.wishlist_enable %}
+                        {% render 'nov-wishlist', id: product.id, handle: product.handle, position: 'top' %}
+                      {% endif %}
+                      {% if settings.addtocart_enable %}
+                        {% render 'nov-product-addtocart', product: product, swatch_color: swatch_color, current_variant: current_variant, position: position, available: available, button_type: section.settings.button_type_color, button_size: section.settings.button_size %}
+                      {% endif %}
+                      {% if settings.quickview_enable %}
+                        {% render 'nov-quickview', id: product.variants.first.id, handle: product.handle, position: 'top' %}
+                      {% endif %}
+                    </div>
+                    {% if settings.addtocart_enable and product.has_only_default_variant == false %}
+                      <div class="product__popup-swatch">
+                        {% render 'add-to-cart-form', product: product, id: 'grid-product-form-', position: position, section_id: section_id, block_id: block_id %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+  
+          <div class="pss-image-col">
+            <div data-section-id="{{ section.id | append: '-2' }}" class="thumb-slick-right" data-section-type="nov-slick">
+              <div class="nov-slick-carousel {{ sst.arrow_color }}"
+                data-autoplay="false" 
+                data-loop="true"
+                data-dots="false"
+                data-nav="{{ sst.show_nav }}"
+                data-row="1"
+                data-row_mobile="1"
+                data-items_xxl="1"
+                data-speed="500"
+                data-center="true"
+                data-oneslider="1"
+                data-swipe="true"
+                data-fade="true"
+                data-navfor="{{ section.id | prepend: '#' }}"
+                id="{{ section.id | append: '-2' }}">
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign product = block.settings.product
+                    assign image = block.settings.image
+                    if image == blank and product != blank
+                      assign image = current_variant.featured_image | default: product.featured_image
+                    endif
+                  -%}
+                  <div class="pss-image-item sp-item relative" {{ block.shopify_attributes }}>
+                    {% if settings.badge_enable %}
+                      {% render 'nov-product-badge', product: product, current_variant: current_variant %}
+                    {% endif %}
+                    {%- if image != blank -%}
+                      <div class="item-product duration-300 mb-0" data-product-id="product-{{ product.id }}">
+                        {% render 'nov-imgset', image: image %}
+                      </div>
+                    {%- else -%}
+                      {%- capture current -%}{% cycle 1, 2, 3, 4, 5 %}{%- endcapture -%}
+                      {{- 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg main-img-placeholder' -}}
+                    {%- endif -%}
+                    <a href="{{ product.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    var sectionId = '{{ section.id }}';
+    function initSync() {
+      if (typeof jQuery === 'undefined') {
+        setTimeout(initSync, 50);
+        return;
+      }
+      var $sliderRight = jQuery('#' + sectionId + '-2');
+      var $contentCol = jQuery('#shopify-section-' + sectionId).find('.pss-content-col');
+
+      if ($sliderRight.length && $contentCol.length) {
+        $sliderRight.off('beforeChange.novProductSale');
+        $sliderRight.on('beforeChange.novProductSale', function(event, slick, currentSlide, nextSlide) {
+          $contentCol.find('.pss-content-item').removeClass('active');
+          $contentCol.find('.pss-content-item[data-index="' + nextSlide + '"]').addClass('active');
+        });
+        if ($sliderRight.hasClass('slick-initialized')) {
+          var activeIndex = $sliderRight.slick('slickCurrentSlide') || 0;
+          $contentCol.find('.pss-content-item').removeClass('active');
+          $contentCol.find('.pss-content-item[data-index="' + activeIndex + '"]').addClass('active');
+        }
+      }
+    }
+    initSync();
+    document.addEventListener('DOMContentLoaded', function() {
+      initSync();
+    });
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === sectionId) {
+        initSync();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+  {
+    "name": "Vinova Product Sale",
+    "class": "section-product-sale",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<p>Product Hot Deals</p>"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "<p>Super discount deal products of the day</p>"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "subheading_position",
+        "label": "Sub heading position",
+        "default": "bottom",
+        "options": [
+          { "value": "top",    "label": "Top" },
+          { "value": "bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "header",
+        "content": "Card Border & Styling"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_border",
+        "label": "Enable border"
+      },
+      {
+        "type": "select",
+        "id": "ss_border_style",
+        "label": "Border style",
+        "default": "solid",
+        "options": [
+          { "value": "solid",  "label": "Solid" },
+          { "value": "dashed", "label": "Dashed" },
+          { "value": "dotted", "label": "Dotted" }
+        ],
+        "visible_if": "{{ section.settings.enable_border }}"
+      },
+      {
+        "type": "color",
+        "id": "card_border_color",
+        "label": "Card Border Color",
+        "default": "#f43777",
+        "visible_if": "{{ section.settings.enable_border }}"
+      },
+      {
+        "type": "range",
+        "id": "card_border_width",
+        "label": "Card Border Width",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 4,
+        "unit": "px",
+        "visible_if": "{{ section.settings.enable_border }}"
+      },
+      {
+        "type": "range",
+        "id": "card_border_radius",
+        "label": "Card Border Radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 20,
+        "unit": "px",
+        "visible_if": "{{ section.settings.enable_border }}"
+      },
+      {
+        "type": "color",
+        "id": "card_bg_color",
+        "label": "Card Background Color",
+        "default": "#F7F7F7"
+      },
+      {
+        "type": "header",
+        "content": "Big Background Text (Watermark)"
+      },
+      {
+        "type": "range",
+        "id": "watermark_font_size_xxl",
+        "label": "Font Size",
+        "min": 30,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "watermark_font_size_xl",
+        "label": "Font Size",
+        "min": 30,
+        "max": 150,
+        "step": 5,
+        "default": 80,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "watermark_font_size_lg",
+        "label": "Font Size",
+        "min": 30,
+        "max": 150,
+        "step": 5,
+        "default": 80,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "watermark_font_size_md",
+        "label": "Font Size",
+        "min": 30,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "watermark_font_size_sm",
+        "label": "Font Size",
+        "min": 30,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "watermark_font_size_xs",
+        "label": "Font Size",
+        "min": 30,
+        "max": 150,
+        "step": 5,
+        "default": 100,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "watermark_font_weight",
+        "label": "Font Weight",
+        "default": "900",
+        "options": [
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Regular" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi-Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black" }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "watermark_color",
+        "label": "Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Product Title Styling"
+      },
+      {
+        "type": "range",
+        "id": "title_font_size",
+        "label": "Font Size",
+        "min": 14,
+        "max": 48,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "select",
+        "id": "title_font_weight",
+        "label": "Font Weight",
+        "default": "700",
+        "options": [
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Regular" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi-Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black" }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Color",
+        "default": "#000000"
+      },
+      {
+        "type": "header",
+        "content": "Price Styling"
+      },
+      {
+        "type": "range",
+        "id": "price_sale_size",
+        "label": "Sale Price Size",
+        "min": 14,
+        "max": 40,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "price_compare_size",
+        "label": "Compare Price Size",
+        "min": 12,
+        "max": 30,
+        "step": 1,
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Countdown"
+      },
+      {
+        "type": "checkbox",
+        "id": "countdown_enable",
+        "label": "Enable Countdown",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "cd_border_radius",
+        "label": "Countdown Border Radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 10,
+        "unit": "px",
+        "visible_if": "{{ section.settings.countdown_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "countdown_bg",
+        "label": "Background Color",
+        "default": "#f43777",
+        "visible_if": "{{ section.settings.countdown_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "countdown_border",
+        "label": "Border Countdown Color",
+        "default": "#f43777",
+        "visible_if": "{{ section.settings.countdown_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "countdown_number",
+        "label": "Number Countdown Color",
+        "default": "#FFFFFF",
+        "visible_if": "{{ section.settings.countdown_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "countdown_text",
+        "label": "Label Countdown Color",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.countdown_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Add to Cart Button"
+      },
+      {
+        "type": "select",
+        "id": "button_size",
+        "label": "Button size",
+        "options": [
+          { "value": "btn-normal", "label": "Normal" },
+          { "value": "btn-medium", "label": "Medium" },
+          { "value": "btn-large", "label": "Large" }
+        ],
+        "default": "btn-normal"
+      },
+      {
+        "type": "select",
+        "id": "button_type_color",
+        "label": "Button type color",
+        "options": [
+          { "value": "btn-primary", "label": "Primary" },
+          { "value": "btn-secondary", "label": "Secondary" }
+        ],
+        "default": "btn-primary"
+      },
+      {
+        "type": "header",
+        "content": "Arrow"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_nav",
+        "label": "Show arrow"
+      },
+      {
+        "type": "select",
+        "id": "arrow_color",
+        "label": "Arrow color",
+        "default": "arrow_on_light",
+        "options": [
+          {"value": "arrow_on_light","label": "Arrow on light background"},
+          {"value": "arrow_on_dark","label": "Arrow on dark background"}
+        ],
+        "visible_if": "{{ section.settings.show_nav }}"
+      },
+      {
+        "type": "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Show animated",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container",       "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full",  "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "class_section",
+        "label": "Class section"
+      },
+      {
+        "type": "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background image size",
+        "default": "cover",
+        "options": [
+          { "value": "auto",    "label": "Auto" },
+          { "value": "cover",   "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable background image size custom",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Background image size custom",
+        "info": "Replace base background size, unit % or px",
+        "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background image position",
+        "default": "center center",
+        "options": [
+          { "value": "top left",      "label": "Top left" },
+          { "value": "top center",    "label": "Top center" },
+          { "value": "top right",     "label": "Top right" },
+          { "value": "center left",   "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right",  "label": "Center right" },
+          { "value": "bottom left",   "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right",  "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.background_image != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top",    "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full",    "label": "Full" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background size contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 1,
+        "unit": "%",
+        "info": "Breakpoint 1200px up",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 10, "max": 100, "step": 1,
+        "label": "Height background",
+        "default": 100, "unit": "%",
+        "info": "Breakpoint 1441px up",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 10, "max": 100, "step": 1,
+        "label": "Height background",
+        "default": 100, "unit": "%",
+        "info": "Breakpoint 1200px up",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 10, "max": 100, "step": 1,
+        "label": "Height background",
+        "default": 100, "unit": "%",
+        "info": "Breakpoint 992px up",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 10, "max": 100, "step": 1,
+        "label": "Height background",
+        "default": 100, "unit": "%",
+        "info": "Breakpoint 768px up",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 10, "max": 100, "step": 1,
+        "label": "Height background",
+        "default": 100, "unit": "%",
+        "info": "Breakpoint 576px up",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 10, "max": 100, "step": 1,
+        "label": "Height background",
+        "default": 100, "unit": "%",
+        "info": "Breakpoint 575px down",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Breakpoint 1200px up",
+        "default": 80
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Breakpoint 992px up",
+        "default": 60
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Breakpoint 768px up",
+        "default": 40
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Breakpoint 576px up",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Breakpoint 1200px up",
+        "default": 80
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Breakpoint 992px up",
+        "default": 60
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Breakpoint 768px up",
+        "default": 40
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Breakpoint 576px up",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "deal_product",
+        "name": "Deal Product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Main Image Override",
+            "info": "Leave blank to use the product's primary featured image"
+          },
+          {
+            "type": "image_picker",
+            "id": "thumbnail_image",
+            "label": "Thumbnail Image Override",
+            "info": "Leave blank to use the product's secondary image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title Override",
+            "info": "Leave blank to use the product's title"
+          },
+          {
+            "type": "text",
+            "id": "watermark_text",
+            "label": "Watermark Text",
+            "default": "SALE OFF",
+            "info": "Large text shown in background (e.g. SALE OFF, HOT DEAL)"
+          },
+          {
+            "type": "checkbox",
+            "id": "countdown_enable",
+            "label": "Enable countdown",
+            "default": true
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend",
+            "label": "Time end product",
+            "placeholder": "YYYY-MM-DD",
+            "visible_if": "{{ block.settings.countdown_enable }}"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year-Month-Day'",
+            "visible_if": "{{ block.settings.countdown_enable }}"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2030-01-30'",
+            "visible_if": "{{ block.settings.countdown_enable }}"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Product Sale",
+        "category": "Product",
+        "blocks": [
+          {
+            "type": "deal_product",
+            "settings": {
+              "product": "mobile-clip-on-game-controller",
+              "title": "Gamepad DualSense Wireless Controller",
+              "watermark_text": "SALE OFF",
+              "countdown_timeend": "2030-12-31"
+            }
+          },
+          {
+            "type": "deal_product",
+            "settings": {
+              "product": "studio-headphones-black-silver",
+              "title": "Wireless Noise Cancelling Headphones",
+              "watermark_text": "HOT DEAL",
+              "countdown_timeend": "2030-12-31"
+            }
+          },
+          {
+            "type": "deal_product",
+            "settings": {
+              "product": "smartwatch-sport-edition",
+              "title": "Samsung Galaxy S25 Ultra 5G 12GB/256GB",
+              "watermark_text": "SALE OFF",
+              "countdown_timeend": "2030-12-31"
+            }
+          },
+          {
+            "type": "deal_product",
+            "settings": {
+              "product": "360-vr-camera-dual-lens",
+              "title": "Smart VR Home Security Camera",
+              "watermark_text": "LIMITED",
+              "countdown_timeend": "2030-12-31"
+            }
+          },
+          {
+            "type": "deal_product",
+            "settings": {
+              "product": "waterproof-bluetooth-speaker-teal",
+              "title": "Portable Bluetooth Speaker Waterproof",
+              "watermark_text": "SALE OFF",
+              "countdown_timeend": "2030-12-31"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

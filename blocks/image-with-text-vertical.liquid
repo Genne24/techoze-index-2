@@ -1,0 +1,56 @@
+{%- assign bst = block.settings -%}
+<div class="img-with-text-vertical" {{ block.shopify_attributes }}>
+  <div class="position-relative {{ bst.img_animation }}" style="border-radius: {{ bst.corner_radius }}px; overflow: hidden; transform: translateZ(0)">
+    {% if bst.image != blank %}
+      {% render 'nov-aspect-image', image: bst.image %}
+    {% else %}
+      <div class="placeholder-image">
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div> 
+    {% endif %}
+    {% content_for 'block', id: 'text', type: 'text' %}
+    {% content_for 'block', id: 'button', type: 'button' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image With Text Vertical",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "number",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "img_animation",
+      "label": "Image animation when hover",
+      "default": "nov-sh-image-1",
+      "options": [
+        {"value": "nov-sh-image-1","label": "Style 1"},
+        {"value": "nov-sh-image-2","label": "Style 2"},
+        {"value": "nov-sh-image-3","label": "Style 3"},
+        {"value": "nov-sh-image-4","label": "Style 4"},
+        {"value": "nov-sh-image-5","label": "Style 5"},
+        {"value": "nov-sh-image-6","label": "Style 6"},
+        {"value": "nov-sh-image-7","label": "Style 7"},
+        {"value": "nov-sh-image-none","label": "None"}
+      ]
+    }
+  ],
+  "presets": [
+      {
+        "name": "Image With Text Vertical",
+        "category": "Content"
+      }
+    ]
+}
+{% endschema %}

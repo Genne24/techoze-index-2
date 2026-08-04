@@ -1,0 +1,91 @@
+<style>
+  .template-404 .page-404 .image {
+    max-width: {{ section.settings.image_width }}px;
+  }
+</style>
+
+<div class="content-404 text-center mb-80">
+  <div class="image m-center-auto">
+    {% if section.settings.image != blank %}
+      {% render 'nov-imgset', image: section.settings.image, class: 'img-fluid no-ef' %}
+    {% else %}
+      <div class="font-800">404</div>
+    {% endif %}
+  </div>
+  <div class="content">
+    {% if section.settings.title != blank %}
+      <h1 class="font-800 text-uppercase mb-10">{{ section.settings.title }}</h1>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <div class="sub_title font-500 mb-5">
+        <span>{{ section.settings.subheading }}</span>
+      </div>
+    {% endif %}
+    <div class="d-sm-flex d-block justify-content-sm-center mt-50">
+      {% if section.settings.button_back_to_home %}
+        <a href="{{ routes.root_url }}" class="btn btn-large btn-alternate mb-xs-10">
+          <span>{{ 'page.404.link' | t }}</span>
+        </a>
+      {% endif %}
+      {% if section.settings.button_continue_shopping %}
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-large btn-alternate">
+          <span>{{ 'page.404.continue_shopping' | t }}</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+  {% for block in section.blocks %}
+    {% if block.type == '@app' %}
+      {% render block %}
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "Vinova Page 404",
+    "class": "page-404",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "number",
+        "id": "image_width",
+        "label": "Image width",
+        "default": 640
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Vinova Page 404"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "Subtitle from happy customers"
+      },
+      {
+        "type": "checkbox",
+        "id": "button_back_to_home",
+        "label": "Enable Back To Home",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "button_continue_shopping",
+        "label": "Enable Continue Shopping",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      }
+    ]
+  }
+{% endschema %}

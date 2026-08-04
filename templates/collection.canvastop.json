@@ -1,0 +1,294 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "collection-template",
+      "blocks": {
+        "list_collection_T9gidL": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-1.jpg",
+            "collection": "mobile-tablet"
+          }
+        },
+        "list_collection_UXEHUr": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-2.jpg",
+            "collection": "camera"
+          }
+        },
+        "list_collection_3Q9Ldz": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-3.jpg",
+            "collection": "laptop"
+          }
+        },
+        "list_collection_N4DEiC": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-4.jpg",
+            "collection": "headphone"
+          }
+        },
+        "list_collection_DNYkzP": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-8.jpg",
+            "collection": "computer"
+          }
+        },
+        "list_collection_drWmdB": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-5.jpg",
+            "collection": "keyboard"
+          }
+        },
+        "list_collection_j8CnHQ": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-6.jpg",
+            "collection": "game"
+          }
+        },
+        "list_collection_RDhUQz": {
+          "type": "list_collection",
+          "settings": {
+            "image": "shopify://shop_images/cate-7.jpg",
+            "collection": "electronics"
+          }
+        }
+      },
+      "block_order": [
+        "list_collection_T9gidL",
+        "list_collection_UXEHUr",
+        "list_collection_3Q9Ldz",
+        "list_collection_N4DEiC",
+        "list_collection_drWmdB",
+        "list_collection_j8CnHQ",
+        "list_collection_RDhUQz",
+        "list_collection_DNYkzP"
+      ],
+      "settings": {
+        "show_list_collection": true,
+        "show_nav": true,
+        "xxl": 5,
+        "xl": 5,
+        "lg": 4,
+        "md": 3,
+        "sm": 2,
+        "xs": 1,
+        "spacing": 20,
+        "category": "shop-by-categories",
+        "show_more": 5,
+        "products_per_page": 12,
+        "sort_enable": true,
+        "loadmore": true,
+        "type_loadmore": "btn",
+        "cb": true,
+        "show_tags": true,
+        "show_desc": true,
+        "bg_b": "#f2f2f2"
+      }
+    },
+    "nov_policy_PVFmgJ": {
+      "type": "nov-policy",
+      "blocks": {
+        "item_policy_Tn6Hfa": {
+          "type": "item_policy",
+          "settings": {
+            "policy_icon": "shopify://shop_images/policy-1.svg",
+            "title_policy": "Free Shipping",
+            "stitle_policy": "Free Shipping for orders over $99",
+            "desc_policy": "",
+            "mw": 280,
+            "link_label": "",
+            "link": "",
+            "bg_icon": "#ffffff",
+            "border_icon": "#eaeaea",
+            "bg_item": "#f5f5f5",
+            "class": "mb-md-30"
+          }
+        },
+        "item_policy_ynUJzQ": {
+          "type": "item_policy",
+          "settings": {
+            "policy_icon": "shopify://shop_images/policy-2.svg",
+            "title_policy": "Money Guarantee",
+            "stitle_policy": "Within 30 days for an exchange",
+            "desc_policy": "",
+            "mw": 280,
+            "link_label": "",
+            "link": "",
+            "bg_icon": "#ffffff",
+            "border_icon": "#eaeaea",
+            "bg_item": "#ecebeb",
+            "class": "mb-md-30"
+          }
+        },
+        "item_policy_KcRKdP": {
+          "type": "item_policy",
+          "settings": {
+            "policy_icon": "shopify://shop_images/policy-3.svg",
+            "title_policy": "Online Support",
+            "stitle_policy": "24 hours a day, 7 days on week",
+            "desc_policy": "",
+            "mw": 280,
+            "link_label": "",
+            "link": "",
+            "bg_icon": "#ffffff",
+            "border_icon": "#eaeaea",
+            "bg_item": "#f5f5f5",
+            "class": "mb-xs-30"
+          }
+        },
+        "item_policy_akcCDy": {
+          "type": "item_policy",
+          "settings": {
+            "policy_icon": "shopify://shop_images/policy-4.svg",
+            "title_policy": "Flexible Payment",
+            "stitle_policy": "Pay with Multiple Credit Cards",
+            "desc_policy": "",
+            "mw": 280,
+            "link_label": "",
+            "link": "",
+            "bg_icon": "#ffffff",
+            "border_icon": "#eaeaea",
+            "bg_item": "#f5f5f5",
+            "class": "mb-xs-30"
+          }
+        }
+      },
+      "block_order": [
+        "item_policy_Tn6Hfa",
+        "item_policy_ynUJzQ",
+        "item_policy_KcRKdP",
+        "item_policy_akcCDy"
+      ],
+      "name": "Vinova Policy",
+      "settings": {
+        "heading": "",
+        "heading_color": "#1c1c1c",
+        "subheading": "",
+        "subheading_color": "#1c1c1c",
+        "subheading_position": "top",
+        "descheading": "",
+        "descheading_color": "#666666",
+        "alignment": "center",
+        "style": "style2",
+        "show_bgitem": false,
+        "bd_radius": 0,
+        "box_shadow": false,
+        "show_border_item": false,
+        "show_border_right_item": false,
+        "c_border_item": "#ebebeb",
+        "pt": 0,
+        "pb": 0,
+        "ph": 0,
+        "width_icon": 50,
+        "height_icon": 50,
+        "show_bg_icon": false,
+        "bg_icon_w": 80,
+        "bd_radius_icon": 100,
+        "show_border_icon": false,
+        "show_border_right_icon": false,
+        "bg_icon_shadow": false,
+        "shadow_color": "",
+        "shadow_opacity": 40,
+        "icon_animate": true,
+        "text_fz": 18,
+        "text_fz_lg": 18,
+        "text_fz_sm": 14,
+        "text_ff": "f_df",
+        "t_fw": "font-700",
+        "t_letter_spacing": "0",
+        "stext_fz": 14,
+        "stext_ff": "f_df",
+        "st_fw": "font-400",
+        "desc_fz": 14,
+        "desc_ff": "f_df",
+        "desc_fw": "font-400",
+        "xxl": 4,
+        "xl": 4,
+        "lg": 4,
+        "md": 2,
+        "sm": 2,
+        "xs": 1,
+        "spacing": 30,
+        "animate": true,
+        "container": "container",
+        "color_section": "scheme-feccfb6c-3d45-4dfa-a03c-d4c8d6fd725f",
+        "class_section": "",
+        "ss_bg_enable": false,
+        "background_color": "#f7f7f7",
+        "background_img_size": "cover",
+        "enable_background_img_size_custom": false,
+        "background_img_size_custom": "",
+        "background_img_position": "center center",
+        "background_corner": 0,
+        "background_position": "bg-top",
+        "background_size": "full",
+        "background_padding_horizontal": 0,
+        "height_background_xxl": 100,
+        "height_background_xl": 100,
+        "height_background_lg": 100,
+        "height_background_md": 100,
+        "height_background_sm": 100,
+        "height_background_xs": 100,
+        "distance_top_xl": 80,
+        "distance_top_lg": 80,
+        "distance_top_md": 80,
+        "distance_top_sm": 60,
+        "distance_bottom_xl": 80,
+        "distance_bottom_lg": 80,
+        "distance_bottom_md": 80,
+        "distance_bottom_sm": 60
+      }
+    },
+    "recently-viewed-ajax": {
+      "type": "recently-viewed-ajax",
+      "settings": {
+        "heading": "<p>Recently Viewed Products</p>",
+        "heading_color": "#132742",
+        "subheading": "",
+        "subheading_color": "rgba(0,0,0,0)",
+        "alignment": "center",
+        "grid_number_xxl": 4,
+        "grid_number": 3,
+        "grid_number_lg": 3,
+        "grid_number_md": 3,
+        "grid_number_sm": 2,
+        "grid_number_xs": 2,
+        "limit": 20,
+        "show_nav": false,
+        "animate": true,
+        "show_border": true,
+        "border_color": "#ededed",
+        "container": "container",
+        "distance_top_xl": 80,
+        "distance_top_lg": 70,
+        "distance_top_md": 70,
+        "distance_top_sm": 70,
+        "distance_bottom_xl": 100,
+        "distance_bottom_lg": 90,
+        "distance_bottom_md": 80,
+        "distance_bottom_sm": 70
+      }
+    }
+  },
+  "order": [
+    "main",
+    "nov_policy_PVFmgJ",
+    "recently-viewed-ajax"
+  ]
+}

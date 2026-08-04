@@ -1,0 +1,187 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Header 8",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "nov-header-8",
+      "blocks": {
+        "f5a5ac2b-38b6-4567-8a55-ca3cb5239f61": {
+          "type": "megamenu",
+          "settings": {
+            "title": "Collections",
+            "type_width": "full",
+            "custom_width": 1170,
+            "novmenu_menu_enable": true,
+            "show_title": true,
+            "novmenu_xl": "col-xl-8",
+            "submenu_xl": "col-xl-4",
+            "banner_br": 5,
+            "novmenu_banner_enable1": true,
+            "banner_xl_1": "col-xl-2",
+            "novmenu_banner1": "shopify://shop_images/menu-img.jpg",
+            "novmenu_banner_link1": "#",
+            "novmenu_banner_text1": "",
+            "novmenu_banner_text_color1": "",
+            "class_bn1": "",
+            "novmenu_banner_enable2": false,
+            "banner_xl_2": "col-xl-4",
+            "novmenu_banner_link2": "",
+            "novmenu_banner_text2": "",
+            "novmenu_banner_text_color2": "",
+            "class_bn2": "",
+            "novmenu_banner_enable3": false,
+            "banner_xl_3": "col-xl-4",
+            "novmenu_banner_link3": "",
+            "novmenu_banner_text3": "",
+            "novmenu_banner_text_color3": "",
+            "class_bn3": "",
+            "collection_enable": true,
+            "collection_xl": "col-xl-2",
+            "name_collec_1": "Eye Shadow",
+            "link_1": "shopify://collections/eye-shadow",
+            "name_collec_2": "Face Serums",
+            "link_2": "shopify://collections/face-serums",
+            "name_collec_3": "Body Care",
+            "link_3": "shopify://collections/body-care",
+            "name_collec_4": "Oil Cleansers",
+            "link_4": "shopify://collections/oil-cleansers",
+            "name_collec_5": "Lipstick",
+            "link_5": "shopify://collections/lipstick",
+            "product_enable": false,
+            "product_xl": "col-xl-3",
+            "title_product": "Featured Product",
+            "product_list": [],
+            "autoplay": true
+          }
+        },
+        "text_bfy4yP": {
+          "type": "megamenu",
+          "settings": {
+            "title": "Products",
+            "type_width": "full",
+            "custom_width": 1170,
+            "novmenu_menu_enable": true,
+            "show_title": true,
+            "novmenu_xl": "col-xl-9",
+            "submenu_xl": "col-xl-4",
+            "banner_br": 5,
+            "novmenu_banner_enable1": false,
+            "banner_xl_1": "col-xl-4",
+            "novmenu_banner_link1": "",
+            "novmenu_banner_text1": "",
+            "novmenu_banner_text_color1": "",
+            "class_bn1": "",
+            "novmenu_banner_enable2": false,
+            "banner_xl_2": "col-xl-4",
+            "novmenu_banner_link2": "",
+            "novmenu_banner_text2": "",
+            "novmenu_banner_text_color2": "",
+            "class_bn2": "",
+            "novmenu_banner_enable3": false,
+            "banner_xl_3": "col-xl-4",
+            "novmenu_banner_link3": "",
+            "novmenu_banner_text3": "",
+            "novmenu_banner_text_color3": "",
+            "class_bn3": "",
+            "collection_enable": false,
+            "collection_xl": "col-xl-3",
+            "name_collec_1": "Bikini",
+            "link_1": "shopify://collections/bikini",
+            "name_collec_2": "Body Suit",
+            "link_2": "shopify://collections/body-suit",
+            "name_collec_3": "Summer",
+            "link_3": "shopify://collections/summner",
+            "name_collec_4": "Fashion",
+            "link_4": "shopify://collections/fashion",
+            "name_collec_5": "Sneakers",
+            "link_5": "shopify://collections/sneakers",
+            "product_enable": true,
+            "product_xl": "col-xl-2",
+            "title_product": "Featured Product",
+            "product_list": [
+              "berry-lip-pack",
+              "body-butter-cream",
+              "bright-drop-serum",
+              "citrus-soap-cube",
+              "classic-red-lipstick",
+              "clear-skin-balm",
+              "fresh-clean-bar",
+              "gentle-hand-wash"
+            ],
+            "autoplay": true
+          }
+        }
+      },
+      "block_order": [
+        "f5a5ac2b-38b6-4567-8a55-ca3cb5239f61",
+        "text_bfy4yP"
+      ],
+      "custom_css": [],
+      "settings": {
+        "logo": "shopify://shop_images/logo-black.png",
+        "w_logo": 120,
+        "w_logo_lg": 120,
+        "w_logo_md": 120,
+        "wm_logo": 100,
+        "container": "container",
+        "header_top_text_center": "WHERE BEAUTY MEETS TRANQUILITY",
+        "hd_top_color": "#ffffffca",
+        "header_bottom_bg": "#ffffff",
+        "header_bottom_color": "",
+        "stickymenu_sm": true,
+        "address": "Store Locations",
+        "address_link": "shopify://pages/page-store-locations",
+        "phone": "+(123) - 456 - 7890",
+        "header_top_text": "",
+        "show_social": true,
+        "account_icon": "rbb-icon-human-user-11",
+        "account_svg": true,
+        "wishlist": "rbb-icon-rating-start-outline-2",
+        "wishlist_svg": true,
+        "cart_type": "bag",
+        "cart": "3",
+        "cart_svg": true,
+        "main_linklist": "main-menu",
+        "color_menu": "background-1",
+        "menu_fs": 14,
+        "menu_fw": "500",
+        "menu_ff": "f_df"
+      }
+    },
+    "nov_line_Rhiha8": {
+      "type": "nov-line",
+      "name": "Vinova Line",
+      "settings": {
+        "height": 1,
+        "color": "#eaeaea",
+        "style": "solid",
+        "opacity": 100,
+        "animate": true,
+        "container": "container-full",
+        "background_color": "#fff",
+        "class": "",
+        "distance_top_xl": 0,
+        "distance_top_lg": 0,
+        "distance_top_md": 0,
+        "distance_top_sm": 0,
+        "distance_bottom_xl": 0,
+        "distance_bottom_lg": 0,
+        "distance_bottom_md": 0,
+        "distance_bottom_sm": 0
+      }
+    }
+  },
+  "order": [
+    "header",
+    "nov_line_Rhiha8"
+  ]
+}

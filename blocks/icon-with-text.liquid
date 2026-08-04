@@ -1,0 +1,199 @@
+{%- assign bst = block.settings -%}
+<div class="theme-blocks-item icon-with-text-block text-{{ bst.alignment }}" style="--gap: {{ bst.gap | divided_by: 10.0 }}rem;--gap-sm: {{ bst.gap_sm | divided_by: 10.0 }}rem;--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px; --item-padding-x: {{ bst.padding_horizontal }}px;--item-padding-y: {{ bst.padding_vertical }}px; --item-radius: {{ bst.item_radius }}px; --bg-color: {{ bst.bg_color }}; --bg-color-hover: {{ bst.bg_color_hover }}; --color-text-hover: {{ bst.text_color_hover }}" {{ block.shopify_attributes }}>
+  <div class="icon-with-text-block__inner{% if bst.display_flex %} d-inline-flex align-items-{{ bst.align }}{% else %} d-inline-block{% endif %}">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon With Text",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "icon"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_flex",
+      "label": "Display Flex",
+      "info": "If enable, the icon and text will be displayed in the same row."
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Align",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.display_flex == true }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "gap_sm",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap mobile",
+      "default": 10,
+      "info": "Breakpoint 767px ↓"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "alpha": true,
+      "label": "Background",
+      "default": "#00000000"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_hover",
+      "alpha": true,
+      "label": "Background hover",
+      "default": "#00000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color_hover",
+      "label": "Text color hover",
+      "default": "#000"
+    },
+    {
+      "type": "number",
+      "id": "padding_horizontal",
+      "label": "Padding horizontal",
+      "default": 0
+    },
+    {
+      "type": "number",
+      "id": "padding_vertical",
+      "label": "Padding vertical",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "item_radius",
+      "label": "Item border radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Top (px)"
+    },
+    {
+      "type": "number",
+      "id": "mt_xl",
+      "label": "Large laptop",
+      "default": 30,
+      "info": "Breakpoint 1200px"
+    },
+    {
+      "type": "number",
+      "id": "mt_lg",
+      "label": "Laptop",
+      "default": 30,
+      "info": "Breakpoint 992px"
+    },
+    {
+      "type": "number",
+      "id": "mt_md",
+      "label": "Tablet",
+      "default": 30,
+      "info": "Breakpoint 768px"
+    },
+    {
+      "type": "number",
+      "id": "mt_sm",
+      "label": "Mobile",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Spacing Bottom (px)"
+    },
+    {
+      "type": "number",
+      "id": "mb_xl",
+      "label": "Large laptop",
+      "default": 30,
+      "info": "Breakpoint 1200px"
+    },
+    {
+      "type": "number",
+      "id": "mb_lg",
+      "label": "Laptop",
+      "default": 30,
+      "info": "Breakpoint 992px"
+    },
+    {
+      "type": "number",
+      "id": "mb_md",
+      "label": "Tablet",
+      "default": 30,
+      "info": "Breakpoint 768px"
+    },
+    {
+      "type": "number",
+      "id": "mb_sm",
+      "label": "Mobile",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon With Text",
+      "category": "Content",
+      "blocks": {
+        "icon-1": {
+          "type": "icon"
+        },
+        "text-1": {
+          "type": "text"
+        }
+      },
+      "block_order": ["icon-1", "text-1"]
+    }
+  ]
+}
+{% endschema %}

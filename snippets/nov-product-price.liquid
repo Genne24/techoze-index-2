@@ -1,0 +1,21 @@
+{% assign on_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% if on_sale %}
+  <div class="price-sale d-inline-flex flex-wrap align-items-center">
+    <span class="special-price" data-price-grid>{{ product.variants[0].price | money }}</span>
+    <span class="old-price" data-compare-price-grid>{{ product.variants[0].compare_at_price | money }}</span>
+  </div>
+{% else %}
+  <div class="price-regular">
+    <span data-price-grid>{{ product.variants[0].price | money }}</span>
+  </div>
+{% endif %}
+{% if available == false %}
+  <div class="price-soldout d-inline-flex align-items-center">
+    <i class="zmdi zmdi-mood-bad fs-19"></i>
+    <span class="fs-14 font-400">{{ 'products.product.sold_out' | t }}</span>
+  </div>
+{% endif %}

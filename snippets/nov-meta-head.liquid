@@ -1,0 +1,32 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<meta name="theme-color" content="">
+<link rel="canonical" href="{{ canonical_url }}">
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+{%- if settings.favicon != blank -%}
+  <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+{%- endif -%}
+{% if settings.type_google %}
+  {%- comment -%} theme-check-disable RemoteAsset {%- endcomment -%}
+  {%- assign type_base = settings.type_base_family_google | strip | replace: ' ', '+' -%}
+  {%- assign type_header = settings.type_header_family_google | strip | replace: ' ', '+' -%}
+  {{ "https://fonts.googleapis.com/css?family=" | append: type_base | append: ":100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" | stylesheet_tag: preload: true }}
+  {% if type_base != type_header %}
+    {{ "https://fonts.googleapis.com/css?family=" | append: type_header | append: ":100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" | stylesheet_tag: preload: true }}
+  {% endif %}
+  {%- comment -%} theme-check-enable RemoteAsset {%- endcomment -%}
+{% else %}
+  {%- unless settings.type_header_family.system? and settings.type_base_family.system? -%}
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+  {%- endunless -%}
+{% endif %}
+<title>
+  {{ page_title }}
+  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+  {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+</title>
+{% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+{% endif %}

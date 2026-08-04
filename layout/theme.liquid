@@ -1,0 +1,230 @@
+<!doctype html>
+<!-- Techoze 2 v.1.0.0 -->
+{%- liquid
+  assign rtl_languages = 'ar,he,fa,ur,dv,ps,ku,yi'
+  assign rtl_list = rtl_languages | split: ','
+  assign current_lang = request.locale.iso_code | downcase
+
+  assign iso_rtl = false
+  if rtl_list contains current_lang
+    assign iso_rtl = true
+  endif
+-%}
+<html class="no-js{% if iso_rtl %} lang-rtl{% endif %}"{% if iso_rtl %} dir="rtl"{% endif %} lang="{{ request.locale.iso_code }}">
+  <head>
+    {% render 'nov-meta-head' %}
+    {% render 'social-meta-tags' %}
+    {{ content_for_header }}
+    {% render 'font-icon' %}
+    {% render 'css-variables' %}
+    {% render 'nov-head-css' %}
+    {% render 'nov-head-js' %}
+    {% render 'variant-options' %}
+  </head>
+  
+  <body class="template-{{ template | split: '.' | first }}{% if template.name == "page" %} {{ page.handle }}{% endif %}">
+    {% if template.name != "index" and settings.enable_loadpage %}
+      <div class="preloader_nov">
+        <div class="nov_load">
+          {% render 'nov-aspect-image', image: settings.icon_loadpage, class: 'no-ef' %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if template.name == "index" %}
+      {% sections 'nov-system-group' %}
+    {% endif %}
+    
+    <div class="wb-wp">
+      {% case settings.header_layout %}
+        {% when 'header-1' %}
+          {% sections 'header-group-1' %}
+        {% when 'header-2' %}
+          {% sections 'header-group-2' %}
+        {% when 'header-3' %}
+          {% sections 'header-group-3' %}
+        {% when 'header-4' %}
+          {% sections 'header-group-4' %}
+        {% when 'header-5' %}
+          {% sections 'header-group-5' %}
+        {% when 'header-6' %}
+          {% sections 'header-group-6' %}
+        {% when 'header-7' %}
+          {% sections 'header-group-7' %}
+        {% when 'header-8' %}
+          {% sections 'header-group-8' %}
+        {% when 'header-9' %}
+          {% sections 'header-group-9' %}
+      {% endcase %}
+      <!-- BEGIN sections: Breadcrumb -->
+      {% if template.name != 'index' %}
+        {%- liquid
+          if settings.breadcrumbs_enable
+            unless "index 404 password gift_card" contains template.name
+              render 'nov-breadcrumb', collection: collection, product: product, blog: blog, article: article
+            endunless
+          endif
+        -%}
+      {% endif %}
+      <!-- END sections: Breadcrumb -->
+      
+      <main class="main-content" id="MainContent">
+        {{ content_for_layout }}
+      </main>
+      
+      {% case settings.footer_layout %}
+        {% when 'footer-1' %}
+          {% sections 'footer-group-1' %}
+        {% when 'footer-2' %}
+          {% sections 'footer-group-2' %}
+        {% when 'footer-3' %}
+          {% sections 'footer-group-3' %}
+        {% when 'footer-4' %}
+          {% sections 'footer-group-4' %}
+        {% when 'footer-5' %}
+          {% sections 'footer-group-5' %}
+        {% when 'footer-6' %}
+          {% sections 'footer-group-6' %}
+        {% when 'footer-7' %}
+          {% sections 'footer-group-7' %}
+        {% when 'footer-8' %}
+          {% sections 'footer-group-8' %}
+        {% when 'footer-9' %}
+          {% sections 'footer-group-9' %}
+      {% endcase %}
+    </div>
+
+    <div class="sidebar-overlay"></div>
+    {% render 'nov-cart-canvas' %}
+    {% if settings.show_newsletter_popup %}
+      {% render 'nov-popup-newsletter' %}
+    {% endif %}
+    {% render 'nov-popup-video' %}
+    {% render 'nov-product-soldout-newsletter' %}
+    {% render 'nov-cart-empty' %}
+    {% render 'nov-block-account' %}
+    <div class="canvas-menu-top"></div>
+    <div id="MobileVerticalMenu"></div>
+    {% if settings.enable_stickymenu_mobile %}
+      {% render 'nov-stickymenu-mobile' %}
+    {% endif %}
+    {% if settings.show_fake_order_inner_page %}
+      {% render 'nov-popup-fake-order' %}
+    {% else %}
+      {% if template.name == 'index' %}
+        {% render 'nov-popup-fake-order' %}
+      {% endif %}
+    {% endif %}
+    {% if settings.wishlist_enable and settings.show_popup_wishlist %}
+      {% render 'nov-popup-wishlist' %}
+    {% endif %}
+    {% if settings.back_top_enable %}
+      <div class="desktop_back_top d-flex align-items-center justify-content-center fixed pointer overflow-hidden duration-300 z-9">
+        <span id="NovBackTop" class="absolute w-100 b-0"></span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708z"/>
+          <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+        </svg>
+      </div>
+    {% endif %}
+    <script src="{{ 'js-product-variants.js' | asset_url }}" defer></script>
+    <script src="{{ 'js-nuranium.js' | asset_url }}" defer></script>
+    <script>
+      {% comment %} Efect Load Page {% endcomment %}
+      window.addEventListener('load', function() {
+        var loader = document.querySelector('.preloader_nov');
+        if (loader) {
+          window.addEventListener('beforeunload', function() {
+            loader.style.transition = 'opacity 0.5s';
+            loader.style.opacity = '1';
+          });
+
+          setTimeout(function() {
+            loader.style.transition = 'opacity 1.5s';
+            loader.style.opacity = '0';
+          }, 0);
+        }
+      });
+      {% comment %} End Efect Load Page {% endcomment %}
+      {% comment %} Back To Top {% endcomment %}
+      document.addEventListener('DOMContentLoaded', function() {
+        var current_width = window.innerWidth;
+
+        if (current_width > 767) {
+          var backToTopBtn     = document.getElementById('NovBackTop');
+          var backToTopParents = document.querySelector('.desktop_back_top');
+
+          window.addEventListener('scroll', function() {
+            var scrollPosition  = window.scrollY;
+            var documentHeight  = document.documentElement.scrollHeight;
+            var windowHeight    = window.innerHeight;
+            var scrollPercentage = (scrollPosition / (documentHeight - windowHeight)) * 100;
+
+            if (backToTopBtn) {
+              backToTopBtn.style.height = scrollPercentage + '%';
+            }
+            if (backToTopParents) {
+              if (scrollPosition > 100) {
+                backToTopParents.classList.add('show');
+              } else {
+                backToTopParents.classList.remove('show');
+              }
+            }
+          });
+
+          if (backToTopParents) {
+            backToTopParents.addEventListener('click', function(e) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+          }
+
+        } else {
+          var timer;
+          var backTopMobile = document.getElementById('back_top');
+
+          window.addEventListener('scroll', function() {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(function() {
+              if (backTopMobile) {
+                backTopMobile.style.display = 'block';
+                backTopMobile.style.opacity = '1';
+              }
+            }, 200);
+          });
+
+          if (backTopMobile) {
+            backTopMobile.addEventListener('click', function(e) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+          }
+        }
+      });
+      {% comment %} End Back To Top {% endcomment %}
+      {% if template.name == "index" %}
+        {% comment %} Vertical Menu {% endcomment %}
+        var hasVerticalMenu = document.querySelector('.shopify-section-group-nov-system-group.section-vertical-menu');
+        var wbWp = document.querySelector('.wb-wp');
+        var wbMb = document.querySelector('.btn-vertical-mobile');
+        if (hasVerticalMenu && wbWp) {
+          wbWp.classList.add('vertical-menu-active');
+          wbMb.classList.add('active');
+        }
+        {% comment %} End Vertical Menu {% endcomment %}
+      {% endif %}
+      {% comment %} Button Hover Effect {% endcomment %}
+      document.querySelectorAll('.btn-alternate').forEach((btn) => {
+        btn.addEventListener('mouseenter', () => {
+            btn.classList.remove('is-leave');
+            btn.classList.add('is-hover');
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.classList.remove('is-hover');
+            btn.classList.add('is-leave');
+        });
+      });
+      {% comment %} End Button Hover Effect {% endcomment %}
+    </script>
+  </body>
+</html>

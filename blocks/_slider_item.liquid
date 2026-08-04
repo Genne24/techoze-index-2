@@ -1,0 +1,42 @@
+{%- liquid
+  assign bst = block.settings
+  assign item_effect = bst.item_effect | default: 'curtain'
+-%}
+<div class="sp-item effect-{{ item_effect }}">
+  <div class="slider-item-content">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Slider Item",
+    "tag": null,
+    "settings": [
+      {
+        "type": "select",
+        "id": "item_effect",
+        "label": "Slide Transition Effect",
+        "default": "curtain",
+        "options": [
+          {"value": "curtain", "label": "Model 1: Curtain Reveal"},
+          {"value": "circular", "label": "Model 2: Circular Radial"},
+          {"value": "stripes", "label": "Model 3: Horizontal Stripe"}
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@theme"
+      },
+      {
+        "type": "@app"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Slider Item"
+      }
+    ]
+  }
+{% endschema %}
+  

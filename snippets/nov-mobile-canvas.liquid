@@ -1,0 +1,94 @@
+<div id="mobile_menu">
+  {% if settings.mobile_search %}
+    {% render 'nov-formsearch-inline' %}
+  {% endif %}
+  <div class="canvas-menu">
+    <ul class="site-nav-mobile position-relative h-100">
+      {% for link in linklists[mainmenu].links %}
+        {%- assign three_level_nav = false -%}
+        {%- assign child_list_handle = link.title | handleize -%}
+    
+        {% if linklists[child_list_handle].links != blank %}
+          {% for childlink in linklists[child_list_handle].links %}
+            {% assign grand_child_list_handle = childlink.title | handleize %}
+            {% if linklists[grand_child_list_handle].links != blank %}
+              {%- assign three_level_nav = true -%}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+    
+        {% if linklists[child_list_handle].links != blank %}
+          <li class="nav--lv1{% if link.active %} site-nav--active{% endif %}">
+            <a href="{{ link.url }}" class="site-nav__link--main pt-15 pb-15 d-flex align-items-center justify-content-between {{ section.settings.menu_ff }}" title="{{ link.title }}">
+              <span class="site-nav-title fs-13 font-700 text-capitalize">{{ link.title }}</span>
+              <span class="site-nav-direc direc1 fs-11 d-flex align-items-center justify-content-center"><i class="rbb-icon-direction-39"></i></span>
+            </a>
+            <div class="nav-xs-lv1">
+              <div class="navbar fs-13 font-700 color-title f_pr text-uppercase d-flex align-items-center justify-content-between bd-b">
+                {{ link.title }}
+                <span class="direcback1 fs-18 d-flex align-items-center justify-content-center"><i class="zmdi zmdi-long-arrow-return"></i></span>
+              </div>
+              {% if three_level_nav %}
+                {% if linklists[child_list_handle].links != blank %}
+                  <ul>
+                    {% for childlink in linklists[child_list_handle].links %}
+                      {% assign grand_child_list_handle = childlink.title | handle %}
+                      <li class="nav--lv2{% if forloop.last == false %} bd-b{% endif %}">
+                        <a href="{{ childlink.url }}" class="nav-link-2 text-capitalize d-flex align-items-center justify-content-between">
+                          <span class="fs-13 font-600">{{ childlink.title }}</span>
+                          {% if linklists[grand_child_list_handle].links != blank %}
+                            <span class="site-nav-direc direc2 fs-11 d-flex align-items-center justify-content-center"><i class="rbb-icon-direction-39"></i></span>
+                          {% endif %}
+                        </a>
+                        {% if linklists[grand_child_list_handle].links != blank %}
+                        <div class="nav-xs-lv2">
+                          <div class="navbar fs-13 font-700 color-title f_pr text-uppercase d-flex align-items-center justify-content-between bd-b">
+                            {{ childlink.title }}
+                            <span class="direcback2 fs-18 d-flex align-items-center justify-content-center"><i class="zmdi zmdi-long-arrow-return"></i></span>
+                          </div>
+                          <ul>
+                            {% for grandchildlink in linklists[grand_child_list_handle].links %}
+                              <li class="nav--lv3{% if forloop.last == false %} bd-b{% endif %}">
+                                <a href="{{ grandchildlink.url }}" class="fs-13 font-600 text-capitalize">{{ grandchildlink.title | escape }}</a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              {% else %}
+                <ul>
+                  {% for childlink in linklists[child_list_handle].links %}
+                    <li class="nav--lv2{% if forloop.last == false %} bd-b{% endif %}{% if childlink.active %}site-nav--active{% endif %}">
+                      <a href="{{ childlink.url }}" class="nav-link-2 fs-13 font-600 text-capitalize">{{ childlink.title | escape }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </li>
+        {% else %}
+          <li class="nav--lv1{% if link.active %} site-nav--active{% endif %}">
+            <a href="{{ link.url }}" class="site-nav__link--main fs-13 font-700 {{ section.settings.menu_ff }} d-flex pt-10 pb-10" title="{{ link.title }}">{{ link.title }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="mobile_bottom">
+    {% if settings.hotline != blank %}
+      <div class="mobile_contact mb-10 color-title">{{ settings.hotline }}</div>
+    {% endif %}
+    {% if settings.email != blank %}
+      <div class="mobile_email mb-10 color-title">{{ settings.email }}</div>
+    {% endif %}
+    {% if settings.mobile_social %}
+      <div class="color-{{ settings.color_social }}">
+        {% render 'nov-social' %}
+      </div>
+    {% endif %}
+  </div>
+</div>

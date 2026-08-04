@@ -1,0 +1,9 @@
+<div class="grid-item">
+  {% for product in collection.products limit: 50 %}
+    <div class="block_item">
+      <div class="item sp-item{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
+        {% render 'product-grid-item-style-1', product: product, forloop_index: forloop.index %}
+      </div>
+    </div>
+  {% endfor %}
+</div>

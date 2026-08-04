@@ -1,0 +1,57 @@
+@use "sass:math";
+@use "sass:list";
+@use "mixin" as *;
+.template-index {
+	padding-top: 100svh;
+}
+.header-video {
+	height: 100svh;
+	position: fixed;
+	inset-block-start: 0;
+	inset-inline-start: 0;
+	video {
+		width: 100%;
+		height: 100svh;
+		object-fit: cover;
+		object-position: center;
+	}
+  .h1 {
+    max-width: 800px;
+  }
+	.hd-video-scroll {
+		animation: float 1.5s ease-in-out infinite;
+		&:hover {
+			.label {
+				color: white !important;
+			}
+			.line {
+				background-image: linear-gradient(to bottom, #ffffff, #ffffff00);
+			}
+		}
+		.line {
+			display: block;
+			margin-inline: auto;
+			width: 1px;
+			height: 60px;
+			background-image: linear-gradient(to bottom, #ffffffd5, #ffffff00);
+		}
+	}
+}
+@media(min-width: 768px) {
+  .header-content {
+		border-radius: 50px 50px 0 0;
+	}
+}
+@media (min-width: 1200px) {
+	.site-nav, .nav--lv1 {
+		height: 100%;
+	}
+}
+@media (max-width: 1440px) {
+	.site-nav .site-nav__link--main {
+		padding-inline: 12px;
+	}
+	#header-sticky .site-nav__link--main {
+		padding-inline: 10px;
+	}
+}

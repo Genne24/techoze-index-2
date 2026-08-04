@@ -1,0 +1,311 @@
+{%- assign bst = block.settings -%}
+{% style %}
+  #block-{{ block.id }} .progress-bar-wrapper {
+    height: {{ bst.bar_height }}px;
+    background-color: {{ bst.background_color }};
+    border-radius: {{ bst.border_radius }}px;
+  }
+  #block-{{ block.id }} .progress-bar-fill {
+    width: 0%;
+    background: {{ bst.bar_color }};
+    border-radius: {{ bst.border_radius }}px;
+    transition: width {{ bst.animation_duration }}s {{ bst.animation_easing }};
+  }
+
+  {% if bst.show_stripes %}
+    #block-{{ block.id }} .progress-bar-fill::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.2) 10px,
+        rgba(255, 255, 255, 0.2) 20px
+      );
+      {% if bst.animate_stripes %}
+        animation: progress-stripes 2s linear infinite;
+      {% endif %}
+    }
+
+    @keyframes progress-stripes {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 0;}
+    }
+  {% endif %}
+  {% if bst.show_percentage %}
+    .progress-bar-percentage {
+      left: 0;
+      top: 0;
+      color: {{ bst.percentage_color }};
+    }
+  {% endif %}
+
+{% endstyle %}
+<div id="block-{{ block.id }}"  class="theme-blocks-item progress-bar-block color-{{ bst.color_block }}" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;">
+  <div class="d-flex align-items-center justify-content-between fs-16 font-500 color-title mb-10">
+    {% if bst.title != blank %}
+      <div class="title">{{ bst.title }}</div>
+    {% endif %}
+    <div class="target-value">{{ bst.value_prefix }}{{ bst.target_value }}{{ bst.value_suffix }}</div>
+  </div>
+  <progress-bar
+    class="progress-bar-container"
+    data-target-value="{{ bst.target_value }}"
+    data-max-value="{{ bst.max_value }}"
+    data-animation-duration="{{ bst.animation_duration }}"
+    data-show-percentage="{{ bst.show_percentage }}"
+    data-show-values="{{ bst.show_values }}"
+    data-value-prefix="{{ bst.value_prefix }}"
+    data-value-suffix="{{ bst.value_suffix }}"
+    {{ block.shopify_attributes }}
+  >
+  
+    <div class="progress-bar-wrapper position-relative overflow_hidden w-100">
+      <div class="progress-bar-fill position-relative overflow_hidden h-100"></div>
+      {% if bst.show_percentage %}
+        <div class="progress-bar-percentage text-center position-absolute w-100 h-100">0%</div>
+      {% endif %}
+    </div>
+  
+    {% if bst.show_values %}
+      <div class="progress-bar-value-display mt-5 color-title text-center">
+        <span class="progress-bar-current-value">{{ bst.value_prefix }}0{{ bst.value_suffix }}</span>
+        /
+        <span class="progress-bar-max-value">{{ bst.value_prefix }}{{ bst.max_value }}{{ bst.value_suffix }}</span>
+      </div>
+    {% endif %}
+  </progress-bar>
+</div>
+{% schema %}
+  {
+    "name": "Progress Bar",
+    "tag": null,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Lorem"
+      },
+      {
+        "type": "range",
+        "id": "target_value",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Target value",
+        "default": 75
+      },
+      {
+        "type": "range",
+        "id": "max_value",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Maximum value",
+        "default": 100
+      },
+      {
+        "type": "text",
+        "id": "value_prefix",
+        "label": "Value prefix"
+      },
+      {
+        "type": "text",
+        "id": "value_suffix",
+        "label": "Value suffix"
+      },
+      {
+        "type": "header",
+        "content": "Display Options"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_percentage",
+        "label": "Show percentage",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_values",
+        "label": "Show values",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Progress Bar Style"
+      },
+      {
+        "type": "range",
+        "id": "bar_height",
+        "min": 2,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Bar height",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "unit": "px",
+        "label": "Border radius",
+        "default": 10
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_block",
+        "label": "Color",
+        "default": "background-1"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#e5e7eb"
+      },
+      {
+        "type": "color",
+        "id": "bar_color",
+        "label": "Progress color",
+        "default": "#3b82f6"
+      },
+      {
+        "type": "color",
+        "id": "percentage_color",
+        "label": "Percentage color",
+        "default": "#222",
+        "visible_if": "{{ block.settings.show_percentage }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_stripes",
+        "label": "Show stripes"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate_stripes",
+        "label": "Animate stripes"
+      },
+      {
+        "type": "header",
+        "content": "Animation"
+      },
+      {
+        "type": "range",
+        "id": "animation_duration",
+        "min": 0.5,
+        "max": 5,
+        "step": 0.5,
+        "unit": "s",
+        "label": "Animation duration",
+        "default": 2
+      },
+      {
+        "type": "select",
+        "id": "animation_easing",
+        "label": "Animation easing",
+        "options": [
+          {
+            "value": "ease",
+            "label": "Ease"
+          },
+          {
+            "value": "ease-in",
+            "label": "Ease in"
+          },
+          {
+            "value": "ease-out",
+            "label": "Ease out"
+          },
+          {
+            "value": "ease-in-out",
+            "label": "Ease in out"
+          },
+          {
+            "value": "linear",
+            "label": "Linear"
+          }
+        ],
+        "default": "ease-out"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "presets": [
+      {
+        "name": "Progress Bar",
+        "category": "Interaction"
+      }
+    ]
+  }
+  {% endschema %}
+  

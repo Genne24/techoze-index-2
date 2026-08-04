@@ -1,0 +1,131 @@
+{%- liquid
+  assign option_color_swatch = settings.option_color_swatch | downcase
+  for option in product.options_with_values
+      assign option_name = option.name | downcase
+      if option_color_swatch contains option_name
+        assign product_option = option
+        assign index = forloop.index0
+        assign position = forloop.index | minus: 1
+        break
+      else 
+        assign position = 0
+      endif
+  endfor
+
+  assign option_count = product.options | size
+  assign downcased_option = product.options_with_values[0].name | downcase
+  assign available = product.variants.first.available
+  assign current_variant = product.selected_or_first_available_variant
+  assign swatch_color = false
+  if settings.use_color_swatch and option_count == 1 and option_color_swatch contains downcased_option
+   assign swatch_color = true
+  endif
+-%}
+<div class="item-product" data-product-id="product-{{ product.id }}" data-json-product='{"variants": {{ product.variants | json | escape }},"media": {{product.media | json}}}'>
+  <div class="inner-top">
+    <div class="product-top thumbnail-container h-100{% if settings.show_second_image_product and product.images.size > 1 %} has-multiimage{% endif %}">
+      {% assign img_url = product.featured_image %}
+      <div class="card_media relative overflow-hidden" style="aspect-ratio: {{ settings.aspect_product_image }}">
+        <img class="product__thumbnail"
+          src="{{ img_url | image_url: width: 260 }}"
+          srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w, {{ img_url | image_url: width: 900 }} 900w, {{ img_url | image_url: width: 1080 }} 1080w, {{ img_url | image_url: width: 1400 }} 1400w"
+          sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+          alt="{{ img_url.alt }}"
+          width="{{ img_url.width }}"
+          height="{{ img_url.height }}"
+          loading="lazy"
+          style="height: auto;"
+        >
+        {% for image in product.images %}
+          {% assign img_url = image %}
+          {% if forloop.first != true and settings.show_second_image_product %}
+            <img class="product__thumbnail-second"
+              src="{{ img_url | image_url: width: 260 }}"
+              srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w, {{ img_url | image_url: width: 900 }} 900w, {{ img_url | image_url: width: 1080 }} 1080w, {{ img_url | image_url: width: 1400 }} 1400w"
+              sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+              alt="{{ img_url.alt }}"
+              width="{{ img_url.width }}"
+              height="{{ img_url.height }}"
+              loading="lazy"
+              style="height: auto;">
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        <a href="{{ product.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+      </div>
+      {% if settings.badge_enable %}
+        {% render 'nov-product-badge', product: product, current_variant: current_variant %}
+      {% endif %}
+      {% if settings.enable_product_countdowntime and product.metafields.sale.countdown != blank %}
+        <div class="countdownfree d-flex mt-30{% if settings.product_countdown_shadow %} shadow{% endif %}" data-countdown="{{ product.metafields.sale.countdown }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
+      {% endif %}
+      <div class="button--top">
+        {% if settings.wishlist_enable %}
+          {% render 'nov-wishlist', id: product.id, handle: product.handle %}
+        {% endif %}
+        {% if settings.quickview_enable %}
+          {% render 'nov-quickview', id: product.variants.first.id, handle: product.handle %}
+        {% endif %}
+        {% if settings.addtocart_enable and settings.quickadd_type == 'icon' %}
+          {% render 'nov-product-addtocart', product: product, swatch_color: swatch_color, current_variant: current_variant, position: position, available: available %}
+        {% endif %}
+      </div>
+      {% if settings.addtocart_enable %}
+        {% if settings.quickadd_type == 'text' or settings.quickadd_type == 'icon_text' %}
+          {% render 'nov-product-addtocart', product: product, swatch_color: swatch_color, current_variant: current_variant, position: position, available: available %}
+        {% endif %}
+      {% endif %}
+      {% if settings.addtocart_enable and product.has_only_default_variant == false %}
+        <div class="product__popup-swatch">
+          {% render 'add-to-cart-form', product: product, id: 'grid-product-form-', position: position, section_id: section_id, block_id: block_id %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="product__info text-left">
+      {% if settings.product_type %}
+        <div class="product__type">{{ product.type | link_to_type }}</div>
+      {% endif %}
+      <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
+      {% if settings.review_enable %}
+        <div class="product__review">
+          <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+        </div>
+      {% endif %}
+      <div class="product__price price-box price-st d-flex align-items-center">
+        {% render 'nov-product-price', product: product %}
+      </div>
+      {% if settings.addtocart_enable and available == true %}
+        {% render 'item-swatch', product: product, option_color_swatch: option_color_swatch, downcased_option: option_name, product_option: product_option, index: index %}
+      {% endif %}
+      {%- assign product_start_count = product.metafields.stock.initial | times:1 -%}
+      {% if product.metafields.stock.initial != blank %}
+        <div class="deal-flash__sale mt-10">
+          {% if product.variants.size < 2 %}
+            {%- assign available = product.selected_or_first_available_variant.inventory_quantity -%}
+            {%- assign sold = product_start_count | minus:available -%}
+            <div class="flash__sale-top mb-5 d-flex justify-content-between fs-10 color-title">
+              <div class="available">{{ 'sections.product_deals.available' | t }}<span class="font-700 color-act">{{ available }}</span></div>
+              <div class="sold">{{ 'sections.product_deals.sold' | t }}<span class="font-700 color-act">{{ sold }}</span></div>
+            </div>
+            <div class="deal-flash__sale-progress position-relative" style="background-color: {{ settings.progress_deal }}">
+              <div class="progress__bar position-absolute" style="width: {{ product_start_count | minus:available | times: 100 | divided_by : product_start_count }}%;background: {% if settings.enable_rtl and iso_rtl %}{{ settings.gradient_deal | replace: '90deg', '-90deg' }}{% else %}{{ settings.gradient_deal }}{% endif %}"></div>
+            </div>
+          {% elsif product.variants.size > 1 %}
+            {% assign available = 0 %}
+            {% for variant in product.variants %}
+              {% assign available = available | plus: variant.inventory_quantity %}
+            {% endfor %}
+            {%- assign sold = product_start_count | minus:available -%}
+            <div class="flash__sale-top mb-5 d-flex justify-content-between fs-10 color-title">
+              <div class="available">{{ 'sections.product_deals.available' | t }}<span class="font-700 color-act">{{ available }}</span></div>
+              <div class="sold">{{ 'sections.product_deals.sold' | t }}<span class="font-700 color-act">{{ sold }}</span></div>
+            </div>
+            <div class="deal-flash__sale-progress position-relative" style="background-color: {{ settings.progress_deal }}">
+              <div class="progress__bar position-absolute" style="width: {{ product_start_count | minus:available | times: 100 | divided_by : product_start_count }}%;background: {% if settings.enable_rtl and iso_rtl %}{{ settings.gradient_deal | replace: '90deg', '-90deg' }}{% else %}{{ settings.gradient_deal }}{% endif %}"></div>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

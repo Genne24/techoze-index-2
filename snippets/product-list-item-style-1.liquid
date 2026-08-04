@@ -1,0 +1,55 @@
+<div class="item-product{% if settings.show_border_product %} h_bd{% endif %}{% if settings.show_background_product %} bg{% endif %}" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-product-title="{{ product.title | escape }}">
+  <div class="inner-top d-flex align-items-center">
+    <div class="product-top thumbnail-container{% if settings.show_second_image_product and product.images.size > 1 %} has-multiimage{% endif %}">
+      {% assign img_url = product.featured_image %}
+      <div class="card_media relative overflow-hidden" style="aspect-ratio: {{ settings.aspect_product_image }}">
+        <img class="product__thumbnail"
+          src="{{ img_url | image_url: width: 260 }}"
+          srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w, {{ img_url | image_url: width: 900 }} 900w, {{ img_url | image_url: width: 1080 }} 1080w, {{ img_url | image_url: width: 1400 }} 1400w"
+          sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+          alt="{{ img_url.alt }}"
+          width="{{ img_url.width }}"
+          height="{{ img_url.height }}"
+          loading="lazy"
+          style="height: auto;">
+        {% for image in product.images %}
+          {% assign img_url = image %}
+          {% if forloop.first != true and settings.show_second_image_product %}
+            <img class="product__thumbnail-second"
+              src="{{ img_url | image_url: width: 260 }}"
+              srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w, {{ img_url | image_url: width: 900 }} 900w, {{ img_url | image_url: width: 1080 }} 1080w, {{ img_url | image_url: width: 1400 }} 1400w"
+              sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+              alt="{{ img_url.alt }}"
+              width="{{ img_url.width }}"
+              height="{{ img_url.height }}"
+              loading="lazy"
+              style="height: auto;">
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        <a href="{{ product.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+      </div>
+      {% if settings.badge_enable %}
+        {% render 'nov-product-badge', product: product, current_variant: current_variant %}
+      {% endif %}
+      {% if settings.enable_product_countdowntime and product.metafields.sale.countdown != blank %}
+        <div class="countdownfree d-flex mt-30{% if settings.product_countdown_shadow %} shadow{% endif %}" data-countdown="{{ product.metafields.sale.countdown }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
+      {% endif %}
+    </div>
+    
+    <div class="product__info">
+      {% if settings.product_type %}
+        <div class="product__type">{{ product.type | link_to_type }}</div>
+      {% endif %}
+      <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
+      {% if settings.review_enable %}
+        <div class="product__review">
+          <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+        </div>
+      {% endif %}
+      <div class="product__price price-box price-st d-flex align-items-center">
+        {% render 'nov-product-price', product: product %}
+      </div>
+    </div>
+  </div>
+</div>

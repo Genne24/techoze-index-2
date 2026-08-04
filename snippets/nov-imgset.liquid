@@ -1,0 +1,57 @@
+{%- liquid 
+	assign srcset_widths = '165,360,535,750,1070,1200,1500,1900,2048' | split: ','
+	assign srcset_parts = ''
+	for w in srcset_widths
+		assign w_int = w | times: 1
+		if image.width >= w_int
+			assign entry = image | image_url: width: w_int | append: ' ' | append: w_int | append: 'w'
+			if srcset_parts == ''
+				assign srcset_parts = entry
+			else
+				assign srcset_parts = srcset_parts | append: ', ' | append: entry
+			endif
+		endif
+	endfor
+	assign img_alt = image.alt | default: section.settings.image_alt | default: shop.name
+	assign cols = columns | default: 1 | times: 1
+	assign gap = 30 | times: cols | minus: 30
+	assign page_w = settings.container
+	assign desktop_size = page_w | minus: 130 | minus: gap | divided_by: cols | append: 'px'
+
+	assign is_eager = false
+	if eager == true
+		assign is_eager = true
+	elsif eager != false
+		if section.index == 1 or section.index == nil
+			assign is_eager = true
+		endif
+	endif
+-%}
+
+<picture class="media-wrapper d-block">
+  <img
+    src="{{ image | image_url: width: 1920 }}"
+    alt="{{ img_alt }}"
+    srcset="{{ srcset_parts }}"
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    fetchpriority="{% if is_eager %}high{% else %}low{% endif %}"
+    loading="{% if is_eager %}eager{% else %}lazy{% endif %}"
+    class="w-100 h-100 {{ class }}"
+    sizes="
+      (min-width: {{ page_w | append: 'px' }}) {{ desktop_size }},
+      (min-width: 990px) calc((100vw - 130px) / {{ cols }}),
+      (min-width: 750px) calc((100vw - 120px) / {% if cols > 2 %}3{% else %}{{ cols }}{% endif %}),
+      calc((100vw - 35px) / 2)
+    "
+    {% if template.name == 'product' %}
+      data-zoom="{{ image | image_url: width: image.width }}"
+    {% endif %}
+    {% if style != blank %}style="{{ style }}"{% endif %}
+    {{ image_attributes }}
+  >
+</picture>
+
+<noscript>
+  <img src="{{ image | image_url: width: 535 }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+</noscript>

@@ -1,0 +1,69 @@
+{% if swatch_color or product.has_only_default_variant %}
+  <form action="{{ routes.cart_add_url }}" method="post" class="form-btn-item-product position-relative {% if product.has_only_default_variant %}variants-default{% else %}one-option-color{% endif %} color-{{ settings.color_btn_addtocart }} {{ settings.btn_addtocart_type }} z-2" id="grid-product-form--{{ product.id }}-{{ section_id }}" data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ product.variants[0].id }}" />
+    <input type="hidden" name="quantity" value="1" />
+    {% if available == false %}
+      <span class="btn-default btn_sold_out disabled pointer overflow_hidden" type="submit" data-toggle="modal" data-target="#Form_newletter">
+        {% if settings.quickadd_type == 'text' %}
+          <span class="add-to-cart-text">{{ 'products.product.sold_out' | t }}</span>
+        {% elsif settings.quickadd_type == 'icon' %}
+          <span class="add-to-cart-icon">{% render 'icon-cart' %}</span>
+          {% if settings.tooltip_enable %}
+            <span class="btn-tootip">{{ 'products.product.sold_out' | t }}</span>
+          {% endif %}
+        {% elsif settings.quickadd_type == 'icon_text' %}
+          <div class="d-flex align-items-center justify-content-center w-100">
+            <span class="add-to-cart-icon">{% render 'icon-cart' %}</span>
+            <span class="add-to-cart-text">{{ 'products.product.sold_out' | t }}</span>
+          </div>
+        {% endif %}
+      </span>
+      {% if settings.tooltip_enable and settings.quickadd_type == 'icon' %}
+        <span class="btn-tootip">{{ 'products.product.sold_out' | t }}</span>
+      {% endif %}
+    {% else %}
+      <button data-btn-addToCart 
+        class="add-to-cart-btn btn-default{% unless settings.cart_status_addtocart == 'goto_page_cart' %} product-form__cart-submit{% endunless %} btn-alternate z-2"
+        type="submit"
+        data-form-id="#grid-product-form--{{ product.id }}-{{ section_id }}">
+        {% if settings.quickadd_type == 'text' %}
+          <span class="add-to-cart-text">{{ 'products.product.add_to_cart' | t }}</span>
+        {% elsif settings.quickadd_type == 'icon' %}
+          {% render 'icon-cart' %}
+        {% elsif settings.quickadd_type == 'icon_text' %}
+          <div class="d-flex align-items-center justify-content-center w-100">
+            <span class="add-to-cart-icon">{% render 'icon-cart' %}</span>
+            <span class="add-to-cart-text">{{ 'products.product.add_to_cart' | t }}</span>
+          </div>
+        {% endif %}
+        <span class="load"></span>
+
+        {% if settings.tooltip_enable and settings.quickadd_type == 'icon' %}
+          <span class="btn-tootip">
+            {% if current_variant.inventory_policy == 'continue' and current_variant.inventory_management == 'shopify' %}
+              {{ 'products.product.pre_order' | t }}
+            {% else %}
+              {{ 'products.product.add_to_cart' | t }}
+            {% endif %}
+          </span>
+        {% endif %}
+      </button>
+    {% endif %}
+  </form>
+{% else %}
+  <div class="btn btn-quick-add {{ button_type }} {{ button_size }} btn-alternate overflow-hidden relative pointer z-2">
+    {% if settings.quickadd_type == 'text' %}
+      <span class="add-to-cart-text">{{ 'products.product.quick_add' | t }}</span>
+    {% elsif settings.quickadd_type == 'icon' %}
+      <span class="add-to-cart-icon">{% render 'icon-cart' %}</span>
+    {% elsif settings.quickadd_type == 'icon_text' %}
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <span class="add-to-cart-icon">{% render 'icon-cart' %}</span>
+        <span class="add-to-cart-text">{{ 'products.product.quick_add' | t }}</span>
+      </div>
+    {% endif %}
+    {% if settings.tooltip_enable and settings.quickadd_type == 'icon' %}
+      <span class="btn-tootip">{{ 'products.product.quick_add' | t }}</span>
+    {% endif %}
+  </div>
+{% endif %}

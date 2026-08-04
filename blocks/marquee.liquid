@@ -1,0 +1,377 @@
+{%- assign bst = block.settings -%}
+{% style %}
+  {% if bst.bg_blur %}
+    #block-{{ block.id }} {
+      background: rgba(32, 32, 32, 0.2);
+      backdrop-filter: blur(20px);
+    }
+  {% endif %}
+  #block-{{ block.id }} .block-marquee-item {
+    animation-duration: {{ bst.time }}s;
+    --spacing: {{ bst.spacing | divided_by: 10.0 }}rem;
+    --spacing-sm: {{ bst.spacing_sm | divided_by: 10.0 }}rem;
+  }
+  {% if bst.item_style %}
+    #block-{{ block.id }} .theme-blocks-item {
+      background-color: {{ bst.item_bg }};
+      border-radius: {{ bst.item_corner }}px;
+      padding: {{ bst.item_padding_vertical }}px {{ bst.item_padding_horizontal }}px;
+      overflow: hidden;
+      transform: translateZ(0);
+    }
+  {% endif %}
+  {% if bst.enable_marquee_width %}
+    #block-{{ block.id }} .nov-marquee {
+      max-width: {{ bst.marquee_width }}px;
+      margin-inline: auto;
+    }
+  {% endif %}
+  {% if bst.item_width == 'custom' %}
+    #block-{{ block.id }} .theme-blocks-item {
+      width: {{ bst.xs }}vw !important;
+    }
+    @media(min-width:  576px) {
+      #block-{{ block.id }} .theme-blocks-item {
+        width: {{ bst.sm }}vw !important;
+      }
+    }
+    @media(min-width:  768px) {
+      #block-{{ block.id }} .theme-blocks-item {
+        width: {{ bst.md }}vw !important;
+      }
+    }
+    @media(min-width:  992px) {
+      #block-{{ block.id }} .theme-blocks-item {
+        width: {{ bst.lg }}vw !important;
+      }
+    }
+    @media(min-width:  1200px) {
+      #block-{{ block.id }} .theme-blocks-item {
+        width: {{ bst.xl }}vw !important;
+      }
+    }
+    @media(min-width:  1441px) {
+      #block-{{ block.id }} .theme-blocks-item {
+        width: {{ bst.xxl }}vw !important;
+      }
+    }
+  {% endif %}
+{% endstyle %}
+<div id="block-{{ block.id }}" class="theme-blocks-item line-block" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;">
+  <div class="nov-marquee overflow_hidden d-flex{% if bst.show_dot %} show-dots{% endif %}{% if bst.marquee_reverse %} marquee-reverse{% endif %}">
+    <div class="block-marquee-item d-flex">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Marquee",
+    "tag": null,
+    "blocks": [
+      {
+        "type": "text"
+      },
+      {
+        "type": "image"
+      },
+      {
+        "type": "button"
+      },
+      {
+        "type": "icon-with-text"
+      }
+    ],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Marquee Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_marquee_width",
+        "label": "Custom width",
+        "default": false
+      },
+      {
+        "type": "number",
+        "id": "marquee_width",
+        "label": "Width",
+        "default": 960,
+        "visible_if": "{{ block.settings.enable_marquee_width }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "marquee_reverse",
+        "label": "Marquee reverse",
+        "info": "Enable to reverse the marquee direction"
+      },
+      {
+        "type": "range",
+        "id": "time",
+        "min": 5,
+        "max": 60,
+        "step": 1,
+        "unit": "s",
+        "label": "Marquee run time",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "spacing",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Spacing",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "spacing_sm",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Spacing mobile",
+        "default": 10
+      },
+      {
+        "type": "checkbox",
+        "id": "show_dot",
+        "label": "Show dots",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "item_width",
+        "label": "Item width",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Auto"
+          },
+          {
+            "value": "custom",
+            "label": "Custom (vw)"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "range",
+        "id": "xxl",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "vw",
+        "label": "Desktop",
+        "default": 20,
+        "info": "Breakpoint 1441px ↑",
+        "visible_if": "{{ block.settings.item_width == 'custom' }}"
+      },
+      {
+        "type": "range",
+        "id": "xl",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "vw",
+        "label": "Large laptop",
+        "default": 20,
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ block.settings.item_width == 'custom' }}"
+      },
+      {
+        "type": "range",
+        "id": "lg",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "vw",
+        "label": "Laptop",
+        "default": 20,
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ block.settings.item_width == 'custom' }}"
+      },
+      {
+        "type": "range",
+        "id": "md",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "vw",
+        "label": "Tablet",
+        "default": 20,
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ block.settings.item_width == 'custom' }}"
+      },
+      {
+        "type": "range",
+        "id": "sm",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "vw",
+        "label": "Large mobile",
+        "default": 20,
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ block.settings.item_width == 'custom' }}"
+      },
+      {
+        "type": "range",
+        "id": "xs",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "vw",
+        "label": "Mobile",
+        "default": 20,
+        "info": "Breakpoint 575px ↓",
+        "visible_if": "{{ block.settings.item_width == 'custom' }}"
+      },
+      {
+        "type": "header",
+        "content": "Style Item"
+      },
+      {
+        "type": "checkbox",
+        "id": "item_style",
+        "label": "Show style",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "item_bg",
+        "label": "Item background",
+        "default": "#d5d5d5",
+        "visible_if": "{{ block.settings.item_style }}"
+      },
+      {
+        "type": "range",
+        "id": "item_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Item corner",
+        "default": 5,
+        "visible_if": "{{ block.settings.item_style }}"
+      },
+      {
+        "type": "range",
+        "id": "item_padding_horizontal",
+        "label": "Item padding horizontal",
+        "default": 2,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "info": "Item padding horizontal",
+        "visible_if": "{{ block.settings.item_style }}"
+      },
+      {
+        "type": "range",
+        "id": "item_padding_vertical",
+        "label": "Item padding vertical",
+        "default": 2,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "info": "Item padding vertical",
+        "visible_if": "{{ block.settings.item_style }}"
+      },
+      {
+        "type": "header",
+        "content": "Style Block"
+      },
+      {
+        "type": "checkbox",
+        "id": "bg_blur",
+        "label": "Background blur"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "presets": [
+      {
+        "name": "Marquee",
+        "category": "Content",
+        "blocks": [
+          {
+            "type": "text"
+          },
+          {
+            "type": "text"
+          },
+          {
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+  

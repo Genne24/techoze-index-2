@@ -1,0 +1,11 @@
+<div class="productWishList relative z-2">
+  <a class="btnProductWishlist item-product__wishlist" 
+    data-icon-wishlist href="#" 
+    data-product-handle="{{ handle }}"
+    data-id="{{ id | json }}">
+    <i class="{{ settings.wishlist_icon }}" style="font-size: {{ settings.wishlist_icon_fz | append: 'px' }};"></i>
+    {% if settings.tooltip_enable %}
+      <span class="btn-tootip {{ position }}">{{ 'products.product.wishlist' | t }}</span>
+    {% endif %}
+  </a>
+</div>

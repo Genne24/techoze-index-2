@@ -1,0 +1,596 @@
+{%- liquid 
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  if section.settings.class_section != blank
+    assign class_section = section.settings.class_section | prepend: ' '
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position | append: class_section
+  if section.settings.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+{% style %}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} .image-wrapper {
+    border-radius: {{ sst.bd_radius}}px;
+    transform: translateZ(0);
+  }
+  @media(min-width: 992px) {
+    #shopify-section-{{ section.id }} .split-image__column {
+      height: {{ sst.h_lg }}px !important;
+    }
+  }
+  @media(min-width: 1200px) {
+    #shopify-section-{{ section.id }} .split-image__column {
+      height: {{ sst.h_xl }}px !important;
+    }
+  }
+  @media(min-width: 1600px) {
+    #shopify-section-{{ section.id }} .split-image__column {
+      height: {{ sst.h_xxl }}px !important;
+    }
+  }
+  @media(min-width: 2000px) {
+    #shopify-section-{{ section.id }} .split-image__column {
+      height: {{ sst.h_xxxl }}px !important;
+    }
+  }
+{% endstyle %}
+<div class="container-outer{{ bg_class_full }}">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      {% render 'heading-section', sub_position: sst.subheading_position %}
+      <div class="row {% if sst.spacing_1 %}spacing-1{% else %}spacing-{{ sst.spacing }}{% endif %}">
+        {% for block in section.blocks %}
+          {% assign bst = block.settings %}
+          <div class="col-lg split-image__column{% if forloop.first %} act{% endif %}{% if sst.spacing_1 == false %} mb-md-{{ sst.spacing }} mb-sm-15{% endif %}{% if bst.class != blank %} {{ bst.class }}{% endif %}">
+            <div class="split-image__item position-relative color-{{ bst.color }}">
+              {% if bst.link != blank %}
+                <a class="gallery-image__link" href="{{ bst.link }}">
+              {% endif %}
+                <div class="image-wrapper overflow_hidden h-100">
+                  {% if bst.image != blank %}
+                    <img src="{{ bst.image | image_url: width: 1 }}" data-src="{{ bst.image | image_url: width: 1200 }}" class="lazyload" width="{{ bst.image.width }}" height="{{ bst.image.height }}" alt="{{ bst.image.alt | default: 'image' }}">
+                  {% else %}
+                    {%- capture current -%}{% cycle 1, 2, 3 %}{%- endcapture -%}
+                    {{ 'hero-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                {% if bst.tabs_icon != blank or bst.tabs_text != blank %}
+                  <div class="position-absolute text-abs d-inline-flex align-items-center" style="background: {{ bst.tabs_bg }}; color: {{ bst.tabs_color }}">
+                    {% if bst.tabs_icon != blank %}
+                      <img class="img-fluid" src="{{ bst.tabs_icon | image_url: width: 30 }}" width="30" height="30" alt="{{ bst.tabs_icon.alt | default: 'img' }}" loading="lazy">
+                    {% endif %}
+                    {% if bst.tabs_text != blank %}
+                      <span class="fs-12 font-500">{{ bst.tabs_text }}</span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% if bst.link != blank %}
+                </a>
+              {% endif %}
+
+              {% if bst.title != blank or bst.desc != blank or sst.show_btn_arrow %}
+                <div class="block-content position-absolute left-bottom d-flex align-items-end">
+                  <div class="content-left">
+                    {% if bst.title != blank or bst.desc != blank %}
+                      {% if bst.title != blank %}
+                        <div class="h1 fs-24 fs-xl-22 fs-lg-20 fs-md-18 fs-sm-16 fs-xs-14 color-title mb-15">{{ bst.title }}</div>
+                      {% endif %}
+                      {% if bst.desc != blank %}
+                        <div class="desc color-text fs-lg-12">{{ bst.desc }}</div>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                  {% if sst.show_btn_arrow %}
+                    <a href="{{ bst.link }}" class="btn btn-arrow btn-secondary m-left-auto">
+                      <i class="zmdi zmdi-long-arrow-right fs-17 m-0"></i>
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
+        {% endfor %}
+      </div><!-- End row -->
+    </div>
+  </div><!-- End container -->
+</div>
+{% if section.blocks.size == 0 %}
+  {% render 'no-blocks' %}
+{% endif %}
+{% schema %}
+  {
+    "name": "Vinova Image Split",
+    "class": "section-image-split",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<p>Vinova Image Split</p>"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "<p>Subtitle from happy customers</p>"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "subheading_position",
+        "label": "Sub heading position",
+        "default": "bottom",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ],
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "descheading",
+        "label": "Description",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+      },
+      {
+        "type": "color",
+        "id": "descheading_color",
+        "label": "Description color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.descheading != blank }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment",
+        "label": "Alignment",
+        "default": "left"
+      },
+      {
+        "type": "header",
+        "content": "Height"
+      },
+      {
+        "type": "number",
+        "id": "h_xxxl",
+        "label": "Height 4k",
+        "info": "Breakpoint 2000px ↑",
+        "default": 850
+      },
+      {
+        "type": "number",
+        "id": "h_xxl",
+        "label": "Height desktop",
+        "info": "Breakpoint 1600px ↑",
+        "default": 850
+      },
+      {
+        "type": "number",
+        "id": "h_xl",
+        "label": "Height large laptop",
+        "info": "Breakpoint 1200px ↑",
+        "default": 700
+      },
+      {
+        "type": "number",
+        "id": "h_lg",
+        "label": "Height laptop",
+        "info": "Breakpoint 992px ↑",
+        "default": 600
+      },
+      {
+        "type": "header",
+        "content": "Item Image Style"
+      },
+      {
+        "type": "range",
+        "id": "bd_radius",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Border radius image",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "spacing",
+        "min": 0,
+        "max": 60,
+        "step": 5,
+        "label": "Spacing items",
+        "default": 20
+      },
+      {
+        "type": "checkbox",
+        "id": "spacing_1",
+        "label": "Spacing 1px"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_btn_arrow",
+        "label": "Show button arrow",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Show animated",
+        "default":   true
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "class_section",
+        "label": "Class"
+      },
+      {
+        "type":  "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background image size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable background image size custom",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Background image size custom",
+        "info": "Replace base background size, unit % or px",
+        "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background image position",
+        "default": "center center",
+        "options": [
+          { "value": "top left", "label": "Top left" },
+          { "value": "top center", "label": "Top center" },
+          { "value": "top right", "label": "Top right" },
+          { "value": "center left", "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right", "label": "Center right" },
+          { "value": "bottom left", "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right", "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.background_image != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full" },
+          { "value": "contain", "label": "Contain"}
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background size contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 1,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1441px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 575px ↓",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "515 x 900px recommend"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "color_scheme",
+            "id": "color",
+            "label": "Color",
+            "default": "background-1"
+          },
+          {
+            "type": "richtext",
+            "id": "title",
+            "label": "Title",
+            "default": "<p>Lorem ipsum</p>"
+          },
+          {
+            "type": "richtext",
+            "id": "desc",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Text Absolute"
+          },
+          {
+            "type": "image_picker",
+            "id": "tabs_icon",
+            "label": "Icon"
+          },
+          {
+            "type": "text",
+            "id": "tabs_text",
+            "label": "Text"
+          },
+          {
+            "type": "color",
+            "id": "tabs_color",
+            "label": "Color",
+            "default": "#222"
+          },
+          {
+            "type": "color",
+            "id": "tabs_bg",
+            "alpha": true,
+            "label": "Background",
+            "default": "#dfdfdf"
+          },
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Image Split",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,106 @@
+{%- assign bst = block.settings -%}
+<div class="theme-blocks-item payment-method-block d-flex" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;" {{ block.shopify_attributes }}>
+  {% if shop.enabled_payment_types %}
+    <div class="payment-content d-inline-flex img-fluid">
+      {% if bst.payment != blank %}
+        <div class="payment-image" style="width: {{ bst.payment_mw }}px;">
+          {% render 'nov-aspect-image', image: bst.payment, class: 'w-100 no-ef' %}
+        </div>
+      {% else %}
+        {%- for type in shop.enabled_payment_types -%}
+          <div class="payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</div>
+        {%- endfor -%}
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Payment Method",
+    "tag": null,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "payment",
+        "label": "Payment image"
+      },
+      {
+        "type": "number",
+        "id": "payment_mw",
+        "label": "Payment image width",
+        "default": 100,
+        "info": "Unit: px"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "presets": [
+      {
+        "name": "Payment Method",
+        "category": "Footer"
+      }
+    ]
+  }
+  {% endschema %}
+  

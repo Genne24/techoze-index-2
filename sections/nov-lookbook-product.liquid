@@ -1,0 +1,742 @@
+{%- liquid 
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position
+  if section.settings.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+
+{% style %}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} .img-wapper {
+    border-radius: {{ sst.corner }}px;
+    overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .block-product-inner {
+    background-color: {{ sst.panel_bg_color }};
+    border-radius: {{ sst.panel_corner }}px;
+    padding: {{ sst.panel_padding }}px;
+  }
+  @media (max-width: 575px) {
+    #shopify-section-{{ section.id }} .block-product-inner {
+      padding: {{ sst.panel_padding }}px 0;
+    }
+  }
+  #shopify-section-{{ section.id }} .overlay-card {
+    position: absolute;
+    bottom: 2rem;
+    inset-inline-start: 2rem;
+    background-color: {{ sst.overlay_card_bg }};
+    opacity: {{ sst.overlay_card_opacity | divided_by: 100.0 }};
+    border-radius: {{ sst.overlay_card_corner }}px;
+    padding: 1.6rem 2rem;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .overlay-card__badge {
+    display: inline-block;
+    background-color: {{ sst.overlay_badge_bg }};
+    color: {{ sst.overlay_badge_color }};
+    border-radius: 100px;
+    padding: 2px 11px;
+    margin-bottom: 8px;
+  }
+  #shopify-section-{{ section.id }} .overlay-card__title {
+    color: {{ sst.overlay_title_color }};
+    margin-bottom: 8px;
+  }
+  #shopify-section-{{ section.id }} .overlay-card__desc {
+    color: {{ sst.overlay_desc_color }};
+  }
+{% endstyle %}
+
+<div class="container-outer{{ bg_class_full }} position-relative color-{{ sst.color_section }}" data-section-id>
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      <div class="row">
+        <div class="image-lookbook position-relative col-lg-6">
+          <div class="position-relative">
+            <div class="img-wapper">
+              {% if sst.lookbook_image != blank %}
+                {% render 'nov-aspect-image', image: sst.lookbook_image %}
+              {% else %}
+                {%- capture current -%}{% cycle 1, 2, 3 %}{%- endcapture -%}
+                {{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+            {% for block in section.blocks %}
+              {% assign bst = block.settings %}
+              {% if block.type == 'item' %}
+                <div class="number nov_btn_act position-absolute d-flex align-items-center justify-content-center r-100 pointer{% if forloop.first %} act{% endif %}" data-toggle="{{ section.id }}{{ forloop.index }}" style="top: {{ bst.pin_position_top }}%; left: {{ bst.pin_position_left }}%">
+                  <span class="position-relative d-flex align-items-center justify-content-center">{{ forloop.index }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+  
+            {% if sst.overlay_card_enable %}
+              <div class="overlay-card">
+                {% if sst.overlay_badge_text != blank %}
+                  <span class="overlay-card__badge fs-12">{{ sst.overlay_badge_text }}</span>
+                {% endif %}
+                {% if sst.overlay_title != blank %}
+                  <p class="overlay-card__title h3 fs-20 fs-lg-16 font-700">{{ sst.overlay_title }}</p>
+                {% endif %}
+                {% if sst.overlay_desc != blank %}
+                  <p class="overlay-card__desc fs-14 font-lg-12 mb-0">{{ sst.overlay_desc }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="block-product mt-md-40 col-lg-6">
+          <div class="block-product-inner h-100 d-flex flex-column align-items-center justify-content-center">
+            {% render 'heading-section', sub_position: sst.subheading_position %}
+            <div class="list--view-items position-relative w-100">
+              {% for block in section.blocks %}
+                <div class="item d-flex align-items-center{% unless forloop.last %} mb-25{% endunless %} nov_item_act{% if forloop.first %} act{% endif %}"
+                  data-act="{{ section.id }}{{ forloop.index }}">
+                  {% assign product = all_products[block.settings.pin_product] %}
+                  {%- liquid
+                    assign on_sale = false
+                    if product.compare_at_price_min > product.price_min
+                      assign on_sale = true
+                    endif
+                    assign current_variant = product.selected_or_first_available_variant
+                  -%}
+                  
+                  <div class="item-product{% if settings.show_border_product %} h_bd{% endif %}{% if settings.show_background_product %} bg{% endif %}" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-product-title="{{ product.title | escape }}">
+                    <div class="inner-top d-flex align-items-center">
+                      <div class="product-top thumbnail-container ratio-{{ settings.aspect_product_image }}{% if settings.show_second_image_product and product.images.size > 1 %} has-multiimage{% endif %}">
+                        <a href="{{ product.url }}">
+                          {% assign img_url = product.featured_image %}
+                          <div class="respone_image" style="padding-top:{{ 1 | divided_by: img_url.aspect_ratio | times: 100}}%;">
+                            <img class="product__thumbnail lazyload" src="{{ img_url | image_url: width: 1 }}" data-src="{{ img_url | image_url: width: 260 }}" data-srcset="{{ img_url | image_url: width: 260 }} 260w,{{ img_url | image_url: width: 360 }} 360w,{{ img_url | image_url: width: 540 }} 540w,{{ img_url | image_url: width: 720 }} 720w,{{ img_url | image_url: width: 900 }} 900w,{{ img_url | image_url: width: 1080 }} 1080w" data-sizes="auto" alt="{{ img_url.alt }}" width="{{ img_url.width }}" height="{{ img_url.height }}" loading="lazy" style="height: auto;">
+                            {% for image in product.images %}
+                              {% assign img_url = image %}
+                              {% if forloop.first != true and settings.show_second_image_product %}
+                                <img class="product__thumbnail-second lazyload" src="{{ img_url | image_url: width: 1 }}" data-src="{{ img_url | image_url: width: 260 }}" data-srcset="{{ img_url | image_url:width: 260 }} 260w,{{ img_url | image_url: width: 360 }} 360w,{{ img_url | image_url: width: 540 }} 540w,{{ img_url | image_url: width: 720 }} 720w,{{ img_url | image_url: width: 900 }} 900w,{{ img_url | image_url: width: 1080 }} 1080w" data-sizes="auto" alt="{{ img_url.alt }}" width="{{ img_url.width }}" height="{{ img_url.height }}" loading="lazy" style="height: auto;">
+                                {% break %}
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </a>
+                      </div>
+                      
+                      <div class="product__info"> 
+                        {% if settings.review_enable %}
+                          <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+                        {% endif %}
+                        <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
+                        <div class="price-box price-st">
+                          {% if on_sale %}
+                            <div class="price-sale">
+                              <span class="special-price" data-price-grid>{{ product.variants[0].price | money }}</span>
+                              <span class="old-price" data-compare-price-grid>{{ product.variants[0].compare_at_price | money }}</span>
+                            </div>
+                          {% else %}
+                            <div class="price-regular">
+                              <span data-price-grid>{{ product.variants[0].price | money }}</span>
+                            </div>
+                          {% endif %}
+                        </div>
+                        {% if settings.wishlist_enable %}
+                          {% render 'nov-wishlist', id: product.id, handle: product.handle %}
+                        {% endif %}
+                        {% if settings.addtocart_enable %}
+                          {% if product.has_only_default_variant %}
+                            <form action="{{ routes.cart_add_url }}" method="post" class="form-btn-item-product {% if product.has_only_default_variant %}variants-default{% else %}one-option-color{% endif %} color-{{ settings.color_btn_addtocart }} {{ settings.btn_addtocart_type }}" id="grid-product-form--{{ product.id }}-{{ section.id }}" data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+                              <input type="hidden" name="id" value="{{ product.variants[0].id }}" />
+                              <input type="hidden" name="quantity" value="1" />
+                              {% if product.variants.first.available == false %}
+                                <span class="btn disabled pointer overflow_hidden" type="submit" data-toggle="modal" data-target="#Form_newletter">
+                                  {% render 'icon-cart' %}
+                                </span>
+                                {% if settings.tooltip_enable %}
+                                  <span class="btn-tootip">{{ 'products.product.sold_out' | t }}</span>
+                                {% endif %}
+                              {% else %}
+                                <button data-btn-addToCart 
+                                class="add-to-cart-btn btn{% unless settings.cart_status_addtocart == 'goto_page_cart' %} product-form__cart-submit{% endunless %}"
+                                type="submit"
+                                data-form-id="#grid-product-form--{{ product.id }}-{{ section.id }}">
+                                  {% render 'icon-cart' %}
+                                  <span class="d-none d-sm-block">
+                                    {% if current_variant.inventory_policy == 'continue' and current_variant.inventory_management == 'shopify' %}
+                                      {{ 'products.product.pre_order' | t }}
+                                    {% else %}
+                                      {{ 'products.product.add_to_cart' | t }}
+                                    {% endif %}
+                                  </span>
+                                  <span class="load"></span>
+                                </button>
+                              {% endif %}
+                            </form>
+                          {% else %}
+                            <a href="{{ product.url }}" class="btn pointer">
+                              {% render 'icon-cart' %}
+                              {{ 'products.product.select_options' | t }}
+                            </a>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            {% if sst.add_all_to_card != blank %}
+              <div class="btn-add-all-cart text-center mt-60 mt-xs-35">
+                <div class="btn btn-medium js_add_all_to_cart position-relative">
+                  <span>{{ sst.add_all_to_card }}</span>
+                  <i class="zmdi zmdi-long-arrow-right"></i>
+                  <div class="load"></div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Vinova Lookbook Product",
+    "class": "section-lookbook-product",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<p>Vinova Lookbook Product</p>"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "<p>Subtitle from happy customers</p>"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "subheading_position",
+        "label": "Sub heading position",
+        "default": "bottom",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ],
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "descheading",
+        "label": "Description",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+      },
+      {
+        "type": "color",
+        "id": "descheading_color",
+        "label": "Description color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.descheading != blank }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment",
+        "label": "Alignment",
+        "default": "left"
+      },
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "lookbook_image",
+        "label": "Image"
+      },
+      {
+        "type": "range",
+        "id": "corner",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Image corner radius",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Image Overlay Card"
+      },
+      {
+        "type": "checkbox",
+        "id": "overlay_card_enable",
+        "label": "Show overlay card",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "overlay_badge_text",
+        "label": "Badge text",
+        "default": "Neutral",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "overlay_badge_bg",
+        "label": "Badge background",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "overlay_badge_color",
+        "label": "Badge text color",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "text",
+        "id": "overlay_title",
+        "label": "Overlay title",
+        "default": "Classic Collection",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "overlay_title_color",
+        "label": "Overlay title color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "text",
+        "id": "overlay_desc",
+        "label": "Overlay description",
+        "default": "Timeless beauty for any occasion",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "overlay_desc_color",
+        "label": "Overlay description color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "color",
+        "id": "overlay_card_bg",
+        "label": "Overlay card background",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "overlay_card_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Overlay card opacity",
+        "default": 90,
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "overlay_card_corner",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Overlay card corner radius",
+        "default": 12,
+        "visible_if": "{{ section.settings.overlay_card_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Product Panel (Right Block)"
+      },
+      {
+        "type": "color",
+        "id": "panel_bg_color",
+        "label": "Panel background color",
+        "default": "#f5f3f0"
+      },
+      {
+        "type": "range",
+        "id": "panel_corner",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Panel corner radius",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "panel_padding",
+        "min": 0,
+        "max": 60,
+        "step": 2,
+        "unit": "px",
+        "label": "Panel padding",
+        "default": 32
+      },
+      {
+        "type": "header",
+        "content": "Button Add All To Card"
+      },
+      {
+        "type": "text",
+        "id": "add_all_to_card",
+        "label": "Button label"
+      },
+      {
+        "type":  "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Show animated",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_section",
+        "label": "Color section",
+        "default": "background-1"
+      },
+      {
+        "type":  "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background image size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable background image size custom",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Background image size custom",
+        "info": "Replace base background size, unit % or px",
+        "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background image position",
+        "default": "center center",
+        "options": [
+          { "value": "top left", "label": "Top left" },
+          { "value": "top center", "label": "Top center" },
+          { "value": "top right", "label": "Top right" },
+          { "value": "center left", "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right", "label": "Center right" },
+          { "value": "bottom left", "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right", "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.background_image != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full" },
+          { "value": "contain", "label": "Contain"}
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background size contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 1,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1441px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 575px ↓",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Item Lookbook",
+        "settings": [
+          {
+            "type": "product",
+            "id": "pin_product",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Position Pin"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Left",
+            "default": 5,
+            "unit": "%"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Lookbook Product",
+        "category": "Lookbook"
+      }
+    ]
+  }
+{% endschema %}

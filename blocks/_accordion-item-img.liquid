@@ -1,0 +1,43 @@
+<div class="nov-accordion__item has-img position-relative">
+  <div class="d-flex align-items-center">
+    <div class="acc-content">
+      <div class="nov-accordion__title h3 d-flex color-title d-flex align-items-center mb-0 nov-slick-dot">
+        {% content_for 'block', type: "text", id: "title" %}
+      </div>
+      <div class="nov-accordion__content">
+        <div class="block color-text position-relative">{% content_for 'block', type: "text", id: "content" %}{% content_for 'block', type: "button", id: "button" %}</div>
+      </div>
+    </div>
+    <div class="acc-img">
+      <div class="nov-accordion__content overflow_hidden" style="border-radius: {{ block.settings.corner_radius }}px;transform: translateZ(0)">
+        {% render 'nov-aspect-image', image: block.settings.image %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Accordion Item Has Image",
+    "tag": null,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "number",
+        "id": "corner_radius",
+        "label": "Corner radius",
+        "default": 0
+      }
+    ],
+    "presets": [
+      {
+        "name": "Accordion Item Has Image"
+      }
+    ]
+  }
+{% endschema %}
+  

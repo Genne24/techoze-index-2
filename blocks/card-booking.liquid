@@ -1,0 +1,111 @@
+{%- liquid
+  assign bst = block.settings
+-%}
+
+<div id="block-{{ block.id }}" class="theme-blocks-item card-booking-block overflow_hidden" style="border-radius: {{ bst.corner_radius }}px {{ bst.corner_radius }}px 0 0" {{ block.shopify_attributes }}>
+  <div class="card-img">
+    {% if bst.image != blank %}
+      {% render 'nov-aspect-image', image: bst.image %}
+    {% else %}
+      {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  </div>
+  <div class="card-content" style="background-color: {{ bst.bg_color }};padding: {{ bst.padding }}px; border: 1px solid {{ bst.bd_color }}; border-top: none;border-radius: 0 0 {{ bst.corner_radius }}px {{ bst.corner_radius }}px">
+    <div class="d-flex align-items-center justify-content-between mb-10">
+      {% if bst.title != blank %}
+        <div class="title h3 fs-20 fs-lg-16 color-title">{{ bst.title }}</div>
+      {% endif %}
+      {% if bst.time != blank %}
+        <div class="time color-text fs-12 fs-lg-11 fs-md-10">{{ bst.time }}</div>
+      {% endif %}
+    </div>
+    {% if bst.desc != blank %}
+      <div class="desc mb-20">{{ bst.desc }}</div>
+    {% endif %}
+    {% if bst.btn_label != blank %}
+      <a href="{{ bst.btn_link }}" class="btn w-100">{{ bst.btn_label }}</a>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Card - Booking",
+    "tag": null,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Glow Facial Ritual"
+      },
+      {
+        "type": "text",
+        "id": "time",
+        "label": "Time",
+        "default": "90 minutes"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "desc",
+        "label": "Description",
+        "default": "A revitalizing facial treatment designed to deeply cleanse, hydrate, and restore your skin’s natural radiance."
+      },
+      {
+        "type": "text",
+        "id": "btn_label",
+        "label": "Button label",
+        "default": "Booking Now"
+      },
+      {
+        "type": "url",
+        "id": "btn_link",
+        "label": "Button link"
+      },
+      {
+        "type": "header",
+        "content": "Style"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "alpha": true,
+        "label": "Background color",
+        "default": "#f2f2f2"
+      },
+      {
+        "type": "color",
+        "id": "bd_color",
+        "alpha": true,
+        "label": "Border color",
+        "default": "#d2d2d2"
+      },
+      {
+        "type": "number",
+        "id": "corner_radius",
+        "label": "Corner radius",
+        "default": 20,
+        "info": "Unit: px"
+      },
+      {
+        "type": "number",
+        "id": "padding",
+        "label": "Content padding",
+        "default": 30,
+        "info": "Unit: px"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Card - Booking",
+        "category": "Content"
+      }
+    ]
+  }
+  {% endschema %}
+  

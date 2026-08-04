@@ -1,1 +1,0 @@
-# techoze-index-2

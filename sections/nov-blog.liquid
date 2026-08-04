@@ -1,0 +1,909 @@
+{%- liquid
+  assign sst = section.settings
+  assign collection_blog = blogs[sst.blog]
+  assign blog_limit = sst.limit
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position
+  if sst.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+{%- style -%}
+  {% render 'nov-section-style' %}
+  #shopify-section-{{ section.id }} .article__card {
+    border-radius: var(--corner-radius);
+  }
+  #shopify-section-{{ section.id }} .nov-slick-carousel:not([data-row="1"]) .slick-slide > div:not(:last-child) {
+    margin-bottom: var(--spacing);
+  }
+{%- endstyle -%}
+
+<div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }} position-relative" data-section-id="{{ section.id }}" data-section-type="nov-slick">
+  <div class="{{ sst.container }}">
+    <div class="d-flex align-items-center justify-content-between{% if sst.hv_box_shadow %} mb-8{% else %} {{ settings.section_heading_spacing | prepend: 'mb-' }}{% endif %}">
+      {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-0' %}
+      {% if sst.show_nav and sst.arrow_postion == 'arrow_on_top' %}
+        <div class="block-nav {{ sst.arrow_color }} {{ sst.arrow_postion }} d-flex justify-content-center">
+          <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
+          <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
+        </div>
+      {% endif %}
+      {% if sst.show_view_all_blog %}
+        <div class="view_all relative duration-300" style="--color-viewall: {{ sst.viewall_color }}; --color-viewall-hover: {{ sst.viewall_color_hv }}; --color-viewall-line: {{ sst.viewall_color_line }}">
+          <a href="{{ collection_blog.url }}">
+            <span class="fs-16 font-700 lh-22">{{ 'sections.blog.view_all_blog' | t }}</span>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="container-inner{{ bg_class_contain }} {{ sst.dots_color }} {{ sst.arrow_color }} {{ sst.arrow_postion }} relative"> 
+      <div class="nov-slick-carousel row {{ sst.spacing | prepend: 'spacing-' }} {{ sst.layout }}{% if sst.hv_box_shadow %} hv_box_shadow{% endif %} overflow-hidden"
+        data-loop       ="false"
+        data-dots       ="{{ sst.show_dots }}"
+        data-nav        ="false"
+        data-items_xxl  ="{{ sst.xxl }}"
+        data-items_xl   ="{{ sst.xl }}"
+        data-items_lg   ="{{ sst.lg }}"
+        data-items_md   ="{{ sst.md }}"
+        data-items_sm   ="{{ sst.sm }}"
+        data-items_xs   ="1"
+        data-row        ="{{ sst.row }}"
+        data-row_mobile ="{{ sst.row }}"
+        data-speed      ="700"
+        style="--spacing-post: -{{ sst.spacing | divided_by: 2 | append: 'px' }};">
+        {% for article in collection_blog.articles limit: blog_limit %}
+          <div class="item{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
+            <div class="sp-item">
+              <div class="item-article{% if sst.layout == 'split_card' and sst.type == 'horizontal' %} row spacing-0{% endif %} {{ sst.type }} {{ sst.layout }} color-{{ sst.color_sections }} overflow_hidden duration-300" style="--corner-radius: {{ sst.corner_radius | append: 'px' }};--border-style: {{ sst.border_style }};--border-size: {{ sst.border_size | append: 'px' }};--spacing-post: {{ sst.spacing_post | append: 'px' }}">
+                {% if article.image %}
+                  <div class="{% if sst.layout == 'split_card' and sst.type == 'horizontal' %}col-md-6 col-12 {% endif %}article__card position-relative overflow_hidden h-100">
+                    {% render 'nov-imgset', image: article.image %}
+                    <a href="{{ article.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+                  </div>
+                {% endif %}
+                <div class="{% if sst.layout == 'split_card' and sst.type == 'horizontal' %}col-md-6 col-12 {% else %}mt-20 mb-20  {% endif %}article__info">
+                  {% for block in section.blocks %}
+                    {%- case block.type -%}
+                      {%- when 'title' %}
+                        <div class="article__title {{ block.settings.line_clamp }} line-clamp-xs-1 {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
+                          <a href="{{ article.url }}" class="fs-24 fs-md-16 font-700 lh-32 color-title">{{ article.title | truncate: 70 }}</a>
+                        </div>
+                      {%- when 'author_date' %}
+                        <div class="article_cs d-flex align-items-center {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
+                          <span class="article__author fs-12 font-400 lh-20 text-uppercase d-flex align-items-center">{{ article.author }}</span>
+                          <span class="article__date fs-12 font-400 lh-20 text-uppercase">{{ article.published_at | date: "%B" }} {{ article.published_at | date: "%d" }}, {{ article.published_at | date: "%Y" }}</span>
+                        </div>
+                      {%- when 'excerpt' %}
+                        <div class="article__excerpt {{ block.settings.line_clamp }} fs-16 lh-22 font-400 color-subtitle {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
+                          {% if article.excerpt.size > 0 %}
+                          {{ article.excerpt | truncate: 160 }}
+                          {% else %}
+                          {{ article.content | strip_html | truncate: 160 }}
+                          {% endif %}
+                        </div>
+                      {%- when 'button' %}
+                        <a href="{{ article.url }}" class="btn {{ block.settings.button_size }} {{ block.settings.button_type_color }} btn-alternate link {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} fs-14 font-700 lh-20 d-inline-flex align-items-center" aria-label="Read more about {{ article.title }}" {{ block.shopify_attributes }}>
+                          <span>{{ 'sections.button.read_more' | t }}</span>
+                          <span class="visually-hidden"> {{ 'sections.button.read_more' | t }} {{ article.title }}</span>
+                        </a>
+                    {% endcase %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>    
+        {% else %}
+          {%- for i in (1..4) -%}
+            {%- capture current -%}{% cycle 1, 2, 3 %}{%- endcapture -%}
+            <div class="sp-item item">
+              {{ 'blog-apparel-' | append: current | placeholder_svg_tag : 'placeholder-svg' }}
+            </div>
+          {%- endfor -%}
+        {% endfor %}
+      </div>
+      {% if sst.show_nav and sst.arrow_postion == 'arrow_on_center' %}
+        <div class="block-nav {{ sst.arrow_color }} {{ sst.arrow_postion }} d-flex justify-content-center">
+          <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
+          <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Vinova Blog",
+    "class": "section-blog",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<p>Vinova Blog</p>"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "<p>Subtitle from happy customers</p>"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "subheading_position",
+        "label": "Sub heading position",
+        "default": "bottom",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ],
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "descheading",
+        "label": "Description",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+      },
+      {
+        "type": "color",
+        "id": "descheading_color",
+        "label": "Description color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.descheading != blank }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment",
+        "label": "Alignment",
+        "default": "left"
+      },
+      {
+        "type": "header",
+        "content": "Blog"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_sections",
+        "label": "Color scheme",
+        "default": "background-1"
+      },
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog"
+      },
+      {
+        "type": "header",
+        "content": "Cards layout"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Blog layout",
+        "default": "split_card",
+        "options": [
+          {
+            "value": "split_card",
+            "label": "Split"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "type",
+        "label": "Blog type",
+        "default": "horizontal",
+        "options": [
+          {
+            "value": "horizontal",
+            "label": "Horizontal"
+          },
+          {
+            "value": "vertical",
+            "label": "Vertical"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all_blog",
+        "label": "Button view all blog"
+      },
+      {
+        "type": "color",
+        "id": "viewall_color",
+        "label": "Color",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.show_view_all_blog }}"
+      },
+      {
+        "type": "color",
+        "id": "viewall_color_hv",
+        "label": "Color Hover",
+        "default": "#F43777",
+        "visible_if": "{{ section.settings.show_view_all_blog }}"
+      },
+      {
+        "type": "color",
+        "id": "viewall_color_line",
+        "label": "Color Line",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.show_view_all_blog }}"
+      },
+      {
+        "type":  "header",
+        "content": "Blog Item Settings"
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Item Corner Radius",
+        "default": 20
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_border",
+        "label": "Enable border",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "border_size",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "label": "Border size",
+        "default": 1,
+        "visible_if": "{{ section.settings.enable_border }}"
+      },
+      {
+        "type": "select",
+        "id": "border_style",
+        "label": "Border style",
+        "default": "solid",
+        "options": [
+          { "value": "solid",  "label": "Solid" },
+          { "value": "dashed", "label": "Dashed" },
+          { "value": "dotted", "label": "Dotted" }
+        ],
+        "visible_if": "{{ section.settings.enable_border }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "hv_box_shadow",
+        "label": "Enable hover box shadow",
+        "default": true
+      },
+      {
+        "type":  "header",
+        "content": "Carousel Columns"
+      },
+      {
+        "type": "range",
+        "id": "xxl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Desktop",
+        "default": 1,
+        "info": "Breakpoint 1441px"
+      },
+      {
+        "type": "range",
+        "id": "xl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large laptop",
+        "default": 1,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "range",
+        "id": "lg",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Laptop",
+        "default": 1,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "range",
+        "id": "md",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Tablet",
+        "default": 1,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "range",
+        "id": "sm",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Mobile",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "row",
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "label": "Rows",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 1,
+        "max": 15,
+        "step": 1,
+        "label": "Post count",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "spacing",
+        "min": 5,
+        "max": 70,
+        "step": 5,
+        "unit": "px",
+        "label": "Horizontal gap",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Carousel dot"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_dots",
+        "label": "Show dots",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "dots_color",
+        "label": "Dots color",
+        "default": "dots_on_light",
+        "options": [
+          {"value": "dots_on_light","label": "Dots on light background"},
+          {"value": "dots_on_dark","label": "Dots on dark background"}
+        ],
+        "visible_if": "{{ section.settings.show_dots }}"
+      },
+      {
+        "type": "header",
+        "content": "Carousel navigation"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_nav",
+        "label": "Show prev/next arrow",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "arrow_color",
+        "label": "Arrow color",
+        "default": "arrow_on_light",
+        "options": [
+          {"value": "arrow_on_light","label": "Arrow on light background"},
+          {"value": "arrow_on_dark","label": "Arrow on dark background"}
+        ],
+        "visible_if": "{{ section.settings.show_nav }}"
+      },
+      {
+        "type": "select",
+        "id": "arrow_postion",
+        "label": "Arrow Postion",
+        "default": "arrow_on_center",
+        "options": [
+          {"value": "arrow_on_center","label": "Arrow on center"},
+          {"value": "arrow_on_top","label": "Arrow on top"}
+        ],
+        "visible_if": "{{ section.settings.show_nav }}"
+      },
+      {
+        "type":  "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Show animated",
+        "default":   true
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_section",
+        "label": "Color section",
+        "default": "background-1"
+      },
+      {
+        "type":  "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background image size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable background image size custom",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Background image size custom",
+        "info": "Replace base background size, unit % or px",
+        "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background image position",
+        "default": "center center",
+        "options": [
+          { "value": "top left", "label": "Top left" },
+          { "value": "top center", "label": "Top center" },
+          { "value": "top right", "label": "Top right" },
+          { "value": "center left", "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right", "label": "Center right" },
+          { "value": "bottom left", "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right", "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.background_image != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full" },
+          { "value": "contain", "label": "Contain"}
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background size contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 1,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1441px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 575px ↓",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "title",
+        "name": "Title",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "line_clamp",
+            "label": "Max number line title",
+            "default": "line-clamp-1",
+            "options": [
+              {
+                "value": "auto",
+                "label": "auto"
+              },
+              {
+                "value": "line-clamp-1",
+                "label": "1"
+              },
+              {
+                "value": "line-clamp-2",
+                "label": "2"
+              },
+              {
+                "value": "line-clamp-3",
+                "label": "3"
+              }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "padding_block_start",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 10,
+            "unit": "px"
+          },
+          {
+            "type": "range",
+            "id": "padding_block_end",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Bottom",
+            "default": 10,
+            "unit": "px"
+          }
+        ]
+      },
+      {
+        "type": "excerpt",
+        "name": "Excerpt",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "line_clamp",
+            "label": "Max number line excerpt",
+            "default": "line-clamp-1",
+            "options": [
+              {
+                "value": "auto",
+                "label": "auto"
+              },
+              {
+                "value": "line-clamp-1",
+                "label": "1"
+              },
+              {
+                "value": "line-clamp-2",
+                "label": "2"
+              },
+              {
+                "value": "line-clamp-3",
+                "label": "3"
+              }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "padding_block_start",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 10,
+            "unit": "px"
+          },
+          {
+            "type": "range",
+            "id": "padding_block_end",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Bottom",
+            "default": 10,
+            "unit": "px"
+          }
+        ]
+      },
+      {
+        "type": "author_date",
+        "name": "Author and Date",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "range",
+            "id": "padding_block_start",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 10,
+            "unit": "px"
+          },
+          {
+            "type": "range",
+            "id": "padding_block_end",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Bottom",
+            "default": 10,
+            "unit": "px"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "Button",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "button_size",
+            "label": "Button size",
+            "options": [
+              { "value": "btn-normal", "label": "Normal" },
+              { "value": "btn-medium", "label": "Medium" },
+              { "value": "btn-large", "label": "Large" }
+            ],
+            "default": "btn-normal"
+          },
+          {
+            "type": "select",
+            "id": "button_type_color",
+            "label": "Button type color",
+            "options": [
+                { "value": "btn-primary", "label": "Primary" },
+                { "value": "btn-secondary", "label": "Secondary" }
+            ],
+            "default": "btn-primary"
+          },
+          {
+            "type": "range",
+            "id": "padding_block_start",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 10,
+            "unit": "px"
+          },
+          {
+            "type": "range",
+            "id": "padding_block_end",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Bottom",
+            "default": 10,
+            "unit": "px"
+          }
+        ]
+      }
+    ],
+
+    "presets": [
+      {
+        "name": "Vinova Blog",
+        "category": "Blog"
+      }
+    ]
+  }
+{% endschema %}

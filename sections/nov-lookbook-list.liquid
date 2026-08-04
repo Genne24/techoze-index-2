@@ -1,0 +1,706 @@
+{%- liquid 
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  if section.settings.class_section != blank
+    assign class_section = section.settings.class_section | prepend: ' '
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position | append: class_section
+  if section.settings.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+
+{% style %}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} .item-content {
+    border-radius: {{ sst.corner }}px;
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+  #shopify-section-{{ section.id }} .row {
+    margin: -{{ sst.gap | times: 0.5 }}px;
+  }
+  #shopify-section-{{ section.id }} .sp-item {
+    padding: {{ sst.gap | times: 0.5 }}px;
+  }
+  @media(max-width: 991px) {
+    #shopify-section-{{ section.id }} .row {
+      margin: -{{ sst.gap_md | times: 0.5 }}px;
+    }
+    #shopify-section-{{ section.id }} .sp-item {
+      padding: {{ sst.gap_md | times: 0.5 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="container-outer{{ bg_class_full }}">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      {% render 'heading-section', sub_position: sst.subheading_position %}
+      <div class="row">
+        {% for block in section.blocks %}
+          <div class="sp-item {% render 'number-to-col', xxl: sst.xxl, xl: sst.xl, lg: sst.lg, md: sst.md, sm: sst.sm, xs: sst.xs  %}">
+            <div class="item-content position-relative data-act-parent">
+              {% if block.settings.lookbook_image != blank %}
+                {% render 'nov-aspect-image', image: block.settings.lookbook_image %}
+              {% else %}
+                {%- capture current -%}{% cycle 1, 2, 3 %}{%- endcapture -%}
+                {{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+              {% for i in (1..4) %}
+                {% assign pin_product_id = 'pin_product_' | append: i %}
+                {% assign pin_position_top_id = 'pin_position_top_' | append: i %}
+                {% assign pin_position_left_id = 'pin_position_left_' | append: i %}
+                {% assign product = all_products[block.settings[pin_product_id]] %}
+                {% if product != blank %}
+                  <div class="number nov_btn_act position-absolute d-flex align-items-center justify-content-center r-100 pointer{% if forloop.first %} act{% endif %}" data-toggle="{{ section.id }}{{ block.id }}{{ forloop.index }}" style="top: {{ block.settings[pin_position_top_id] }}%; left: {{ block.settings[pin_position_left_id] }}%">
+                    <span></span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+              <div class="block-product list--view-items position-absolute bottom-center b-2 w-100">
+                {% for i in (1..4) %}
+                  {% assign pin_product_id = 'pin_product_' | append: i %}
+                  {% assign product = all_products[block.settings[pin_product_id]] %}
+                  {% if product != blank %}
+                    <div class="item-product d-flex align-items-center nov_item_act{% if forloop.first %} act{% endif %}" data-act="{{ section.id }}{{ block.id }}{{ forloop.index }}">
+                      <div class="thumbnail-container">
+                        <a href="{{ product.url }}">
+                          {% assign img_url = product.featured_image %}
+                        <img src="{{ img_url | image_url: width: 1 }}" data-src="{{ img_url | image_url: width: 500 }}" class="product__thumbnail lazyload img-fluid" alt="{{ img_url.alt | default: 'image' }}" width="500" height="500" loading="lazy">
+                        </a>
+                      </div>
+                      <div class="product__info">
+                        <div class="product__title line-clamp-1"><a href="{{ product.url }}">{{ product.title }}</a></div>
+                        {% if settings.review_enable %}
+                          <div class="AirReviews-Widget AirReviews-Widget--Stars" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+                        {% endif %}
+                        <div class="price-box mt-10">
+                          {% if product.compare_at_price_min > product.price_min %}
+                            <div class="price-sale d-flex flex-wrap align-items-center">
+                              <span class="special-price fs-14" data-price-grid>{{ product.variants[0].price | money }}</span>
+                              <span class="old-price fs-12" data-compare-price-grid>{{ product.variants[0].compare_at_price | money }}</span>
+                            </div>
+                          {% else %}
+                            <div class="price-regular fs-14">
+                              <span data-price-grid>{{ product.variants[0].price | money }}</span>
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% for block in section.blocks %}
+        {% if block.type == '@app' %}
+          {% render block %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Vinova Lookbook List",
+    "class": "section-lookbook-list",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<p>Vinova Lookbook List</p>"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "<p>Subtitle from happy customers</p>"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "subheading_position",
+        "label": "Sub heading position",
+        "default": "bottom",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ],
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "descheading",
+        "label": "Description",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+      },
+      {
+        "type": "color",
+        "id": "descheading_color",
+        "label": "Description color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.descheading != blank }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment",
+        "label": "Alignment",
+        "default": "left"
+      },
+      {
+        "type":  "header",
+        "content": "Item Per Row"
+      },
+      {
+        "type": "range",
+        "id": "xxl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Desktop",
+        "default": 3,
+        "info": "Breakpoint 1441px"
+      },
+      {
+        "type": "range",
+        "id": "xl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large laptop",
+        "default": 3,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "range",
+        "id": "lg",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Laptop",
+        "default": 3,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "range",
+        "id": "md",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Tablet",
+        "default": 3,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "range",
+        "id": "sm",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large mobile",
+        "default": 2,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "range",
+        "id": "xs",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Mobile",
+        "default": 2,
+        "info": "Breakpoint"
+      },
+      {
+        "type": "header",
+        "content": "Gap"
+      },
+      {
+        "type": "range",
+        "id": "gap",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "label": "Gap",
+        "default": 30,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "gap_md",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "label": "Gap tablet",
+        "default": 30,
+        "unit": "px",
+        "info": "Breakpoint 991px ↓"
+      },
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "range",
+        "id": "corner",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Image corner radius",
+        "default": 0
+      },
+      {
+        "type":  "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Show animated",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "class_section",
+        "label": "Class"
+      },
+      {
+        "type":  "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Background image size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable background image size custom",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Background image size custom",
+        "info": "Replace base background size, unit % or px",
+        "visible_if": "{{ section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_position",
+        "label": "Background image position",
+        "default": "center center",
+        "options": [
+          { "value": "top left", "label": "Top left" },
+          { "value": "top center", "label": "Top center" },
+          { "value": "top right", "label": "Top right" },
+          { "value": "center left", "label": "Center left" },
+          { "value": "center center", "label": "Center middle" },
+          { "value": "center right", "label": "Center right" },
+          { "value": "bottom left", "label": "Bottom left" },
+          { "value": "bottom center", "label": "Bottom center" },
+          { "value": "bottom right", "label": "Bottom right" }
+        ],
+        "visible_if": "{{ section.settings.background_image != blank }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Corner background",
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full" },
+          { "value": "contain", "label": "Contain"}
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "background_padding_horizontal",
+        "label": "Background size contain padding horizontal",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 1,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xxl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1441px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xl",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_lg",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_md",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_sm",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "range",
+        "id": "height_background_xs",
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "label": "Height background",
+        "default": 100,
+        "unit": "%",
+        "info": "Breakpoint 575px ↓",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Item Lookbook",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "lookbook_image",
+            "label": "Image"
+          },
+          {
+            "type":  "header",
+            "content": "Pin 1"
+          },
+          {
+            "type": "product",
+            "id": "pin_product_1",
+            "label": "Select Pin Product",
+          },
+          {
+            "type": "range",
+            "id": "pin_position_top_1",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_left_1",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Left",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type":  "header",
+            "content": "Pin 2"
+          },
+          {
+            "type": "product",
+            "id": "pin_product_2",
+            "label": "Select Pin Product"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_top_2",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_left_2",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Left",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type":  "header",
+            "content": "Pin 3"
+          },
+          {
+            "type": "product",
+            "id": "pin_product_3",
+            "label": "Select Pin Product"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_top_3",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_left_3",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Left",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type":  "header",
+            "content": "Pin 4"
+          },
+          {
+            "type": "product",
+            "id": "pin_product_4",
+            "label": "Select Pin Product"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_top_4",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Top",
+            "default": 5,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "pin_position_left_4",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Left",
+            "default": 5,
+            "unit": "%"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Lookbook List",
+        "category": "Lookbook",
+        "blocks": [
+          {
+            "type": "item"
+          },
+          {
+            "type": "item"
+          },
+          {
+            "type": "item"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

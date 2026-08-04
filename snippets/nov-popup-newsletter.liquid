@@ -1,0 +1,94 @@
+<!-- Popup newsletter -->
+{% form 'customer', id: 'newsletter_contact' %}
+  {% if form.posted_successfully? %}
+    <div id="popupAlert" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content">
+          <p class="form--success alert-success text-center mb-0">{{ 'general.newsletter_form.confirmation' | t }}</p>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div id="popup-subscribe" class="{{ settings.newsletter_type }} modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-sm="{{ settings.newsletter_sm }}">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header pointer color-icons color-hover fs-22" data-dismiss="modal"><i class="zmdi zmdi-close"></i></div>
+          <div class="modal-body{% if settings.newsletter_type == 'promotion' %} text-center{% else %} row spacing-0 align-items-md-end align-items-center{% endif %} overflow-hidden">
+            {% if settings.newsletter_type == 'promotion' %}
+              {% if settings.newsletter_promoimg_link != blank %}
+                <a href="{{ settings.newsletter_promoimg_link }}">
+              {% endif %}
+              {% if settings.newsletter_promoimg != blank %}
+                {% assign img_url = settings.newsletter_promoimg %}
+                <img src="{{ img_url | image_url: width: 650 }}" width="{{ img_url.width }}" height="{{ img_url.height }}" class="img-fluid" style="height: auto;">
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+              {% if settings.newsletter_promoimg_link != blank %}
+                </a>
+              {% endif %}
+            {% else %}
+              <div class="col-md-6 news-img position-relative d-none d-md-block overflow_hidden">
+                {% if settings.img_newsletter != blank %}
+                  {% assign img_url = settings.img_newsletter %}
+                  <div class="respone_image h-100" style="padding-top:{{ 1 | divided_by: img_url.aspect_ratio | times: 100}}%;">
+                    <img src="{{ img_url | image_url: width: 1 }}" srcset="{{ img_url | image_url: width: 260 }} 260w,{{ img_url | image_url: width:360 }} 360w,{{ img_url | image_url: width: 540 }} 540w" data-sizes="auto" alt="{{ img_url.alt }}" width="501" height="501" class="img-fluid" fetchpriority="high">
+                  </div>
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+                {% if settings.news_countdown != blank %}
+                  <div class="countdownfree d-flex justify-content-center position-absolute bottom-center b-2" data-countdown="{{ settings.news_countdown }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
+                {% endif %}
+              </div>
+              <div class="col-md-6 modal-body_content pb-20">
+                {% if settings.sub_title_newsletter != blank %}
+                  <div class="sub_title_block fs-12 color-title font-500 mb-10">{{ settings.sub_title_newsletter }}</div>
+                {% endif %}
+                <div class="title_block h2 fs-32 fs-md-24 color-title mb-10">{{ settings.title_newsletter }}</div>
+                <div class="desc mb-25 fs-14 fs-md-12 color-text">{{ settings.desc_newsletter }}</div>
+                {% if settings.preferences_newsletter %}
+                  <div class="preferences mb-20">
+                    <h5 class="mb-20">{{ 'general.newsletter_form.product_preferences' | t }}:</h5>
+                    <div class="d-flex flex-wrap">
+                      <input type="radio" name="contact[note][{{ 'general.newsletter_form.product_preferences' | t }}]" value="{{ 'general.newsletter_form.preferences_value_1' | t }}" id="Newsletter-val-1">
+                      <label for="Newsletter-val-1">{{ 'general.newsletter_form.preferences_value_1' | t }}</label>
+                      <input type="radio" name="contact[note][{{ 'general.newsletter_form.product_preferences' | t }}]" value="{{ 'general.newsletter_form.preferences_value_2' | t }}" id="Newsletter-val-2">
+                      <label for="Newsletter-val-2">{{ 'general.newsletter_form.preferences_value_2' | t }}</label>
+                      <input type="radio" name="contact[note][{{ 'general.newsletter_form.product_preferences' | t }}]" value="{{ 'general.newsletter_form.i_want_it_all' | t }}" id="Newsletter-all">
+                      <label for="Newsletter-all">{{ 'general.newsletter_form.i_want_it_all' | t }}</label>
+                    </div>
+                  </div>
+                {% endif %}
+                {{ form.errors | default_errors }}
+                <div class="input-subscribe-wrap position-relative">
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <input type="email"
+                    name="contact[email]"
+                    class="input"
+                    required
+                    placeholder="{{ 'general.newsletter_form.email_newsletter' | t }}"
+                  >
+                  <button id="Subscribe" type="submit" name="commit" class="pointer btn fs-11">
+                    <i class="zmdi zmdi-arrow-right-top"></i>
+                  </button>
+                </div>
+                {% if settings.news_social %}
+                  {% render 'nov-social' %}
+                {% endif %}
+                <div class="checkbox mt-60 mt-md-30">
+                  <label class="d-inline-flex">
+                    <span class="custom-checkbox">
+                      <input name="no-view" class="no-view" type="checkbox">
+                    </span>
+                    <span id="text" class="fs-10 color-title">{{ settings.notify_newsletter }}</span>
+                  </label>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endform %}

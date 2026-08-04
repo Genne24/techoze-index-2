@@ -1,0 +1,72 @@
+<form action="search" method="get" class="search-header-inline{% if settings.show_border_product %} product-has-border{% endif %} w-100 color-{{ settings.search_btn_color }}" role="search">
+	<div class="search-header__content position-relative">
+		<input type="hidden" name="type" value="product">
+		{% if settings.show_search_category %}
+			<div class="search-category__wrapper d-none d-md-flex" style="--search-category-color: {{ settings.search_category_color }};font-size: {{ settings.search_category_font_size | append: 'px' }};font-weight: {{ settings.search_category_font_weight }};">
+				<div class="search-category__select fs-14 font-700 pointer" id="search-category-select">
+				<span class="search-category__selected" data-value="">{{ 'general.search.all_categories' | t }}</span>
+				<div class="search-category__dropdown">
+					<span class="search-category__option">{{ 'general.search.all_categories' | t }}</span>
+					{% for collection in collections %}
+						{% unless collection.handle == 'frontpage' %}
+							<span class="search-category__option" data-value="{{ collection.handle }}">{{ collection.title }}</span>
+						{% endunless %}
+					{% endfor %}
+				</div>
+			</div>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+					<path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</div>
+		{% endif %}
+		<div class="search-header__groups relative w-100">
+			<div class="search-header__placeholder text-animate-js">{{ 'general.search.what_are_you_looking_for' | t }}</div>
+			<input class="search-header__input" 
+			type="search"
+			name="q"
+			placeholder="{{ 'general.search.what_are_you_looking_for' | t }}"
+			aria-label="{{ 'general.search.title' | t }}">
+		</div>
+		<div class="search-header__actions d-flex align-items-center gap-10">
+			<clear-search-button class="btn-search__clear-text hide pointer">
+				<i class="zmdi zmdi-close-circle"></i>
+			</clear-search-button>
+			{% if settings.show_search_mic %}
+				<speech-search-button class="btn-search__mic d-flex align-items-center justify-content-center pointer duration-300" id="voice-search-btn" tabindex="0" title="Search by voice">
+					<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="presentation"><path fill="currentColor" d="M17.3 11c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72m-8.2-6.1c0-.66.54-1.2 1.2-1.2.66 0 1.2.54 1.2 1.2l-.01 6.2c0 .66-.53 1.2-1.19 1.2-.66 0-1.2-.54-1.2-1.2M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3 3 3 0 0 0-3 3v6a3 3 0 0 0 3 3Z"></path></svg>
+				</speech-search-button>
+			{% endif %}
+			<button class="search-header__submit d-flex align-items-center justify-content-center" type="submit" title="{{ 'general.search.submit' | t }}">
+				{% if settings.show_search_icon %}
+					<span class="search-header__submit-icon">
+						{% render 'icon-search' %}
+					</span>
+				{% endif %}
+				{% if settings.show_search_text %}
+					<span class="search-header__submit-text fs-14 font-700 text-uppercase f_pr">{{ 'general.search.submit' | t }}</span>
+				{% endif %}
+			</button>
+		</div>
+	</div>
+
+	<div class="search_overlay"></div>
+	<div class="search_autocomplete color-background-1">
+		<div class="search_autocomplete-content">
+			{% if settings.show_key_trend %}
+				<div class="search_trend">
+					<div class="search_trend-content text-center text-md-left">
+					<div class="search_trend-title color-title fs-20 fs-md-16 fs-xs-16 font-600 mb-20">{{ 'general.search.search_trend' | t }}</div>
+					<div class="list-item fs-16 fs-md-14 fs-sm-12 font-500">
+						{% for i in (1..10) %}
+							{% assign key_trend_id = 'key_trend_' | append: i %}
+							{% if settings[key_trend_id] != blank %}
+								<div class="search-trend-item pointer color-title color-hover{% unless forloop.last %} mb-10 mb-sm-0{% endunless %}">{{ settings[key_trend_id] }}</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</form>

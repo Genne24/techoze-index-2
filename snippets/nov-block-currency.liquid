@@ -1,0 +1,28 @@
+{% if settings.show_currency_flag %}
+  {% assign class = 'nov-country flag' %}
+{% else %}
+  {% assign class = 'nov-country' %}
+{% endif %}
+
+{%- form 'localization', id: id, class: class -%}
+  <div class="position-relative">
+    <div class="nov_ud_btn w-100 text-left d-flex align-items-center duration-300">
+      <span>{{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})</span>
+      {% render 'icon-chevron-down' %}
+    </div>
+    <div class="nov_ud_dropdown w-100">
+      {%- for country in localization.available_countries -%}
+        <div class="item font-500 pointer d-flex align-items-center{% if country.currency.iso_code == localization.country.currency.iso_code %} active{% endif %}" data-value="{{ country.iso_code }}">
+          {%- if settings.show_currency_flag -%}
+            <div class="flag-icon">
+              <img src="{{ country | image_url: width: 32 }}" alt="{{ country.name }}" width="14" height="16">
+            </div>
+          {%- endif -%}
+          {% if settings.show_country_name %} {{ country.name }} | {% endif %} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+{%- endform -%}

@@ -1,0 +1,99 @@
+{%- assign bst = block.settings -%}
+{% if bst.heading != blank or bst.subheading != blank %}
+  <div class="title_section {{ bst.alignment | prepend: 'text' }}" {{ block.shopify_attributes }}>
+    {% if bst.subheading != blank and bst.subheading_position == "top" %}
+      <div class="sub_title" style="--color-subheading: {{ bst.subheading_color }};">{{ bst.subheading }}</div>
+    {% endif %}
+    {% if bst.heading != blank %}
+      <div class="title" style="--color-heading: {{ bst.heading_color }}">{{ bst.heading }}</div>
+    {% endif %}
+    {% if bst.subheading != blank and bst.subheading_position == "bottom" %}
+      <div class="sub_title" style="--color-subheading: {{ bst.subheading_color }};">{{ bst.subheading }}</div>
+    {% endif %}
+    {% if bst.descheading != blank %}
+      <div class="desc" style="--color-descheading: {{ bst.descheading_color }};max-width: {{ bst.max_descheading }}px">{{ bst.descheading }}</div>
+    {% endif %}
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "Heading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Lorem Ipsum</p>"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#222222"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sub heading",
+      "default": "<p>Subtitle from happy customers</p>"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Sub heading color",
+      "default": "#666666",
+      "visible_if": "{{ block.settings.subheading != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "subheading_position",
+      "label": "Sub heading position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "visible_if": "{{ block.settings.subheading != blank }}"
+    },
+    {
+      "type": "richtext",
+      "id": "descheading",
+      "label": "Description",
+      "default": "<p>Subtitle from happy customers</p>"
+    },
+    {
+      "type": "color",
+      "id": "descheading_color",
+      "label": "Description color",
+      "default": "#666666",
+      "visible_if": "{{ block.settings.descheading != blank }}"
+    },
+    {
+      "type": "number",
+      "id": "max_descheading",
+      "label": "Max width description",
+      "default": 600,
+      "visible_if": "{{ block.settings.descheading != blank }}"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heading",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

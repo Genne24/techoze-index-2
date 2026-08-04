@@ -1,0 +1,57 @@
+{%- liquid
+  assign bst = block.settings
+-%}
+<div class="cl-item">
+  <div class="cl-content text-center position-relative d-flex align-items-center justify-content-center flex-column">
+    <div class="cl-bg position-absolute center-center">{{ bst.background | image_url: width: 500 | image_tag: alt: bst.background.alt, loading: 'lazy', class: 'img-fluid' }}</div>
+    <div class="cl-ico position-relative m-center-auto">
+      {% if bst.icon != blank %}
+        {{ bst.icon | image_url: width: 200 | image_tag: alt: bst.icon.alt, loading: 'lazy', class: 'img-fluid' }}
+      {% else %}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+      {% if bst.icon_hover != blank %}
+        {{ bst.icon_hover | image_url: width: 200 | image_tag: alt: bst.icon_hover.alt, loading: 'lazy', class: 'img-fluid position-absolute center-center' }}
+      {% endif %}
+    </div>
+    <div class="cl-title fs-18 fs-xl-16 fs-lg-14 fs-xs-12 font-800 f_pr mt-10 position-relative">
+      {{ bst.title }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collection Item",
+    "tag": null,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "icon",
+        "label": "Icon"
+      },
+      {
+        "type": "image_picker",
+        "id": "icon_hover",
+        "label": "Icon hover"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "label": "Title",
+        "default": "Title"
+      },
+      {
+        "type": "image_picker",
+        "id": "background",
+        "label": "Background"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection Item"
+      }
+    ]
+  }
+{% endschema %}
+  

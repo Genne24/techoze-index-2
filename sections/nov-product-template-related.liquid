@@ -1,0 +1,357 @@
+{%- assign sst = section.settings -%}
+{% style %}
+  #shopify-section-{{ section.id }} .distance {
+    padding-top: {{ sst.distance_top_xs }}px;
+    padding-bottom: {{ sst.distance_bottom_xs }}px;
+    {% if sst.background_color != blank %}
+      background: {{ sst.background_color }};
+    {% endif %}
+  }
+  @media(min-width: 768px) {
+    #shopify-section-{{ section.id }} .distance {
+      padding-top: {{ sst.distance_top_md }}px;
+      padding-bottom: {{ sst.distance_bottom_md }}px;
+    }
+  }
+  @media(min-width: 1200px) {
+    #shopify-section-{{ section.id }} .distance {
+      padding-top: {{ sst.distance_top_xl }}px;
+      padding-bottom: {{ sst.distance_bottom_xl }}px;
+    }
+  }
+{% endstyle %}
+<div class="distance color-{{ sst.color_section }}{% if sst.class != blank %} {{ sst.class }}{% endif %}" data-section-id="{{ section.id }}" data-section-type="nov-slick">
+  <div class="{{ sst.container }}">
+    {%- liquid 
+      assign current_product = product
+      if collection == null or collection.handle == 'all'
+        assign found_collection = false
+        for item in product.collections
+          if found_collection == false and item.handle != 'all' and item.all_products_count > 1
+            assign found_collection = true
+            assign collection = item
+          endif
+        endfor
+      endif
+    -%}
+    {% if collection and collection.products_count > 1 %}
+      <div class="ProductRelated">
+        {% render 'heading-section' %}
+        <div class="nov-slick-carousel grid--view-items row spacing-30 slider-shadow {{ sst.dots_color }} {{ sst.arrow_color }}" 
+          data-row         ="1" 
+          data-autoplay    ="false" 
+          data-nav         ="{{ sst.show_nav }}" 
+          data-dots        ="{{ sst.show_dots }}" 
+          data-loop        ="false" 
+          data-items_xxl   ="{{ sst.xxl }}"  
+          data-items_xl    ="{{ sst.xl }}" 
+          data-items_lg    ="{{ sst.lg }}" 
+          data-items_md    ="{{ sst.md }}" 
+          data-items_sm    ="{{ sst.sm }}" 
+          data-items_xs    ="{{ sst.xs }}"
+          data-spacing     ="{{ sst.spacing }}">
+          {% for product in collection.products limit: 12 %}
+            {% unless product.handle == current_product.handle %}
+              <div class="item sp-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                {% render 'product-grid-item-style-1', product: product, section_id: section.id %}
+              </div>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% for block in section.blocks %}
+      {% if block.type == '@app' %}
+        {% render block %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Product related",
+    "class": "product-template-related",
+    "enabled_on": {
+      "templates": ["product"]
+    },
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<p>Vinova Product Related</p>",
+      "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+      "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading",
+        "default": "<p>Subtitle from happy customers</p>",
+      "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+      "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment",
+        "label": "Alignment",
+        "default": "left"
+      },
+      {
+        "type":  "header",
+        "content": "Product Item Per Row"
+      },
+      {
+        "type": "range",
+        "id": "xxl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Desktop",
+        "default": 4,
+        "info": "Breakpoint 1441px"
+      },
+      {
+        "type": "range",
+        "id": "xl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large laptop",
+        "default": 4,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "range",
+        "id": "lg",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Laptop",
+        "default": 3,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "range",
+        "id": "md",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Tablet",
+        "default": 3,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "range",
+        "id": "sm",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large mobile",
+        "default": 2,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "range",
+        "id": "xs",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Mobile",
+        "default": 2
+      },
+      {
+        "type":  "header",
+        "content": "Slider Options"
+      },
+      {
+        "type": "range",
+        "id": "row_number",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Number row",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "row_mobile",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Number row mobile",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 4,
+        "max": 30,
+        "step": 1,
+        "label": "Limit",
+        "default": 30,
+        "info": "Select number limit products"
+      },
+      {
+        "type": "range",
+        "id": "spacing",
+        "min": 0,
+        "max": 30,
+        "step": 5,
+        "unit": "px",
+        "label": "Spacing",
+        "default": 30,
+        "info": "Spacing item"
+      },
+      {
+        "type": "header",
+        "content": "Dots Slider"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_dots",
+        "label": "Show dots"
+      },
+      {
+        "type": "select",
+        "id": "dots_color",
+        "label": "Dots color",
+        "default": "dots_on_light",
+        "options": [
+          {"value": "dots_on_light","label": "Dots on light background"},
+          {"value": "dots_on_dark","label": "Dots on dark background"}
+        ],
+        "visible_if": "{{ section.settings.show_dots }}"
+      },
+      {
+        "type": "header",
+        "content": "Arrow Slider"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_nav",
+        "label": "Show prev/next arrow",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "arrow_color",
+        "label": "Arrow color",
+        "default": "arrow_on_light",
+        "options": [
+          {"value": "arrow_on_light","label": "Arrow on light background"},
+          {"value": "arrow_on_dark","label": "Arrow on dark background"}
+        ],
+        "visible_if": "{{ section.settings.show_nav }}"
+      },
+      {
+        "type": "select",
+        "id": "arrow_postion",
+        "label": "Arrow Postion",
+        "default": "arrow_on_center",
+        "options": [
+          {"value": "arrow_on_center","label": "Arrow on center"},
+          {"value": "arrow_on_bottom","label": "Arrow on bottom"}
+        ],
+        "visible_if": "{{ section.settings.show_nav }}"
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_section",
+        "label": "Color",
+        "default": "background-1"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background colors"
+      },
+      {
+        "type": "text",
+        "id": "class",
+        "label": "Class"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xs",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xs",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product related"
+      }
+    ]
+  }
+{% endschema %}

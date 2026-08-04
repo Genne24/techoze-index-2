@@ -1,0 +1,353 @@
+{%- assign bst = block.settings -%}
+<div class="theme-blocks-item menu-block color-{{ bst.color_scheme }} text-{{ bst.text_alignment }}{% if bst.responsive_alignment %} text-xl-{{ bst.alignment_xl }} text-lg-{{ bst.alignment_lg }} text-md-{{ bst.alignment_md }} text-sm-{{ bst.alignment_sm }}{% endif %} type-{{ bst.type }}" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px;--mt-xs: {{ bst.mt_xs }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;--mb-xs: {{ bst.mb_xs }}px; --gap-title: {{ bst.title_gap_bottom }}px; --gap-bottom: {{ bst.gap_bottom }}px; --gap-bottom-lg: {{ bst.gap_bottom_lg }}px;{% if bst.type == 'horizontal' %} --max-width: {{ bst.max_width }}px{% endif %}" {{ block.shopify_attributes }}>
+  {% if bst.block_title != blank %}
+    <div class="title-block color-title fs-{{ bst.title_font_size }} {{ bst.title_font_weight }} f_pr position-relative{% if bst.h_t %} d-sm-none{% endif %}{% if bst.show_title_border %} bd-b{% endif %}">
+      {{ bst.block_title }}
+      {% if bst.mobile_acc and bst.type == 'vertical' %}
+        <span class="f_btn_sl d-sm-none"><i class="zmdi zmdi-plus"></i></span>
+      {% endif %}
+    </div>
+  {% endif %}
+  <div class="block-content{% if bst.block_title != blank and bst.mobile_acc and bst.type == 'vertical' %} h_t{% endif %}{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}{% if bst.hover_effect %} hover_effect{% endif %}">
+    {%- assign footer_linklist = bst.menu_handle -%}
+    {% if linklists[footer_linklist].links.size > 0 %}
+      <ul class="linklist list-unstyled text-{{ bst.link_text_transform }} fs-{{ bst.link_font_size }} fs-lg-{{ bst.link_font_size_lg }} fs-md-{{ bst.link_font_size_lg }} fs-sm-{{ bst.link_font_size_sm }} fs-xs-{{ bst.link_font_size_xs }} {{ bst.link_font_weight }}{% if bst.mobile_acc and bst.type == 'vertical' %} pb-xs-30{% endif %}">
+        {% for link in linklists[footer_linklist].links %}
+          <li class="linklist-item">
+            <a href="{{ link.url }}" class="{{ bst.color_link }} color-hover d-inline-flex relative">
+              <span>{{ link.title }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Menu",
+    "tag": null,
+    "settings": [
+      {
+        "type": "text",
+        "id": "block_title",
+        "label": "Title"
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile_acc",
+        "label": "Mobile accordion",
+        "visible_if": "{{ block.settings.block_title != blank and block.settings.type == 'vertical' }}"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_handle",
+        "label": "Choose menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "header",
+        "content": "Style"
+      },
+      {
+        "type": "select",
+        "id": "type",
+        "label": "Type",
+        "options": [
+          {
+            "value": "vertical",
+            "label": "Vertical"
+          },
+          {
+            "value": "horizontal",
+            "label": "Horizontal"
+          }
+        ],
+        "default": "vertical",
+      },
+      {
+        "type": "number",
+        "id": "max_width",
+        "label": "Max width",
+        "default": 9999,
+        "info": "Unit: px"
+      },
+      {
+        "type": "text_alignment",
+        "id": "text_alignment",
+        "label": "Alignment",
+        "default": "left"
+      },
+      {
+        "type": "checkbox",
+        "id": "responsive_alignment",
+        "label": "Responsive alignment"
+      },
+      {
+        "type": "checkbox",
+        "id": "hover_effect",
+        "label": "Hover effect"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment_xl",
+        "label": "Large laptop",
+        "info": "Breakpoint 1200px ↑",
+        "visible_if": "{{ block.settings.responsive_alignment }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment_lg",
+        "label": "Laptop",
+        "info": "Breakpoint 992px ↑",
+        "visible_if": "{{ block.settings.responsive_alignment }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment_md",
+        "label": "Tablet",
+        "info": "Breakpoint 768px ↑",
+        "visible_if": "{{ block.settings.responsive_alignment }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment_sm",
+        "label": "Large mobile",
+        "info": "Breakpoint 576px ↑",
+        "visible_if": "{{ block.settings.responsive_alignment }}"
+      },
+      {
+        "type": "header",
+        "content": "Title"
+      },
+      {
+        "type": "number",
+        "id": "title_font_size",
+        "label": "Font size",
+        "default": 16
+      },
+      {
+        "type": "select",
+        "id": "title_font_weight",
+        "label": "Font weight",
+        "options": [
+          {"value": "font-100","label": "Thin - 100"},
+          {"value": "font-300","label": "Light - 300"},
+          {"value": "font-400","label": "Regular - 400"},
+          {"value": "font-500","label": "Medium - 500"},
+          {"value": "font-600","label": "SemiBold - 600"},
+          {"value": "font-700","label": "Bold - 700"},
+          {"value": "font-800","label": "ExtraBold - 800"},
+          {"value": "font-900","label": "Black - 900"}
+        ],
+        "default": "font-400"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title_border",
+        "label": "Show border bottom",
+        "default": false
+      },
+      {
+        "type": "number",
+        "id": "title_gap_bottom",
+        "label": "Spacing bottom",
+        "default": 20,
+        "info": "Unit: px"
+      },
+      {
+        "type": "header",
+        "content": "Link"
+      },
+      {
+        "type": "number",
+        "id": "link_font_size",
+        "label": "Font size",
+        "default": 14
+      },
+      {
+        "type": "number",
+        "id": "link_font_size_lg",
+        "label": "Font size laptop",
+        "default": 14
+      },
+      {
+        "type": "number",
+        "id": "link_font_size_md",
+        "label": "Font size tablet",
+        "default": 14
+      },
+      {
+        "type": "number",
+        "id": "link_font_size_sm",
+        "label": "Font size large mobile",
+        "default": 14
+      },
+      {
+        "type": "number",
+        "id": "link_font_size_xs",
+        "label": "Font size mobile",
+        "default": 14
+      },
+      {
+        "type": "select",
+        "id": "color_link",
+        "label": "Color",
+        "default": "color-link",
+        "options": [
+          { "value": "color-link", "label": "Color link" },
+          { "value": "color-title", "label": "Color title" },
+          { "value": "color-text", "label": "Color text" },
+          { "value": "color-act", "label": "Color hover" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "link_font_weight",
+        "label": "Font weight",
+        "options": [
+          {"value": "font-100","label": "Thin - 100"},
+          {"value": "font-300","label": "Light - 300"},
+          {"value": "font-400","label": "Regular - 400"},
+          {"value": "font-500","label": "Medium - 500"},
+          {"value": "font-600","label": "SemiBold - 600"},
+          {"value": "font-700","label": "Bold - 700"},
+          {"value": "font-800","label": "ExtraBold - 800"},
+          {"value": "font-900","label": "Black - 900"}
+        ],
+        "default": "font-400"
+      },
+      {
+        "type": "select",
+        "id": "link_text_transform",
+        "label": "Text transform",
+        "default": "capitalize",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Gap"
+      },
+      {
+        "type": "number",
+        "id": "gap_bottom",
+        "label": "Gap",
+        "default": 20,
+        "info": "Unit: px"
+      },
+      {
+        "type": "number",
+        "id": "gap_bottom_lg",
+        "label": "Gap laptop 1199px ↓",
+        "default": 20,
+        "info": "Unit: px"
+      },
+      {
+        "type": "header",
+        "content": "Color"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "background-1"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Large mobile",
+        "default": 30,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "number",
+        "id": "mt_xs",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Large mobile",
+        "default": 30,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "number",
+        "id": "mb_xs",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "presets": [
+      {
+        "name": "Menu",
+        "category": "Footer"
+      }
+    ]
+  }
+{% endschema %}

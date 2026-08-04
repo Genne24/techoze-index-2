@@ -1,0 +1,218 @@
+{%- assign bst = block.settings -%}
+{% style %}
+  .block-{{ block.id }} {
+    --tmh-radius: {{ bst.corner_radius }}px;
+    --tmh-card-bg: {{ bst.card_bg }};
+    --tmh-card-radius: {{ bst.card_radius }}px;
+    --tmh-name-size: {{ bst.name_size }}px;
+    --tmh-role-size: {{ bst.role_size }}px;
+    --tmh-name-color: {{ bst.name_color }};
+    --tmh-role-color: {{ bst.role_color }};
+    --tmh-overlay-bg: {{ bst.overlay_bg }};
+    --tmh-overlay-color: {{ bst.overlay_color }};
+    --tmh-blur: {{ bst.blur }}px;
+  }
+  .block-{{ block.id }} .tmh-media {
+    border-radius: var(--tmh-radius);
+    transform: translateZ(0);
+  }
+  .block-{{ block.id }} .tmh-overlay {
+    inset: 0;
+    z-index: 2;
+    padding: 20px;
+    background: var(--tmh-overlay-bg);
+    backdrop-filter: blur(var(--tmh-blur));
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  .block-{{ block.id }}:hover .tmh-overlay { opacity: 1; }
+
+  .block-{{ block.id }} .tmh-overlay .tmh-name { color: var(--tmh-overlay-color); }
+  .block-{{ block.id }} .tmh-overlay .tmh-role { color: var(--tmh-overlay-color); }
+
+  .block-{{ block.id }} .tmh-info {
+    width: 90%;
+    height: 80px;
+    bottom: 0;
+    z-index: 2;
+    background: var(--tmh-card-bg);
+    border-radius: var(--tmh-card-radius);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, .1);
+    transition: .3s ease;
+  }
+  .block-{{ block.id }}:hover .tmh-info {
+    bottom: -40px;
+    opacity: 0;
+  }
+  .block-{{ block.id }} .tmh-info .tmh-name { color: var(--tmh-name-color); }
+  .block-{{ block.id }} .tmh-info .tmh-role { color: var(--tmh-role-color); }
+
+  .block-{{ block.id }} .tmh-name {
+    margin: 0;
+    font-size: var(--tmh-name-size);
+  }
+  .block-{{ block.id }} .tmh-role {
+    font-size: var(--tmh-role-size);
+  }
+{% endstyle %}
+
+<div class="block-{{ block.id }} theme-blocks-item" {{ block.shopify_attributes }}>
+  <div class="tmh-card position-relative pb-40">
+    <div class="tmh-media position-relative overflow_hidden">
+      <div class="tmh-img tmh-img--main">
+        {% if bst.image_1 != blank %}
+          {% render 'nov-aspect-image', image: bst.image_1, aspect: bst.aspect_ratio %}
+        {% else %}
+          <div class="placeholder-image">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {% endif %}
+      </div>
+
+      <div class="tmh-overlay position-absolute d-flex align-items-center justify-content-center flex-column">
+        {% if bst.name != blank %}<p class="tmh-name font-600">{{ bst.name }}</p>{% endif %}
+        {% if bst.role != blank %}<p class="tmh-role">{{ bst.role }}</p>{% endif %}
+        <div class="tmh-social mt-15">
+          {% content_for 'block', type: 'social-personal', id: 'social' %}
+        </div>
+      </div>
+    </div>
+
+    <div class="tmh-info position-absolute bottom-center text-center d-flex align-items-center justify-content-center flex-column">
+      {% if bst.name != blank %}<p class="tmh-name font-600">{{ bst.name }}</p>{% endif %}
+      {% if bst.role != blank %}<p class="tmh-role">{{ bst.role }}</p>{% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Team Member Hover",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Image ratio",
+      "default": "34",
+      "options": [
+        { "value": "34", "label": "Portrait (3:4)" },
+        { "value": "11", "label": "Square (1:1)" },
+        { "value": "43", "label": "Landscape (4:3)" },
+        { "value": "auto", "label": "Original" }
+      ]
+    },
+    {
+      "type": "number",
+      "id": "corner_radius",
+      "label": "Image corner radius",
+      "default": 12,
+      "info": "Unit: px"
+    },
+    {
+      "type": "header",
+      "content": "Info Card (default state)"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name",
+      "default": "Nathan M. Mullen"
+    },
+    {
+      "type": "text",
+      "id": "role",
+      "label": "Role",
+      "default": "Stylist"
+    },
+    {
+      "type": "number",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "default": 8,
+      "info": "Unit: px"
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "label": "Name size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "role_size",
+      "label": "Role size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Hover Overlay"
+    },
+    {
+      "type": "range",
+      "id": "blur",
+      "label": "Image blur on hover",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "color",
+      "id": "overlay_bg",
+      "label": "Overlay background",
+      "default": "rgba(0,0,0,0.4)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Card Colors"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "name_color",
+      "label": "Name color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "role_color",
+      "label": "Role color",
+      "default": "#888888"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Team Member Hover",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,444 @@
+{%- assign bst = block.settings -%}
+{% style %}
+  .block-{{ block.id }} .video-block__content {
+    border-radius: {{ bst.radius }}px;
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+  .block-{{ block.id }} .block-text {
+    --horizontal: {{ bst.content_horizontal }}%;
+    --vertical: {{ bst.content_vertical }}%;
+  }
+  {%- if bst.img_cover != blank -%}
+    .block-{{ block.id }} .bg-video__cover {
+      top: 0;
+      left: 0;
+      background: url("{{ bst.img_cover | image_url: width: 2560 }}") center;
+      background-size: cover;
+    }
+  {%- endif -%}
+  {% if bst.enable_mh %}
+    .block-{{ block.id }} .img-cover {
+      height: 100% !important;
+    }
+    .block-{{ block.id }} video {
+      {% if bst.height_unit == 'px' %}height: {{ bst.mh }}px !important{% else %}aspect-ratio: {{ bst.mh }}{% endif %};
+    }
+    @media(min-width: 768px) {
+      .block-{{ block.id }} video {
+        {% if bst.height_unit == 'px' %}height: {{ bst.mh_md }}px !important{% else %}aspect-ratio: {{ bst.mh_md }}{% endif %};
+      }
+    }
+    @media(min-width: 1200px) {
+      .block-{{ block.id }} video {
+        {% if bst.height_unit == 'px' %}height: {{ bst.mh_xl }}px !important{% else %}aspect-ratio: {{ bst.mh_xl }}{% endif %};
+      }
+    }
+    @media(min-width: 1441px) {
+      .block-{{ block.id }} video {
+        {% if bst.height_unit == 'px' %}height: {{ bst.mh_xxl }}px !important{% else %}aspect-ratio: {{ bst.mh_xxl }}{% endif %};
+      }
+    }
+  {% endif %}
+{% endstyle %}
+<div class="theme-blocks-item video-block block-{{ block.id }} color-{{ bst.btn_play_color }} {{ bst.btn_play_type_color }}" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;" {{ block.shopify_attributes }}>
+  <div class="video-block__content position-relative">
+    {% if bst.video != blank %}
+      {%- assign video_obj = bst.video -%}
+      {%- assign poster_image = video_obj.preview_image | image_url: width: 1100 -%}
+      <video 
+        class="lazy"
+        width="100"
+        height="auto"
+        {% if bst.controls %}controls{% endif %}
+        {% if bst.muted %}muted{% endif %}
+        {% if bst.autoplay %}autoplay{% endif %}
+        loop
+        playsinline
+        preload="none"
+        poster="{{ poster_image }}"
+        data-id= "{{ block.id }}"
+        data-alt= "{{ shop.name }}"
+        style="width: 100%; max-width: 100%; height: auto; object-fit: cover; display: block;"
+      >
+        {%- for source in video_obj.sources -%}
+          {%- if source.format == 'mp4' -%}
+            <source data-src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endif -%}
+        {%- endfor -%}
+      </video>
+      {% if bst.img_cover != blank %}
+        <div class="bg-video__cover position-absolute w-100 h-100" data-id="{{ block.id }}"></div>
+      {% endif %}
+    {% endif %}
+    {% if bst.img_cover != blank and bst.show_video_popup and bst.video == blank %}
+      <img src="{{ bst.img_cover | image_url: width: 180 }}" data-src="{{ bst.img_cover | image_url: width: 1920 }}" class="img-cover w-100 lazyload" alt="{{ bst.img_cover.alt }}" width="{{ bst.img_cover.width }}" height="{{ bst.img_cover.height }}" style="object-fit: cover; height: auto;" loading="lazy">
+    {% endif %}
+    <div class="block-text position-absolute {{ bst.content_p }} text-{{ bst.text_alignment }}" data-id="{{ block.id }}">
+      {% content_for 'blocks' %}
+      {% if bst.video != blank or bst.show_video_popup %}
+        {% if bst.video != blank %}
+          {% if bst.img_cover != blank or bst.autoplay == false %}
+            {% if bst.btn_play_style == 'style1' %}
+              <div class="btn-video__play style1 d-inline-flex align-items-center justify-content-center position-relative" data-id="{{ block.id }}">
+                <span class="icon-svg d-flex align-items-center justify-content-center position-relative">
+                  {% render 'icon-caret-right' %}
+                </span>
+                <svg class="svg-text-cricle" width="125" height="125" viewBox="0 0 125 125" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <path id="circlePath{{ block.id }}" d="M 62.5, 62.5 m -31.25, 0 a 31.25,31.25 0 1,1 62.5,0 a 31.25,31.25 0 1,1 -62.5,0" />
+                  </defs>
+                  <circle cx="62.5" cy="62.5" r="31.25" fill="none" />
+                  <text font-size="6" fill="white">
+                    <textPath href="#circlePath{{ block.id }}" textLength="196.3495">
+                      {{ bst.icon_play_text }}&nbsp;
+                    </textPath>
+                  </text>
+                </svg>
+              </div>
+            {% else %}
+              <div class="btn-video__play style2 d-inline-flex align-items-center justify-content-center position-relative" data-id="{{ block.id }}">
+                <span class="icon-svg d-flex align-items-center justify-content-center position-relative">
+                  {% render 'icon-caret-right' %}
+                </span>
+                {{ bst.icon_play_text }}
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+        {% if bst.show_video_popup %}
+          <div class="icon_play {{ bst.btn_play_style }} d-inline-flex align-items-center justify-content-center position-relative" data-toggle="modal" data-target="#ModalVideo" data-src="{% if bst.video_url.type == "youtube"  %}https://www.youtube.com/embed/{{ bst.video_url.id }}?rel=0&showinfo=0&vq=720{% endif %}{% if bst.video_url.type == "vimeo" %}//player.vimeo.com/video/{{ bst.video_url.id }}?byline=0&portrait=0&badge=0{% endif %}">
+            {% if bst.btn_play_style == 'style1' %}
+              <span class="icon-svg d-flex align-items-center justify-content-center position-relative">
+                {% render 'icon-caret-right' %}
+              </span>
+              <svg class="svg-text-cricle" width="125" height="125" viewBox="0 0 125 125" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <path id="circlePath{{ block.id }}" d="M 62.5, 62.5 m -31.25, 0 a 31.25,31.25 0 1,1 62.5,0 a 31.25,31.25 0 1,1 -62.5,0" />
+                </defs>
+                <circle cx="62.5" cy="62.5" r="31.25" fill="none" />
+                <text font-size="6" fill="white">
+                  <textPath href="#circlePath{{ block.id }}" textLength="196.3495">
+                    {{ bst.icon_play_text }}&nbsp;
+                  </textPath>
+                </text>
+              </svg>
+            {% else %}
+              <span class="icon-svg d-flex align-items-center justify-content-center position-relative">
+                {% render 'icon-caret-right' %}
+              </span>
+              {{ bst.icon_play_text }}
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% if bst.video == blank and bst.show_video_popup == false %}
+      {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+      <div class="block-text text-center position-absolute center-center">
+        <div class="btn-video__play d-inline-flex align-items-center justify-content-center position-relative" data-id="{{ block.id }}">
+          <span class="icon-svg d-flex align-items-center justify-content-center position-relative">
+            {% render 'icon-caret-right' %}
+          </span>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Video",
+    "tag": null,
+    "blocks": [
+      {
+        "type": "text"
+      },
+      {
+        "type": "button"
+      },
+      {
+        "type": "@app"
+      }
+    ],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Video Default"
+      },
+      {
+        "type": "video",
+        "id": "video",
+        "label": "Video"
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Autoplay",
+        "visible_if": "{{ block.settings.video != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "muted",
+        "label": "Muted",
+        "default": true,
+        "visible_if": "{{ block.settings.video != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "controls",
+        "label": "Controls",
+        "visible_if": "{{ block.settings.video != blank }}"
+      },
+      {
+        "type": "header",
+        "content": "Video Popup"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_video_popup",
+        "label": "Enable video popup"
+      },
+      {
+        "type": "video_url",
+        "id": "video_url",
+        "label": "Video popup",
+        "accept": ["youtube", "vimeo"],
+        "info": "Only For Youtube And Vimeo"
+      },
+      {
+        "type": "header",
+        "content": "Button Play"
+      },
+      {
+        "type": "select",
+        "id": "btn_play_style",
+        "label": "Style",
+        "default": "style1",
+        "options": [
+          { "value": "style1", "label": "Style 1" },
+          { "value": "style2", "label": "Style 2" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "icon_play_text",
+        "label": "Button play label",
+        "default": "Press play and immerse yourself in video!"
+      },
+      {
+        "type": "color_scheme",
+        "id": "btn_play_color",
+        "label": "Color button play",
+        "default": "background-1"
+      },
+      {
+        "type": "select",
+        "id": "btn_play_type_color",
+        "label": "Color button play type",
+        "options": [
+          {
+            "value": "btn-primary",
+            "label": "Primary"
+          },
+          {
+            "value": "btn-secondary",
+            "label": "Secondary"
+          }
+        ],
+        "default": "btn-primary"
+      },
+      {
+        "type": "header",
+        "content": "Background cover"
+      },
+      {
+        "type": "image_picker",
+        "id": "img_cover",
+        "label": "Background cover"
+      },
+      {
+        "type": "header",
+        "content": "Corner radius"
+      },
+      {
+        "type": "range",
+        "id": "radius",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Corner radius",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "Video Height"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_mh",
+        "label": "Enable custom height"
+      },
+      {
+        "type": "select",
+        "id": "height_unit",
+        "label": "Image width unit",
+        "options": [
+          { "value": "px", "label": "px" },
+          { "value": "aspect_ratio", "label": "Aspect ratio" }
+        ],
+        "default": "px",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "paragraph",
+        "content": "Example px: 500, 650, ...",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "paragraph",
+        "content": "Example aspect ratio: 1/2, 3/4, 16/9, ...",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "text",
+        "id": "mh_xxl",
+        "label": "Desktop",
+        "default": "600",
+        "info": "Breakpoint 1441px",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "text",
+        "id": "mh_xl",
+        "label": "Large laptop",
+        "default": "400",
+        "info": "Breakpoint 1200px",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "text",
+        "id": "mh_md",
+        "label": "Tablet",
+        "default": "400",
+        "info": "Breakpoint 768px",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "text",
+        "id": "mh",
+        "label": "Mobile",
+        "default": "400",
+        "visible_if": "{{ block.settings.enable_mh }}"
+      },
+      {
+        "type": "header",
+        "content": "Block Content",
+      },
+      {
+        "type": "select",
+        "id": "content_p",
+        "label": "Position",
+        "default": "center-center",
+        "options": [
+          {"value": "left-top", "label": "Left top" },
+          {"value": "left-center", "label": "Left center"},
+          {"value": "left-bottom", "label": "Left bottom"},
+          {"value": "right-top", "label": "Right top" },
+          {"value": "right-center", "label": "Right center"},
+          {"value": "right-bottom", "label": "Right bottom"},
+          {"value": "top-center", "label": "Top center"},
+          {"value": "center-center", "label": "Middle center"},
+          {"value": "bottom-center", "label": "Bottom center"}
+        ]
+      },
+      {
+        "type": "number",
+        "id": "content_horizontal",
+        "label": "Horizontal position",
+        "default": 5
+      },
+      {
+        "type": "number",
+        "id": "content_vertical",
+        "label": "Vertical position",
+        "default": 5
+      },
+      {
+        "type": "text_alignment",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "default": "center"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 0,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 0,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 0,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Mobile",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 0,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 0,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 0,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Mobile",
+        "default": 0
+      }
+    ],
+    "presets": [
+      {
+        "name": "Video",
+        "category": "Basic"
+      }
+    ]
+  }
+{% endschema %}

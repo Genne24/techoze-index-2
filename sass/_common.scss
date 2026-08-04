@@ -1,0 +1,128 @@
+a,
+button,
+input,
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+	outline: none;
+}
+html {
+	padding-bottom: 0 !important;
+	font-size: 62.5%;
+}
+@media (min-width: 1200px) {
+	.container {
+		max-width: var(--container);
+	}
+}
+img {
+	max-width: 100%;
+}
+p:last-child {
+	margin-bottom: 0;
+}
+input, select, textarea {
+	display: block;
+	width: 100%;
+	border: 1px solid #e3e0d3;
+	background-color: white;
+	color: #162950;
+	max-width: 100%;
+	line-height: 1.2;
+	font-family: inherit;
+	border-radius: 0;
+	padding: 13px 15px;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	-webkit-box-shadow: 0 0 0px 1000px #f2f2f2 inset;
+	transition: background-color 5000s ease-in-out 0s;
+}
+select {
+	background-image: url('icon-downward-arrow.svg');
+	background-size: 12px;
+	background-repeat: no-repeat;
+	background-position: center right 15px;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	.lang-rtl & {
+			background-position: center left 15px;
+	}
+}
+.form-vertical {
+	.title_block {
+		font-family: var(--font-family-default);
+		font-weight: 800;
+		font-size: 2.4rem;
+		color: var(--color-title);
+		text-transform: uppercase;
+	}
+	input, select, textarea {
+		display: inline-block;
+		margin-bottom: 30px;
+	}
+}
+.box-shadow {
+	box-shadow: 4px 4px 6px rgba(var(--color-shadow-rgb),.08);
+}
+.box-shadow-2 {
+	box-shadow: 8px 8px 2px 1px rgba(var(--color-shadow-rgb), .05);
+}
+/*============================================================================
+	Fast Tap
+	enables no-delay taps (FastClick-esque) on supporting browsers
+==============================================================================*/
+a,
+button,
+[role="button"],
+input,
+label,
+select,
+textarea {
+	touch-action: manipulation;
+}
+@media (min-width: 1441px) {
+	.d-xxl-flex {
+		display: flex !important;
+	}
+	.text-xxl-center {
+		text-align: center !important;
+	}
+	.container-fluid {
+		padding-inline: var(--container-fluid);
+	}
+}
+@media (max-width: 1440px) {
+	html {
+		font-size: 60%;
+	}
+}
+@media (max-width: 1199px) {
+	html {
+		font-size: 58.5%;
+	}
+}
+@media (max-width: 991px) {
+	html {
+		font-size: 57%;
+	}
+}
+@media (max-width: 575px) {
+	html {
+		font-size: 55%;
+	}
+	.flex-xs-unordered {
+		order: 0;
+	}
+	.flex-xs-first {
+		order: -1;
+	}
+}

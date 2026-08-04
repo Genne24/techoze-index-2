@@ -1,0 +1,118 @@
+{%- assign bst = block.settings -%}
+<div class="theme-blocks-item lang-cur-block color-{{ bst.color }}" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;{% if bst.type_color != 'title' %} --color-title: var(--color-{{ bst.type_color }}){% endif %}">
+  <div class="nov-lang-cur nov_ud_toggle d-none justify-content-end d-flex" data-ud_collapse="true">
+    {%- if settings.show_language -%}
+      <div class="block-language nov_ud_group">
+        {% render 'nov-block-language' id: 'PromotionLanguage' %}
+      </div>
+    {%- endif -%}
+    {% if settings.show_multiple_currencies %}
+      <div class="block-currency nov_ud_group">
+        {% render 'nov-block-currency' %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Language - Currency",
+    "tag": null,
+    "settings": [
+      {
+        "type": "color_scheme",
+        "id": "color",
+        "label": "Color",
+        "default": "background-1"
+      },
+      {
+        "type": "select",
+        "id": "type_color",
+        "label": "Type color",
+        "options": [
+          {
+            "value": "title",
+            "label": "Title"
+          },
+          {
+            "value": "sub-title",
+            "label": "Sub title"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ],
+        "default": "title"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "presets": [
+      {
+        "name": "Language With Currency",
+        "category": "E-commerce"
+      }
+    ]
+  }
+{% endschema %}

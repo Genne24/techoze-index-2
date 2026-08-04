@@ -1,0 +1,122 @@
+{%- liquid
+  assign bst = block.settings
+-%}
+
+<div class="collection-hover-block" style="--ico-w: {{ bst.icon_w }}px; --color: {{ bst.title_color }}; --color-hover: {{ bst.title_color_hover }}" data-section-id="{{ section.id }}" data-section-type="nov-slick" {{ block.shopify_attributes }}>
+  <div class="nov-slick-carousel"
+    data-dots="false"
+    data-nav="false" 
+    data-row="1"
+    data-items_xxl="{{ bst.xxl }}"
+    data-items_xl="{{ bst.xl }}"
+    data-items_lg="{{ bst.lg }}"
+    data-items_md="{{ bst.md }}"
+    data-items_sm="{{ bst.sm }}"
+    data-items_xs="{{ bst.xs }}"
+    data-speed="700">
+      {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collection Hover",
+    "tag": null,
+    "blocks": [
+      {
+        "type": "_collection-hover-item"
+      }
+    ],
+    "settings": [
+      {
+        "type": "number",
+        "id": "icon_w",
+        "label": "Icon width",
+        "default": 45,
+        "info": "Unit: px"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title color",
+        "default": "#666"
+      },
+      {
+        "type": "color",
+        "id": "title_color_hover",
+        "label": "Title color hover",
+        "default": "#000"
+      },
+      {
+        "type":  "header",
+        "content": "Item Per Row"
+      },
+      {
+        "type": "range",
+        "id": "xxl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Desktop",
+        "default": 6,
+        "info": "Breakpoint 1441px"
+      },
+      {
+        "type": "range",
+        "id": "xl",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large laptop",
+        "default": 6,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "range",
+        "id": "lg",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Laptop",
+        "default": 5,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "range",
+        "id": "md",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Tablet",
+        "default": 4,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "range",
+        "id": "sm",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Large mobile",
+        "default": 2,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "range",
+        "id": "xs",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Mobile",
+        "default": 2
+      },
+    ],
+    "presets": [
+      {
+        "name": "Collection Hover",
+        "category": "Content"
+      }
+    ]
+  }
+  {% endschema %}
+  

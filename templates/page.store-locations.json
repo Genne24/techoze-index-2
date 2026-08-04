@@ -1,0 +1,68 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "nov-page-store-locations",
+      "blocks": {
+        "edfe556c-c399-4b04-a7f5-8d0afbb77b77": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/store_1.jpg",
+            "store": "Store in New York",
+            "address": "123 Suspendis matti, Visaosang Building VST District, NY Accums, North American",
+            "email": "support@domain.com",
+            "call": "(012)-345-67890",
+            "time": "Our store has re-opened for shopping, exchanges every day 11am to 7pm",
+            "text_button": "Get Direction"
+          }
+        },
+        "0d0246a5-8151-46e5-8f1d-7469306555c1": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/store_2.jpg",
+            "store": "Store in California",
+            "address": "123 Suspendis matti, Visaosang Building VST District, NY Accums, North American",
+            "email": "support@domain.com",
+            "call": "(012)-345-67890",
+            "time": "Our store has re-opened for shopping, exchanges every day 11am to 7pm",
+            "text_button": "Get Direction"
+          }
+        },
+        "ef087b7e-062a-40fe-92d9-ac3154b4aa81": {
+          "type": "item",
+          "settings": {
+            "img": "shopify://shop_images/store_3.jpg",
+            "store": "Store in Chicago",
+            "address": "123 Suspendis matti, Visaosang Building VST District, NY Accums, North American",
+            "email": "support@domain.com",
+            "call": "(012)-345-67890",
+            "time": "Our store has re-opened for shopping, exchanges every day 11am to 7pm",
+            "text_button": "Get Direction"
+          }
+        }
+      },
+      "block_order": [
+        "edfe556c-c399-4b04-a7f5-8d0afbb77b77",
+        "0d0246a5-8151-46e5-8f1d-7469306555c1",
+        "ef087b7e-062a-40fe-92d9-ac3154b4aa81"
+      ],
+      "settings": {
+        "has_fullwidth": false,
+        "background_color": "",
+        "distance_top": 40,
+        "distance_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

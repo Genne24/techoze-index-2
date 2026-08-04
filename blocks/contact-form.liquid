@@ -1,0 +1,540 @@
+{%- assign bst = block.settings -%}
+{% style %}
+  #block-{{ block.id }} {
+    --title-color: {{ bst.title_color }};
+    --input-color: {{ bst.input_color }};
+    --input-place-color: {{ bst.input_place_color }};
+    --input-bg: {{ bst.input_bg }};
+    --input-border-color: {{ bst.input_border_color }};
+    --input-height: {{ bst.input_height }}px;
+    --input-radius: {{ bst.input_radius }}px;
+    --textarea-radius: {{ bst.textarea_radius }}px;
+    --btn-width: {{ bst.btn_width }}px;
+    --btn-label-font-size: {{ bst.btn_label_font_size }}px;
+    --max-width: {{ bst.max_width }}px;
+    --color-link: {{ bst.color_link }};
+    --color-hover: {{ bst.color_hover }};
+    --gap-horizontal: {{ bst.gap_horizontal }}px;
+    --gap-vertical: {{ bst.gap_vertical }}px;
+  }
+{% endstyle %}
+<div id="block-{{ block.id }}" class="theme-blocks-item contact-form-block{% if bst.show_max_width %} max-width{% endif %}" style="--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;" {{ block.shopify_attributes }}>
+
+  {% form 'contact', id: block.id %}   
+    {% if form.posted_successfully? %}
+      <p class="note form-success mb-30">
+        {{ 'page.contact.form.post_success' | t }}
+      </p>
+    {% endif %}
+    
+    {{ form.errors | default_errors }}
+    
+    <div class="form-group row">
+
+      <div class="item{% render 'number-to-col', md: bst.md %}">
+        {% if bst.show_title %}
+          <div class="form-title">{{ 'page.contact.form.name' | t }}</div>
+        {% endif %}
+        <input type="text" name="contact[name]" value="{% if form.fields.name %}{{ form.fields.name }}{% elsif customer %}{{ customer.name }}{% endif %}" class="mb-0 {% if form.errors contains 'name' %}input--error{% endif %}" placeholder="{{ 'page.contact.form.name' | t }}" required>
+      </div>
+
+      <div class="item{% render 'number-to-col', md: bst.md %}">
+        {% if bst.show_title %}
+          <div class="form-title">{{ 'page.contact.form.email' | t }}</div>
+        {% endif %}
+        <input type="email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="mb-0 {% if form.errors contains 'email' %}input--error{% endif %}" placeholder="{{ 'page.contact.form.email' | t }}" required>
+      </div>
+
+      <div class="item {% unless bst.enable_custom_form1 or bst.enable_custom_form2 or bst.enable_custom_form3 %}col-12{% else %}{% render 'number-to-col', md: bst.md %}{% endunless %}">
+        {% if bst.show_title %}
+          <div class="form-title">{{ 'page.contact.form.phone' | t }}</div>
+        {% endif %}
+        <input type="tel" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.fields.phone %}{{ form.fields.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" class="mb-0 {% if form.errors contains 'phone' %}input--error{% endif %}" placeholder="{{ 'page.contact.form.phone' | t }}">
+      </div>
+
+      {% for i in (1..3) %}
+        {%- liquid
+          assign enable_custom_form_id = 'enable_custom_form' | append: i
+          assign enable_custom_form_title_id = 'enable_custom_form_title' | append: i
+        -%}
+        {% if bst[enable_custom_form_id] %}
+          <div class="item{% render 'number-to-col', md: bst.md %}">
+            {% if bst.show_title %}
+              <div class="form-title">{{ bst[enable_custom_form_title_id] }}</div>
+            {% endif %}
+            <select name="contact[{{ bst[enable_custom_form_title_id] }}]" class="pointer" required>
+              <option disabled hidden selected value="">{{ bst[enable_custom_form_title_id] }}</option>
+              {% for n in (1..6) %}
+                {% assign custom_form_value_id = 'custom_form_value' | append: i | append: n %}
+                {% if bst[custom_form_value_id] != blank %}
+                  <option value="{{ bst[custom_form_value_id] }}">{{ bst[custom_form_value_id] }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% if bst.show_title %}
+      <div class="form-title">{{ 'page.contact.form.message' | t }}</div>
+    {% endif %}
+    <textarea rows="9" cols="50" name="contact[body]" placeholder="{{ 'page.contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+    <div class="form-button text-{{ bst.btn_alignment }}">
+      <button type="submit" class="pointer{% if bst.btn_type == 'text' %} link f_pr font-700{% else %} btn color-{{ bst.submit_color }} {{ bst.submit_btn_type }}{% if bst.full_width %} w-100{% endif %}{% endif %}">
+        <span class="position-relative d-flex align-items-center justify-content-center">
+          {% if bst.btn_text_arrow == 'text' or bst.btn_text_arrow == 'text_arrow' %}
+            {{ bst.btn_label }}
+          {% endif %}
+          {% if bst.btn_text_arrow == 'arrow' or bst.btn_text_arrow == 'text_arrow' %}
+            <i class="zmdi zmdi-long-arrow-right"></i>
+          {% endif %}
+        </span>
+      </button>
+    </div>
+  {% endform %}
+</div>
+{% schema %}
+  {
+    "name": "Contact Form",
+    "tag": null,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Custom Form 1"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_custom_form1",
+        "label": "Enable custom form"
+      },
+      {
+        "type": "text",
+        "id": "enable_custom_form_title1",
+        "label": "Title",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value11",
+        "label": "Value 1",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value12",
+        "label": "Value 2",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value13",
+        "label": "Value 3",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value14",
+        "label": "Value 4",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value15",
+        "label": "Value 5",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value16",
+        "label": "Value 6",
+        "visible_if": "{{ block.settings.enable_custom_form1 }}"
+      },
+      {
+        "type": "header",
+        "content": "Custom Form 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_custom_form2",
+        "label": "Enable custom form"
+      },
+      {
+        "type": "text",
+        "id": "enable_custom_form_title2",
+        "label": "Title",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value21",
+        "label": "Value 1",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value22",
+        "label": "Value 2",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value23",
+        "label": "Value 3",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value24",
+        "label": "Value 4",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value25",
+        "label": "Value 5",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value26",
+        "label": "Value 6",
+        "visible_if": "{{ block.settings.enable_custom_form2 }}"
+      },
+      {
+        "type": "header",
+        "content": "Custom Form 3"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_custom_form3",
+        "label": "Enable custom form"
+      },
+      {
+        "type": "text",
+        "id": "enable_custom_form_title3",
+        "label": "Title",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value31",
+        "label": "Value 1",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value32",
+        "label": "Value 2",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value33",
+        "label": "Value 3",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value34",
+        "label": "Value 4",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value35",
+        "label": "Value 5",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "text",
+        "id": "custom_form_value36",
+        "label": "Value 6",
+        "visible_if": "{{ block.settings.enable_custom_form3 }}"
+      },
+      {
+        "type": "header",
+        "content": "Item Per Row"
+      },
+      {
+        "type": "range",
+        "id": "md",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "label": "Item per row",
+        "default": 2
+      },
+      {
+        "type": "header",
+        "content": "Style Form"
+      },
+      {
+        "type": "number",
+        "id": "gap_horizontal",
+        "label": "Gap horizontal",
+        "default": 15
+      },
+      {
+        "type": "number",
+        "id": "gap_vertical",
+        "label": "Gap vertical",
+        "default": 15
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": "Show title",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title color",
+        "default": "#000",
+        "visible_if": "{{ block.settings.show_title }}"
+      },
+      {
+        "type": "color",
+        "id": "input_color",
+        "label": "Input color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "input_place_color",
+        "label": "Input placeholder color",
+        "default": "#666"
+      },
+      {
+        "type": "color",
+        "id": "input_bg",
+        "label": "Input background",
+        "default": "#d2d2d2"
+      },
+      {
+        "type": "color",
+        "id": "input_border_color",
+        "label": "Border color",
+        "default": "#d2d2d2"
+      },
+      {
+        "type": "checkbox",
+        "id": "shadow_input",
+        "label": "Show shadow input",
+        "default": false
+      },
+      {
+        "type": "number",
+        "id": "input_height",
+        "label": "Input height",
+        "default": 60,
+        "info": "Unit: px"
+      },
+      {
+        "type": "number",
+        "id": "input_radius",
+        "label": "Input radius",
+        "default": 3,
+        "info": "Unit: px"
+      },
+      {
+        "type": "number",
+        "id": "textarea_radius",
+        "label": "Textarea radius",
+        "default": 3,
+        "info": "Unit: px"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+        "type": "select",
+        "id": "btn_type",
+        "label": "Button type",
+        "options": [
+          { "value": "btn", "label": "Button" },
+          { "value": "text", "label": "Text" }
+        ],
+        "default": "btn"
+      },
+      {
+        "type": "number",
+        "id": "btn_width",
+        "label": "Button width",
+        "default": 90,
+        "info": "Unit: px",
+        "visible_if": "{{ block.settings.btn_type == 'btn' }}"
+      },
+      {
+        "type": "color_scheme",
+        "id": "submit_color",
+        "label": "Button submit color",
+        "default": "background-1",
+        "visible_if": "{{ block.settings.btn_type == 'btn' }}"
+      },
+      {
+        "type": "select",
+        "id": "submit_btn_type",
+        "label": "Submit type color",
+        "default": "btn-primary",
+        "options": [
+          { "value": "btn-primary", "label": "Primary" },
+          { "value": "btn-secondary", "label": "Secondary" }
+        ],
+        "visible_if": "{{ block.settings.btn_type == 'btn' }}"
+      },
+      {
+        "type": "text_alignment",
+        "id": "btn_alignment",
+        "label": "Button alignment"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Full width",
+        "visible_if": "{{ block.settings.btn_type == 'btn' }}"
+      },
+      {
+        "type": "color",
+        "id": "color_link",
+        "label": "Color link",
+        "default": "#000",
+        "visible_if": "{{ block.settings.btn_type == 'text' }}"
+      },
+      {
+        "type": "color",
+        "id": "color_hover",
+        "label": "Color hover",
+        "default": "#000",
+        "visible_if": "{{ block.settings.btn_type == 'text' }}"
+      },
+      {
+        "type": "select",
+        "id": "btn_text_arrow",
+        "label": "Button text or arrow",
+        "options": [
+          { "value": "text", "label": "Text" },
+          { "value": "arrow", "label": "Arrow" },
+          { "value": "text_arrow", "label": "Text and Arrow" }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "text",
+        "id": "btn_label",
+        "label": "Button label",
+        "default": "Submit"
+      },
+      {
+        "type": "number",
+        "id": "btn_label_font_size",
+        "label": "Label font size",
+        "default": 13,
+        "info": "Unit: px"
+      },
+      {
+        "type": "header",
+        "content": "Max width"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_max_width",
+        "label": "Show max width",
+        "default": false
+      },
+      {
+        "type": "number",
+        "id": "max_width",
+        "label": "Max width",
+        "default": 670,
+        "info": "Unit: px",
+        "visible_if": "{{ block.settings.show_max_width }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "mt_xl",
+        "label": "Large laptop",
+        "default": 0,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mt_lg",
+        "label": "Laptop",
+        "default": 0,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mt_md",
+        "label": "Tablet",
+        "default": 0,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mt_sm",
+        "label": "Large Mobile",
+        "default": 0,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "number",
+        "id": "mt_xs",
+        "label": "Mobile",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "mb_xl",
+        "label": "Large laptop",
+        "default": 0,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "mb_lg",
+        "label": "Laptop",
+        "default": 0,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "mb_md",
+        "label": "Tablet",
+        "default": 0,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "mb_sm",
+        "label": "Large mobile",
+        "default": 0,
+        "info": "Breakpoint 576px"
+      },
+      {
+        "type": "number",
+        "id": "mb_xs",
+        "label": "Mobile",
+        "default": 0
+      }
+    ],
+    "presets": [
+      {
+        "name": "Contact Form",
+        "category": "Form"
+      }
+    ]
+  }
+  {% endschema %}
+  

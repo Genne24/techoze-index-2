@@ -1,0 +1,84 @@
+
+{%- liquid
+  assign bst = block.settings
+-%}
+
+<div class="theme-blocks-item image-with-text-curved-block position-relative m-center-auto" style="width: {{ bst.image_width }}px" {{ block.shopify_attributes }}>
+  <div class="icon position-relative pb-20">
+    {% if bst.image != blank %}
+    {% render 'nov-aspect-image', image: bst.image, class: 'no-ef' %}
+    {% else %}
+      <div class="placeholder-image">
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {% endif %}
+  </div>
+  <svg class="svg-text-cricle position-absolute center-center" width="{{ bst.image_width | times: 2.3 }}" height="{{ bst.image_width | times: 2.3 }}" viewBox="0 0 {{ bst.image_width | times: 2 }} {{ bst.image_width | times: 2 }}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <path id="circlePath{{ block.id }}" d="M 20, {{ bst.image_width }} A 100, 70 0 0, 0 {{ bst.image_width | times: 2 | minus: 20 }}, {{ bst.image_width }}" />
+    </defs>
+    <text font-size="{{ bst.fs }}" font-weight="500" fill="{{ bst.color }}">
+      <textPath href="#circlePath{{ block.id }}" textLength="{{ bst.text_length }}" text-anchor="middle" startOffset="50%">
+        {{ bst.icon_play_text }}&nbsp;
+      </textPath>
+    </text>
+  </svg>
+</div>
+
+{% schema %}
+  {
+    "name": "Image - Text Curved",
+    "tag": null,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "header",
+        "content": "Width"
+      },
+      {
+        "type": "number",
+        "id": "image_width",
+        "label": "Image width",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "text",
+        "id": "icon_play_text",
+        "label": "Text",
+        "default": "Our Promise To You..."
+      },
+      {
+        "type": "number",
+        "id": "fs",
+        "label": "Font size",
+        "default": 12
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Color",
+        "default": "#1C1C1C"
+      },
+      {
+        "type": "number",
+        "id": "text_length",
+        "label": "Length",
+        "default": 300
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image - Text Curved",
+        "category": "Content"
+      }
+    ]
+  }
+{% endschema %}

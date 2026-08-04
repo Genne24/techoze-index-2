@@ -1,0 +1,21 @@
+{% if section.settings.heading != blank or section.settings.subheading != blank or section.settings.descheading != blank %}
+  <div class="title_section{% if section.settings.alignment != null %} {{ section.settings.alignment | prepend: 'text-' }}{% endif %}{% if bd_b != null and bd_b %} bd-b{% endif %}{% if class != blank %} {{ class }}{% endif %}">
+    {% if section.settings.img_heading != blank %}
+      <div class="img-heading w-100 mb-10{% if section.settings.img_heading_animate %} heading-animate{% endif %}">
+        {% render 'nov-aspect-image', image: section.settings.img_heading, class: 'no-ef' %}
+      </div>
+    {% endif %}
+    {% if section.settings.subheading != blank and sub_position == 'top' %}
+      <div class="sub_title" style="--color-subheading: {{ section.settings.subheading_color }};">{{ section.settings.subheading }}</div>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <div class="title" style="--color-heading: {{ section.settings.heading_color }}">{{ section.settings.heading }}</div>
+    {% endif %}
+    {% if section.settings.subheading != blank and sub_position != 'top' %}
+      <div class="sub_title" style="--color-subheading: {{ section.settings.subheading_color }};">{{ section.settings.subheading }}</div>
+    {% endif %}
+    {% if section.settings.descheading != blank %}
+      <div class="desc" style="--color-descheading: {{ section.settings.descheading_color }};">{{ section.settings.descheading }}</div>
+    {% endif %}
+  </div>
+{% endif %}

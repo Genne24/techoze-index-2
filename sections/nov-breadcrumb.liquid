@@ -1,0 +1,40 @@
+{% for block in section.blocks %}
+  {% if block.type == '@app' %}
+    {% render block %}
+  {% endif %}
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Vinova Breadcrumb",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "custom_mb",
+        "label": "Custom spacing bottom"
+      },
+      {
+        "type": "number",
+        "id": "spacing_bottom",
+        "label": "Spacing bottom",
+        "default": 140,
+        "visible_if": "{{ section.settings.custom_mb }}"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      }
+    ]
+  }
+{% endschema %}
+{% if section.settings.custom_mb %}
+  <style>
+    #shopify-section-{{ section.id }} #NovBreadcrumbs {
+      margin-bottom: {{ section.settings.spacing_bottom }}px;
+    }
+  </style>
+{% endif %}
