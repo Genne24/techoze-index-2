@@ -8,11 +8,11 @@
  * ------------------------------------------------------------
  */
 {
-  "name": "Header 2",
+  "name": "Header 7",
   "type": "header",
   "sections": {
     "header": {
-      "type": "nov-header-2",
+      "type": "nov-header-7",
       "blocks": {
         "f5a5ac2b-38b6-4567-8a55-ca3cb5239f61": {
           "type": "megamenu",
@@ -133,10 +133,10 @@
         "w_logo_md": 120,
         "wm_logo": 100,
         "container": "container-fluid",
-        "header_top_bg_index": "#ffffff2a",
+        "header_top_bg_index": "#fcf7ee",
         "header_top_bg_blur": 30,
+        "header_top_color_index": "background-1",
         "header_top_bg_inner": "#f2f3f0",
-        "header_top_color_index": "background-2",
         "header_top_color_inner": "",
         "header_bottom_bg": "#ffffff",
         "header_bottom_color": "",
@@ -145,8 +145,7 @@
         "address": "Store Locations",
         "address_link": "shopify://pages/page-store-locations",
         "phone": "+(123) - 456 - 7890",
-        "header_top_text_icon": "shopify://shop_images/icon-fire.png",
-        "header_top_text": "Limited Time Offer! -35% on Selected Items!",
+        "header_top_text": "",
         "show_social": true,
         "account_icon": "rbb-icon-human-user-11",
         "account_svg": true,

@@ -1844,13 +1844,6 @@ novtheme.FakeOrder = function() {
 };
 novtheme.VerticalMenu = function() {
     var el = $('.site-nav-vertical');
-    var limit = el.data('limit');
-    if ($(window).width() >= 1200) {
-        el.find('.nav--lv1:nth-child('+limit+')').addClass('limit');
-    } else {
-        el.removeClass('act');
-        $('.btn-vertical').removeClass('act');
-    }
     $('.btn-vertical').off('click').on('click', function () {
         $('.system-vertical-menu').toggleClass('open_menu');
         sidebarOverlay.addClass('act');

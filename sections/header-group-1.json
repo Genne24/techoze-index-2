@@ -14,6 +14,47 @@
     "header": {
       "type": "nov-header-1",
       "blocks": {
+        "header_text_cdCQQg": {
+          "type": "header_text",
+          "settings": {
+            "header_top_text": "<p>Free Express Shipping on orders $500!</p>",
+            "header_text_fz": 14,
+            "header_text_fw": 400,
+            "header_text_color": "#ffffff",
+            "highlight_word": "HOT",
+            "highlight_bg": "#f0457a",
+            "highlight_color": "#ffffff",
+            "highlight_radius": 10
+          }
+        },
+        "header_link_GrjdDF": {
+          "type": "header_link",
+          "settings": {
+            "link_text": "Help Center",
+            "link_url": "#"
+          }
+        },
+        "header_link_UTheAp": {
+          "type": "header_link",
+          "settings": {
+            "link_text": "Find a Store",
+            "link_url": "#"
+          }
+        },
+        "header_link_WWEbTM": {
+          "type": "header_link",
+          "settings": {
+            "link_text": "Track Oders",
+            "link_url": "#"
+          }
+        },
+        "header_clamp_ANdeeW": {
+          "type": "header_clamp",
+          "settings": {
+            "clamp_text": "Special Offer!",
+            "clamp_url": "shopify://collections"
+          }
+        },
         "f5a5ac2b-38b6-4567-8a55-ca3cb5239f61": {
           "type": "megamenu",
           "settings": {
@@ -252,6 +293,11 @@
         }
       },
       "block_order": [
+        "header_text_cdCQQg",
+        "header_link_GrjdDF",
+        "header_link_UTheAp",
+        "header_link_WWEbTM",
+        "header_clamp_ANdeeW",
         "f5a5ac2b-38b6-4567-8a55-ca3cb5239f61",
         "text_bfy4yP",
         "megamenu_iAV8Ar",

@@ -13,6 +13,9 @@
 	.site-nav, .nav--lv1 {
 		height: 100%;
 	}
+	.contentsticky_logo {
+		padding-block: 2.7rem;
+	}
 }
 @media (max-width: 1440px) {
 	.site-nav .site-nav__link--main {
@@ -21,29 +24,4 @@
 	#header-sticky .site-nav__link--main {
 		padding-inline: 10px;
 	}
-}
-.header-contact {
-	.header-contact-item {
-		&:not(:last-child) {
-			margin-inline-end: 3rem;
-			@media (max-width: 991px) {
-				margin-inline-end: 1rem;
-			}
-		}
-		&:hover i {
-			animation: phone 1s linear infinite;
-		}
-	}
-	a {
-		font-size: 10px;
-		font-weight: 500;
-	}
-	i {
-		margin-inline-end: 8px;
-		font-size: 15px;
-	}
-}
-.header-top-icon-text {
-	width: 15px;
-	margin-inline-end: 6px;
 }

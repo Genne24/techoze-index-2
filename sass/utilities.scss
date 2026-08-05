@@ -25,7 +25,7 @@
 		}
 	}
 }
-@for $i from 7 through 100 {
+@for $i from 7 through 110 {
 	.fs-#{$i} {
 		font-size: #{$i}px !important;
 	}
@@ -33,6 +33,9 @@
 @for $i from 0 through 30 {
 	.gap-#{$i} {
 		gap: #{$i}px !important;
+	}
+	.p-#{$i} {
+		padding: #{$i}px !important;
 	}
 }
 @for $i from 2 through 100 {
@@ -56,7 +59,7 @@
 			padding-bottom: #{$value}px !important;
 		}
 	}
-	@for $i from 7 through 100 {
+	@for $i from 7 through 110 {
 		.fs-xl-#{$i} {
 			font-size: #{$i}px !important;
 		}
@@ -87,7 +90,7 @@
 			}
 		}
 	}
-	@for $i from 7 through 80 {
+	@for $i from 7 through 110 {
 		.fs-lg-#{$i} {
 			font-size: #{$i}px !important;
 		}
@@ -118,7 +121,7 @@
 			}
 		}
 	}
-	@for $i from 7 through 60 {
+	@for $i from 7 through 100 {
 		.fs-md-#{$i} {
 			font-size: #{$i}px !important;
 		}
@@ -149,7 +152,7 @@
 			}
 		}
 	}
-	@for $i from 7 through 60 {
+	@for $i from 7 through 80 {
 		.fs-sm-#{$i} {
 			font-size: #{$i}px !important;
 		}
@@ -180,7 +183,7 @@
 			}
 		}
 	}
-	@for $i from 7 through 60 {
+	@for $i from 7 through 80 {
 		.fs-xs-#{$i} {
 			font-size: #{$i}px !important;
 		}

@@ -18,16 +18,30 @@
           "type": "megamenu",
           "settings": {
             "title": "Laptop & Tablet",
-            "type_width": "full",
-            "custom_width": 1170,
+            "type_width": "custom",
+            "custom_width": 660,
+            "show_icon": true,
             "icon_menu": "shopify://shop_images/laptop.svg",
+            "icon_width": 22,
             "novmenu_menu_enable": true,
             "show_title": false,
-            "novmenu_xl": "col-xl-4",
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding_title": 0,
+            "novmenu_xl": "col-xl-5",
             "submenu_xl": "col-xl-12",
-            "banner_br": 5,
+            "font_size": 16,
+            "font_family": "f_df",
+            "font_weight": "600",
+            "text_transform": "none",
+            "line_height": 1,
+            "padding": 0,
+            "banner_br": 0,
             "novmenu_banner_enable1": true,
-            "banner_xl_1": "col-xl-8",
+            "banner_xl_1": "col-xl-7",
             "novmenu_banner1": "shopify://shop_images/vertical-image_1.avif",
             "novmenu_banner_link1": "",
             "novmenu_banner_text1": "",
@@ -70,14 +84,28 @@
             "title": "Computer",
             "type_width": "custom",
             "custom_width": 830,
+            "show_icon": true,
             "icon_menu": "shopify://shop_images/computer.svg",
+            "icon_width": 22,
             "novmenu_menu_enable": true,
-            "show_title": false,
-            "novmenu_xl": "col-xl-8",
+            "show_title": true,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding_title": 0,
+            "novmenu_xl": "col-xl-7",
             "submenu_xl": "col-xl-6",
-            "banner_br": 5,
+            "font_size": 16,
+            "font_family": "f_df",
+            "font_weight": "600",
+            "text_transform": "none",
+            "line_height": 1,
+            "padding": 10,
+            "banner_br": 10,
             "novmenu_banner_enable1": true,
-            "banner_xl_1": "col-xl-4",
+            "banner_xl_1": "col-xl-5",
             "novmenu_banner1": "shopify://shop_images/vertical-image_2.avif",
             "novmenu_banner_link1": "",
             "novmenu_banner_text1": "",
@@ -118,49 +146,112 @@
           "type": "icon_menu",
           "settings": {
             "title": "Smartphones",
-            "icon_menu": "shopify://shop_images/smartphone.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/smartphone.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         },
         "icon_menu_9bExiB": {
           "type": "icon_menu",
           "settings": {
             "title": "Keyboard & Mouse",
-            "icon_menu": "shopify://shop_images/keyboard.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/keyboard.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         },
         "icon_menu_fHMRz9": {
           "type": "icon_menu",
           "settings": {
             "title": "Smartwatch",
-            "icon_menu": "shopify://shop_images/watch.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/watch.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         },
         "icon_menu_PxGMzQ": {
           "type": "icon_menu",
           "settings": {
             "title": "Video Games",
-            "icon_menu": "shopify://shop_images/game.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/game.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         },
         "icon_menu_TNwUiP": {
           "type": "icon_menu",
           "settings": {
             "title": "Cameras",
-            "icon_menu": "shopify://shop_images/camera.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/camera.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         },
         "icon_menu_cTT9eG": {
           "type": "icon_menu",
           "settings": {
             "title": "Headphones",
-            "icon_menu": "shopify://shop_images/headphone.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/headphone.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         },
         "icon_menu_wW3rAR": {
           "type": "icon_menu",
           "settings": {
             "title": "Accesories",
-            "icon_menu": "shopify://shop_images/usb.svg"
+            "show_icon": true,
+            "icon_menu": "shopify://shop_images/usb.svg",
+            "icon_width": 22,
+            "show_title": false,
+            "font_size_title": 16,
+            "font_family_title": "f_df",
+            "font_weight_title": "700",
+            "text_transform_title": "none",
+            "line_height_title": 22,
+            "padding": 8
           }
         }
       },
@@ -178,10 +269,14 @@
       "settings": {
         "vertical_menu_name": "Shop by Categories",
         "vertical_menu": "shop-by-categories",
-        "vertical_menu_limit": 9,
-        "vertical_menu_seemore_icon": "shopify://shop_images/more.svg",
-        "show_icons_arrow": true,
-        "vertical_menu_color": "scheme-91de7ac9-412f-40fd-8ac0-d9da8bbb18eb"
+        "font_size": 16,
+        "color": "#444444",
+        "font_family": "f_df",
+        "font_weight": "700",
+        "text_transform": "none",
+        "line_height": 22,
+        "padding": 0,
+        "vertical_menu_color": "scheme-bf677ceb-69d6-483f-9218-60e5d1ad43fc"
       }
     }
   },

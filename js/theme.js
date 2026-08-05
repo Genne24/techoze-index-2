@@ -473,6 +473,12 @@ theme.Nov_SlideCustom = (function () {
                     }, 1000);
                 }
 
+                if (this.slides.length <= 1) {
+                    if (this.prevBtn) this.prevBtn.style.display = 'none';
+                    if (this.nextBtn) this.nextBtn.style.display = 'none';
+                    if (this.dotsContainer) this.dotsContainer.style.display = 'none';
+                }
+
                 if (this.dotsContainer && this.slides.length > 1) {
                     this.dotsContainer.innerHTML = '';
                     this.dots = this.slides.map((_, i) => {
@@ -495,7 +501,7 @@ theme.Nov_SlideCustom = (function () {
                     this.nextBtn.addEventListener('click', () => this.next());
                 }
 
-                if (this.autoplay) {
+                if (this.autoplay && this.slides.length > 1) {
                     this.startAutoplay();
                     this.wrapper.addEventListener('mouseenter', () => {
                         this.stopAutoplay();

@@ -2,21 +2,18 @@
   assign sst                = section.settings
   assign vertical_menu      = sst.vertical_menu
   assign vertical_menu_name = sst.vertical_menu_name
-  assign limit              = sst.vertical_menu_limit | default: 7
-  assign show_icons_arrow   = sst.show_icons_arrow
   assign color              = sst.vertical_menu_color
-  assign seemore_icon       = sst.vertical_menu_seemore_icon
 
 -%}
 
-<div class="system-vertical-menu color-{{ color }}">
+<div class="system-vertical-menu {{ color | prepend: 'color-' }}">
   <div class="btn-vertical d-flex align-items-center font-500">
     <div class="icon">
       <span></span>
     </div>
     <div class="label">{{ vertical_menu_name }}</div>
   </div>
-  {% render 'vertical-menu', vertical_menu: vertical_menu, limit: limit, show_icons_arrow: show_icons_arrow, seemore_icon: seemore_icon %}
+  {% render 'vertical-menu', vertical_menu: vertical_menu %}
 </div>
 
 {% schema %}
@@ -45,24 +42,69 @@
       },
       {
         "type": "range",
-        "id": "vertical_menu_limit",
-        "min": 1,
-        "max": 20,
+        "id": "font_size",
+        "label": "Font size",
+        "min": 0,
+        "max": 50,
         "step": 1,
-        "label": "Limit",
-        "default": 7
+        "unit": "px",
+        "default": 16
       },
       {
-        "type": "image_picker",
-        "id": "vertical_menu_seemore_icon",
-        "label": "Button see more icon"
+        "type": "color",
+        "id": "color",
+        "alpha": true,
+        "label": "Color",
+        "default": "#444444"
       },
       {
-        "type": "checkbox",
-        "id": "show_icons_arrow",
-        "label": "Show icons arrow",
-        "default": true,
-        "info": "Only show on desktop and when the menu has more than 2 levels"
+        "type": "select",
+        "id": "font_family",
+        "label": "Font family",
+        "options": [
+          { "value": "f_df", "label": "Body font" },
+          { "value": "f_pr", "label": "Heading font" }
+        ],
+        "default": "f_df"
+      },
+      {
+        "type": "select",
+        "id": "font_weight",
+        "label": "Font weight",
+        "options": [
+          {"value": "100","label": "Thin - 100"},
+          {"value": "300","label": "Light - 300"},
+          {"value": "400","label": "Regular - 400"},
+          {"value": "500","label": "Medium - 500"},
+          {"value": "600","label": "SemiBold - 600"},
+          {"value": "700","label": "Bold - 700"},
+          {"value": "800","label": "ExtraBold - 800"},
+          {"value": "900","label": "Black - 900"}
+        ],
+        "default": "700"
+      },
+      {
+        "type": "select",
+        "id": "text_transform",
+        "label": "Text transform",
+        "options": [
+          { "value": "text-capitalize", "label": "Capitalize" },
+          { "value": "text-uppercase", "label": "Uppercase" },
+          { "value": "none", "label": "None" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "number",
+        "id": "line_height",
+        "label": "Line height",
+        "default": 22
+      },
+      {
+        "type": "number",
+        "id": "padding",
+        "label": "Padding",
+        "default": 0
       },
       {
         "type": "color_scheme",
@@ -101,9 +143,24 @@
             "visible_if": "{{ block.settings.type_width == 'custom' }}"
           },
           {
+            "type": "checkbox",
+            "id": "show_icon",
+            "label": "Show Icon",
+            "default": false
+          },
+          {
             "type": "image_picker",
             "id": "icon_menu",
-            "label": "Icon menu"
+            "label": "Icon menu",
+            "visible_if": "{{ block.settings.show_icon }}"
+          },
+          {
+            "type": "number",
+            "id": "icon_width",
+            "label": "Icon width",
+            "default": 22,
+            "info": "Unit: px",
+            "visible_if": "{{ block.settings.show_icon }}"
           },
           {
             "type": "image_picker",
@@ -120,6 +177,71 @@
             "id": "show_title",
             "label": "Show title",
             "default": false
+          },
+          {
+            "type": "range",
+            "id": "font_size_title",
+            "label": "Font size title menu",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "default": 16,
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "select",
+            "id": "font_family_title",
+            "label": "Font family title menu",
+            "options": [
+              { "value": "f_df", "label": "Body font" },
+              { "value": "f_pr", "label": "Heading font" }
+            ],
+            "default": "f_df",
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "select",
+            "id": "font_weight_title",
+            "label": "Font weight title menu",
+            "options": [
+              {"value": "100","label": "Thin - 100"},
+              {"value": "300","label": "Light - 300"},
+              {"value": "400","label": "Regular - 400"},
+              {"value": "500","label": "Medium - 500"},
+              {"value": "600","label": "SemiBold - 600"},
+              {"value": "700","label": "Bold - 700"},
+              {"value": "800","label": "ExtraBold - 800"},
+              {"value": "900","label": "Black - 900"}
+            ],
+            "default": "700",
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "select",
+            "id": "text_transform_title",
+            "label": "Text transform title menu",
+            "options": [
+              { "value": "text-capitalize", "label": "Capitalize" },
+              { "value": "text-uppercase", "label": "Uppercase" },
+              { "value": "none", "label": "None" }
+            ],
+            "default": "none",
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "number",
+            "id": "line_height_title",
+            "label": "Line height title menu",
+            "default": 22,
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "number",
+            "id": "padding_title",
+            "label": "Padding",
+            "default": 0,
+            "visible_if": "{{ block.settings.show_title }}"
           },
           {
             "type": "select",
@@ -162,8 +284,67 @@
             ]
           },
           {
+            "type": "range",
+            "id": "font_size",
+            "label": "Font size menu",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "default": 16
+          },
+          {
+            "type": "select",
+            "id": "font_family",
+            "label": "Font family menu",
+            "options": [
+              { "value": "f_df", "label": "Body font" },
+              { "value": "f_pr", "label": "Heading font" }
+            ],
+            "default": "f_df"
+          },
+          {
+            "type": "select",
+            "id": "font_weight",
+            "label": "Font weight menu",
+            "options": [
+              {"value": "100","label": "Thin - 100"},
+              {"value": "300","label": "Light - 300"},
+              {"value": "400","label": "Regular - 400"},
+              {"value": "500","label": "Medium - 500"},
+              {"value": "600","label": "SemiBold - 600"},
+              {"value": "700","label": "Bold - 700"},
+              {"value": "800","label": "ExtraBold - 800"},
+              {"value": "900","label": "Black - 900"}
+            ],
+            "default": "700"
+          },
+          {
+            "type": "select",
+            "id": "text_transform",
+            "label": "Text transform menu",
+            "options": [
+              { "value": "text-capitalize", "label": "Capitalize" },
+              { "value": "text-uppercase", "label": "Uppercase" },
+              { "value": "none", "label": "None" }
+            ],
+            "default": "none"
+          },
+          {
+            "type": "number",
+            "id": "line_height",
+            "label": "Line height menu",
+            "default": 22
+          },
+          {
             "type": "header",
             "content": "Block Banner"
+          },
+          {
+            "type": "number",
+            "id": "padding",
+            "label": "Padding (px)",
+            "default": 10
           },
           {
             "type": "number",
@@ -479,9 +660,94 @@
             "info": "Menu item of main-menu. Menu item has dropdown megamenu."
           },
           {
+            "type": "checkbox",
+            "id": "show_icon",
+            "label": "Show Icon",
+            "default": false
+          },
+          {
             "type": "image_picker",
             "id": "icon_menu",
-            "label": "Icon Menu"
+            "label": "Icon menu",
+            "visible_if": "{{ block.settings.show_icon }}"
+          },
+          {
+            "type": "number",
+            "id": "icon_width",
+            "label": "Icon width",
+            "default": 22,
+            "info": "Unit: px",
+            "visible_if": "{{ block.settings.show_icon }}"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_title",
+            "label": "Show title",
+            "default": false
+          },
+          {
+            "type": "range",
+            "id": "font_size_title",
+            "label": "Font size title menu",
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "default": 16,
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "select",
+            "id": "font_family_title",
+            "label": "Font family title menu",
+            "options": [
+              { "value": "f_df", "label": "Body font" },
+              { "value": "f_pr", "label": "Heading font" }
+            ],
+            "default": "f_df",
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "select",
+            "id": "font_weight_title",
+            "label": "Font weight title menu",
+            "options": [
+              {"value": "100","label": "Thin - 100"},
+              {"value": "300","label": "Light - 300"},
+              {"value": "400","label": "Regular - 400"},
+              {"value": "500","label": "Medium - 500"},
+              {"value": "600","label": "SemiBold - 600"},
+              {"value": "700","label": "Bold - 700"},
+              {"value": "800","label": "ExtraBold - 800"},
+              {"value": "900","label": "Black - 900"}
+            ],
+            "default": "700",
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "select",
+            "id": "text_transform_title",
+            "label": "Text transform title menu",
+            "options": [
+              { "value": "text-capitalize", "label": "Capitalize" },
+              { "value": "text-uppercase", "label": "Uppercase" },
+              { "value": "none", "label": "None" }
+            ],
+            "default": "none",
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "number",
+            "id": "line_height_title",
+            "label": "Line height title menu",
+            "default": 22,
+            "visible_if": "{{ block.settings.show_title }}"
+          },
+          {
+            "type": "number",
+            "id": "padding",
+            "label": "Padding",
+            "default": 8
           }
         ]
       }

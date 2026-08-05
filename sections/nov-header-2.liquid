@@ -1,19 +1,15 @@
 {{ 'css-header2.css' | asset_url | stylesheet_tag }}
 {% assign sst = section.settings %}
 {% style -%}
-  @media(min-width: 768px) {
-    .site-header__logo {
-      width: {{ sst.w_logo_md }}px;
+  .site-header__logo {
+    @media(min-width: 768px) {
+      width: {{ sst.w_logo_md | append: 'px' }};
     }
-  }
-  @media(min-width: 992px) {
-    .site-header__logo {
-      width: {{ sst.w_logo_lg }}px;
+    @media(min-width: 992px) {
+      width: {{ sst.w_logo_lg | append: 'px' }};
     }
-  }
-  @media(min-width: 1200px) {
-    .site-header__logo {
-      width: {{ sst.w_logo }}px;
+    @media(min-width: 1200px) {
+      width: {{ sst.w_logo | append: 'px' }};
     }
   }
   .site-header, #header-sticky {
@@ -21,15 +17,8 @@
     --menu-fw: {{ sst.menu_fw }};
     --menu-ff: {{ sst.menu_ff }};
   }
-  .template-index .header-top {
-    background: {{ sst.header_top_bg_index }};
-    backdrop-filter: blur({{ sst.header_top_bg_blur }}px);
-  }
-  body:not(.template-index) .header-top {
-    background: {{ sst.header_top_bg_inner }};
-  }
   #header-sticky, .header-mobile .header-mobile-content , .header-content {
-    background: {{ sst.header_bottom_bg }};
+    background: {{ sst.header_bg }};
   }
 {%- endstyle %}
 <script type="application/ld+json">
@@ -44,57 +33,13 @@
   }
 </script>
 <header class="site-header{% if sst.stickymenu %} sticky-header{% endif %}">
-  <div class="header-top {% if request.page_type == 'index' %}color-{{ sst.header_top_color_index }}{% else %}color-{{ sst.header_top_color_inner }}{% endif %} pt-10 pb-10 d-none d-md-block">
-    <div class="{{ sst.container }}">
-      <div class="row align-items-center spacing-10">
-        <div class="col-4">
-          {% if sst.address != blank or sst.phone != blank %}
-            <div class="header-contact d-flex align-items-center">
-              {% if sst.address != blank %}
-                <div class="header-contact-item d-flex align-items-center">
-                  <i class="rbb-icon-location-5 color-icons"></i>
-                  <a href="{{ sst.address_link | default: "#" }}">{{ sst.address }}</a>
-                </div>
-              {% endif %}
-              {% if sst.phone != blank %}
-                <div class="header-contact-item d-flex align-items-center">
-                  <i class="rbb-icon-phone-4 color-icons"></i>
-                  <a href="tel:{{ sst.phone }}">{{ sst.phone }}</a>
-                </div>
-              {% endif %}
-            </div>
-          {% endif %}
-        </div>
-        <div class="col-4">
-          {% if sst.header_top_text != blank %}
-            <div class="text-center fs-10 font-500 color-title d-flex align-items-center justify-content-center">
-              {% if sst.header_top_text_icon != blank %}
-                <div class="header-top-icon-text">
-                  {% render 'nov-aspect-image', image: sst.header_top_text_icon, class: 'no-ef' %}
-                </div>
-              {% endif %}
-              {{ sst.header_top_text }}
-            </div>
-          {% endif %}
-        </div>
-        <div class="col-4 d-flex justify-content-end">
-          {% if sst.show_social %}
-            {% render 'nov-social' %}
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="header-content header-search__parent d-none d-md-block color-{{ sst.header_bottom_color }}">
+  <div class="header-content header-search__parent d-none d-md-block{% if request.page_type == 'index' %} color-{{ sst.header_color_index }}{% else %} color-{{ sst.header_color_inner }}{% endif %}">
     <div class="{{ sst.container }}">
       <div class="row">
-        <div class="contentsticky_menu col-5 d-flex d-xl-block align-items-center">
+        <div class="col-3 pt-25 pb-25 pt-md-20 pb-md-20 d-flex align-items-center">
           <div class="site-nav--btn d-flex d-xl-none align-items-center justify-content-center">
             <span class="icon"><span></span></span>
           </div>
-          <nav id="AccessibleNav" class="text-left d-none d-xl-block h-100">{% render 'site-nav' color: sst.color_menu, mainmenu: sst.main_linklist %}</nav>
-        </div>
-        <div class="col-2 pt-25 pb-25 pt-md-20 pb-md-20 d-flex align-items-center justify-content-center">
           <div class="contentsticky_logo d-flex align-items-center">
             {% if sst.logo %}
               <a href="{{ routes.root_url }}" class="site-header__logo d-flex position-relative">
@@ -113,7 +58,10 @@
             {% endif %}
           </div>
         </div>
-        <div class="col-5 d-flex justify-content-end align-items-center">
+        <div class="contentsticky_menu col-6 d-flex align-items-center justify-content-center" style="--color-menu: {{ sst.color_menu }};--color-menu-hover: {{ sst.color_menu_hover }};">
+          <nav id="AccessibleNav" class="text-center d-none d-xl-block h-100">{% render 'site-nav' color: sst.color_menu_dropdown, mainmenu: sst.main_linklist %}</nav>
+        </div>
+        <div class="col-3 d-flex justify-content-end align-items-center">
           <div class="header-group-item d-flex align-items-center">
             <div class="contentsticky_search">
               <div class="search__btn-overlay header-icon align-items-center nov_btn_act" data-toggle="search_canvas" data-overlay="true">
@@ -131,8 +79,7 @@
             </div>
             {% if settings.wishlist_enable %}
               <div class="contentsticky_wishlist header--wishlist">
-                <a href="{{ settings.link_page_wishlist }}
-" class="header-icon align-items-center" rel="nofollow" title="{{ 'layout.customer.wishlists' | t }}">
+                <a href="/pages/{{ settings.link_page_wishlist }}" class="header-icon align-items-center" rel="nofollow" title="{{ 'layout.customer.wishlists' | t }}">
                   <span class="header-wishlist-icon position-relative d-inline-flex">
                     {% if sst.wishlist_svg %}
                       {% render 'icon-star' %}
@@ -231,13 +178,13 @@
   <div id="header-sticky" class="d-none d-md-block header-search__parent color-{{ sst.header_bottom_color }}">
     <div class="{{ sst.container }}">
       <div class="bl_content row align-items-center">
-        <div class="col-5 d-xl-flex align-items-center">
-          <div class="contentstickynew_menu d-flex"></div>
-        </div>
-        <div class="col-2 d-flex align-items-center">
+        <div class="col-3 d-flex align-items-center">
           <div class="contentstickynew_logo d-flex align-items-center justify-content-center"></div>
         </div>
-        <div class="col-5 d-flex align-items-center justify-content-end">
+        <div class="col-6 d-xl-flex align-items-center justify-content-center">
+          <div class="contentstickynew_menu d-flex"></div>
+        </div>
+        <div class="col-3 d-flex align-items-center justify-content-end">
           <div class="header-group-item d-flex align-items-center justify-content-end">
             <div class="contentstickynew_search"></div>
             {% if settings.wishlist_enable %}
@@ -309,55 +256,18 @@
       },
       {
         "type": "header",
-        "content": "Header Top Color"
-      },
-      {
-        "type": "color",
-        "id": "header_top_bg_index",
-        "alpha": true,
-        "label": "Background page index",
-        "default": "#fff"
-      },
-      {
-        "type": "number",
-        "id": "header_top_bg_blur",
-        "label": "Background blur page index",
-        "default": 0
+        "content": "Header Color"
       },
       {
         "type": "color_scheme",
-        "id": "header_top_color_index",
+        "id": "header_color_index",
         "label": "Color page index",
         "default": "background-1"
       },
       {
-        "type": "color",
-        "id": "header_top_bg_inner",
-        "alpha": true,
-        "label": "Background page inner",
-        "default": "#fff"
-      },
-      {
         "type": "color_scheme",
-        "id": "header_top_color_inner",
+        "id": "header_color_inner",
         "label": "Color page inner",
-        "default": "background-1"
-      },
-      {
-        "type": "header",
-        "content": "Header Color"
-      },
-      {
-        "type": "color",
-        "id": "header_bottom_bg",
-        "alpha": true,
-        "label": "Header background",
-        "default": "#fff"
-      },
-      {
-        "type": "color_scheme",
-        "id": "header_bottom_color",
-        "label": "Header color",
         "default": "background-1"
       },
       {
@@ -377,42 +287,6 @@
         "type": "checkbox",
         "id": "stickymenu_sm",
         "label": "Enable sticky header",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "Header Top"
-      },
-      {
-        "type": "text",
-        "id": "address",
-        "label": "Address"
-      },
-      {
-        "type": "url",
-        "id": "address_link",
-        "label": "Address link"
-      },
-      {
-        "type": "text",
-        "id": "phone",
-        "label": "Phone number"
-      },
-      {
-        "type": "image_picker",
-        "id": "header_top_text_icon",
-        "label": "Icon text"
-      },
-      {
-        "type": "text",
-        "id": "header_top_text",
-        "label": "Text",
-        "default": "Free shipping in orders over $50"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_social",
-        "label": "Show social",
         "default": true
       },
       {
@@ -519,9 +393,21 @@
         "default": "main-menu"
       },
       {
-        "type": "color_scheme",
+        "type": "color",
         "id": "color_menu",
-        "label": "Color menu",
+        "label": "Color Menu",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_menu_hover",
+        "label": "Color Menu Hover",
+        "default": "#F43777"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_menu_dropdown",
+        "label": "Color menu dropdown",
         "default": "background-1"
       },
       {
