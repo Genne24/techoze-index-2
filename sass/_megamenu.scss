@@ -2,12 +2,16 @@
 @use "sass:list";
 @use "mixin" as *;
 /*==============   Common style   ================*/
-.nav--lv1:hover .nav-dropdown--lv1 {
-	opacity: 1;
-	visibility: visible;
-	top: 100%;
-	z-index: 999999;
-	pointer-events: auto;
+.nav--lv1 {
+	&:hover {
+		.nav-dropdown--lv1 {
+			opacity: 1;
+			visibility: visible;
+			top: 100%;
+			z-index: 999999;
+			pointer-events: auto;
+		}
+	}
 }
 .nav-dropdown--lv1 {
 	opacity: 0;
@@ -20,7 +24,6 @@
 	top: calc(100% + 20px);
 	inset-inline-start: 0;
 	box-shadow: 0 10px 10px rgba(0,0,0,0.05);
-	border-top: 1px solid rgba(var(--color-border-rgb), .6);
 	transition: .3s ease-in-out;
 	will-change: opacity, visibility;
 	@media(min-width: 1200px) {
@@ -246,7 +249,7 @@
 		flex-wrap: wrap;
 		position: relative;
 		transition: color .15s linear;
-		padding: 2rem;
+		padding: 18px 14px;
 		@media (max-width: 1440px) {
 			font-size: clamp(10px, var(--menu-fs), 16px);
 		}

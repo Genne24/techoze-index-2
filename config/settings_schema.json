@@ -1552,6 +1552,12 @@
     "settings": [
       {
         "type": "checkbox",
+        "id": "search_enable",
+        "label": "Show Search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
         "id": "show_search_icon",
         "label": "Show Search Icon",
         "default": true
@@ -1700,6 +1706,208 @@
         "label": "Key trend",
         "default": "Lorem",
         "visible_if": "{{ settings.key_trend_9 != blank and settings.show_key_trend }}"
+      }
+    ]
+  },
+  {
+    "name": "Config Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_enable",
+        "label": "Show Cart",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "General Config"
+      },
+      {
+        "type": "checkbox",
+        "id": "freeshipping_enable",
+        "label": "Enable free shipping threshold",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping",
+        "label": "Free shipping",
+        "info": "Set value for got free shipping (Obligatory)",
+        "default": 2000
+      },
+      {
+        "type": "checkbox",
+        "id": "terms_conditions_enable",
+        "label": "Enable terms & conditions",
+        "default": true
+      },
+      {
+        "type": "richtext",
+        "id": "terms_conditions",
+        "label": "Edit terms & conditions",
+        "default": "<p>I agree with the Terms & conditions<\/p>"
+      },
+      {
+        "type": "select",
+        "id": "cart_status_addtocart",
+        "label": "Cart status when Add To Cart",
+        "default": "show_popup",
+        "options": [
+          {
+            "value": "show_popup",
+            "label": "Show Popup"
+          },
+          {
+            "value": "show_minicart",
+            "label": "Show Mini Cart Canvas"
+          },
+          {
+            "value": "goto_page_cart",
+            "label": "Go To Cart Page"
+          },
+          {
+            "value": "no_effect",
+            "label": "No Effect (Only change cart count)"
+          }
+        ],
+        "info": "Here are the cart states after clicking the add to cart button"
+      },
+      {
+        "type": "header",
+        "content": "Config Cart Popup"
+      },
+      {
+        "type": "checkbox",
+        "id": "upsell_enable",
+        "label": "Enable cross sale collection",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Config Mini Cart Canvas"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_note",
+        "label": "Enable Cart note",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "discount_code",
+        "label": "Enable discount code",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_calculator",
+        "label": "Show the shipping calculator?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_calculator_default_country",
+        "label": "Default country selection",
+        "default": "United States",
+        "info": "If your customer is logged-in, the country in his default shipping address will be selected. If you are not sure about the  spelling to use here, refer to the first checkout page."
+      },
+      {
+        "type": "header",
+        "content": "Collections On Cart Empty"
+      },
+      {
+        "type": "paragraph",
+        "content": "Used when there are no products in the shopping cart, appear in an empty cart"
+      },
+      {
+        "type": "select",
+        "id": "cart_empty_btn_type",
+        "label": "Button type",
+        "options": [
+          {
+            "value": "btn-primary",
+            "label": "Primary"
+          },
+          {
+            "value": "btn-secondary",
+            "label": "Secondary"
+          }
+        ],
+        "default": "btn-primary"
+      },
+      {
+        "type": "select",
+        "id": "cart_empty_btn_size",
+        "label": "Button size",
+        "default": "btn-normal",
+        "options": [
+          {
+            "value": "btn-normal",
+            "label": "Normal"
+          },
+          {
+            "value": "btn-medium",
+            "label": "Medium"
+          },
+          {
+            "value": "btn-large",
+            "label": "Large"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "==================="
+      },
+      {
+        "type": "text",
+        "id": "collec_1_name",
+        "label": "Link 1 name"
+      },
+      {
+        "type": "url",
+        "id": "collec_1",
+        "label": "Link 1"
+      },
+      {
+        "type": "text",
+        "id": "collec_2_name",
+        "label": "Link 2 name"
+      },
+      {
+        "type": "url",
+        "id": "collec_2",
+        "label": "Link 2"
+      },
+      {
+        "type": "text",
+        "id": "collec_3_name",
+        "label": "Link 3 name"
+      },
+      {
+        "type": "url",
+        "id": "collec_3",
+        "label": "Link 3"
+      },
+      {
+        "type": "text",
+        "id": "collec_4_name",
+        "label": "Link 4 name"
+      },
+      {
+        "type": "url",
+        "id": "collec_4",
+        "label": "Link 4"
+      },
+      {
+        "type": "text",
+        "id": "collec_5_name",
+        "label": "Link 5 name"
+      },
+      {
+        "type": "url",
+        "id": "collec_5",
+        "label": "Link 5"
       }
     ]
   },
@@ -2680,202 +2888,6 @@
         "id": "img_color20",
         "label": "Image color 20",
         "visible_if": "{{ settings.color19 != blank }}"
-      }
-    ]
-  },
-  {
-    "name": "Config Cart",
-    "settings": [
-      {
-        "type": "header",
-        "content": "General Config"
-      },
-      {
-        "type": "checkbox",
-        "id": "freeshipping_enable",
-        "label": "Enable free shipping threshold",
-        "default": true
-      },
-      {
-        "type": "number",
-        "id": "free_shipping",
-        "label": "Free shipping",
-        "info": "Set value for got free shipping (Obligatory)",
-        "default": 2000
-      },
-      {
-        "type": "checkbox",
-        "id": "terms_conditions_enable",
-        "label": "Enable terms & conditions",
-        "default": true
-      },
-      {
-        "type": "richtext",
-        "id": "terms_conditions",
-        "label": "Edit terms & conditions",
-        "default": "<p>I agree with the Terms & conditions<\/p>"
-      },
-      {
-        "type": "select",
-        "id": "cart_status_addtocart",
-        "label": "Cart status when Add To Cart",
-        "default": "show_popup",
-        "options": [
-          {
-            "value": "show_popup",
-            "label": "Show Popup"
-          },
-          {
-            "value": "show_minicart",
-            "label": "Show Mini Cart Canvas"
-          },
-          {
-            "value": "goto_page_cart",
-            "label": "Go To Cart Page"
-          },
-          {
-            "value": "no_effect",
-            "label": "No Effect (Only change cart count)"
-          }
-        ],
-        "info": "Here are the cart states after clicking the add to cart button"
-      },
-      {
-        "type": "header",
-        "content": "Config Cart Popup"
-      },
-      {
-        "type": "checkbox",
-        "id": "upsell_enable",
-        "label": "Enable cross sale collection",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "Config Mini Cart Canvas"
-      },
-      {
-        "type": "checkbox",
-        "id": "cart_note",
-        "label": "Enable Cart note",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "discount_code",
-        "label": "Enable discount code",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "shipping_calculator",
-        "label": "Show the shipping calculator?",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "shipping_calculator_default_country",
-        "label": "Default country selection",
-        "default": "United States",
-        "info": "If your customer is logged-in, the country in his default shipping address will be selected. If you are not sure about the  spelling to use here, refer to the first checkout page."
-      },
-      {
-        "type": "header",
-        "content": "Collections On Cart Empty"
-      },
-      {
-        "type": "paragraph",
-        "content": "Used when there are no products in the shopping cart, appear in an empty cart"
-      },
-      {
-        "type": "select",
-        "id": "cart_empty_btn_type",
-        "label": "Button type",
-        "options": [
-          {
-            "value": "btn-primary",
-            "label": "Primary"
-          },
-          {
-            "value": "btn-secondary",
-            "label": "Secondary"
-          }
-        ],
-        "default": "btn-primary"
-      },
-      {
-        "type": "select",
-        "id": "cart_empty_btn_size",
-        "label": "Button size",
-        "default": "btn-normal",
-        "options": [
-          {
-            "value": "btn-normal",
-            "label": "Normal"
-          },
-          {
-            "value": "btn-medium",
-            "label": "Medium"
-          },
-          {
-            "value": "btn-large",
-            "label": "Large"
-          }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "==================="
-      },
-      {
-        "type": "text",
-        "id": "collec_1_name",
-        "label": "Link 1 name"
-      },
-      {
-        "type": "url",
-        "id": "collec_1",
-        "label": "Link 1"
-      },
-      {
-        "type": "text",
-        "id": "collec_2_name",
-        "label": "Link 2 name"
-      },
-      {
-        "type": "url",
-        "id": "collec_2",
-        "label": "Link 2"
-      },
-      {
-        "type": "text",
-        "id": "collec_3_name",
-        "label": "Link 3 name"
-      },
-      {
-        "type": "url",
-        "id": "collec_3",
-        "label": "Link 3"
-      },
-      {
-        "type": "text",
-        "id": "collec_4_name",
-        "label": "Link 4 name"
-      },
-      {
-        "type": "url",
-        "id": "collec_4",
-        "label": "Link 4"
-      },
-      {
-        "type": "text",
-        "id": "collec_5_name",
-        "label": "Link 5 name"
-      },
-      {
-        "type": "url",
-        "id": "collec_5",
-        "label": "Link 5"
       }
     ]
   },

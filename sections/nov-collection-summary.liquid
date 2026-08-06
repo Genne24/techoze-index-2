@@ -50,8 +50,8 @@
           {% for block in section.blocks %}
             {% assign bst = block.settings %}
             <div class="{% if sst.type == 'grid' %}{% render 'number-to-col', xxl: sst.xxl, xl: sst.xl, lg: sst.lg, md: sst.md, sm: sst.sm, xs: sst.xs %} mb-30 mb-sm-15{% elsif sst.type == 'carousel' %}swiper-slide item{% endif %}">
-              <div class="collec-item relative nov-sh-image-2{%  if sst.hv_box_shadow %} hv_box_shadow{% endif %} duration-300{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
-                <div class="block-image overflow-hidden duration-300">
+              <div class="collec-item relative nov-sh-image-2 overflow-initial{%  if sst.hv_box_shadow %} hv_box_shadow{% endif %} duration-300{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
+                <div class="block-image duration-300">
                   {% if bst.image != blank %}
                     {% render 'nov-imgset', image: bst.image %}
                   {% else %}
@@ -59,21 +59,11 @@
                     {{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
                 </div>
-                <div class="{% if bst.desc == blank %}block-bottom relative{% else %}block-bottom-desc d-flex align-items-center justify-content-between{% endif %} duration-300">
+                <div class="block-bottom relative duration-300">
                   {% if bst.title != blank %}
                     <div class="block-title h3 fs-16 fs-lg-14 font-700 color-title duration-300{% if bst.desc == blank %} w-100 text-center{% endif %}">{{ bst.title }}</div>
                   {% endif %}
-                  {% if bst.desc != blank %}
-                    <div class="close-icon nov_btn_act" data-toggle="scs-{{ forloop.index }}"></div>
-                  {% endif %}
                 </div>
-                {% if bst.desc != blank %}
-                  <div class="block-overlay" data-act="scs-{{ forloop.index }}">
-                    <div class="block-overlay-content">
-                      {{ bst.desc }}
-                    </div>
-                  </div>
-                {% endif %}
                 <a href="{{ bst.link }}" class="link absolute t-0 l-0 w-100 h-100" aria-label="{{ bst.title }}"></a>
               </div>
             </div>    
@@ -88,7 +78,7 @@
         </div>
       </div>
       {%- if sst.show_nav and sst.type == 'carousel' -%}
-        <div class="block-nav {{ sst.arrow_postion }} d-flex justify-content-center">
+        <div class="block-nav {{ sst.arrow_postion }} d-flex justify-content-between align-items-center">
           <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
           <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
         </div>
@@ -337,7 +327,8 @@
         "default": "arrow_on_light",
         "options": [
           {"value": "arrow_on_light","label": "Arrow on light background"},
-          {"value": "arrow_on_dark","label": "Arrow on dark background"}
+          {"value": "arrow_on_dark","label": "Arrow on dark background"},
+          {"value": "arrow_on_no_bg","label": "Arrow on no background"}
         ],
         "visible_if": "{{ section.settings.show_nav }}"
       },
@@ -645,12 +636,6 @@
             "id": "title",
             "label": "Title",
             "default": "Lorem ipsum"
-          },
-          {
-            "type": "richtext",
-            "id": "desc",
-            "label": "Description",
-            "default": "<p>Quisque id odio sit amet erat viverra</p>"
           }
         ]
       }

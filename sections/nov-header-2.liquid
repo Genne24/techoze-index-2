@@ -35,18 +35,15 @@
 <header class="site-header{% if sst.stickymenu %} sticky-header{% endif %}">
   <div class="header-content header-search__parent d-none d-md-block{% if request.page_type == 'index' %} color-{{ sst.header_color_index }}{% else %} color-{{ sst.header_color_inner }}{% endif %}">
     <div class="{{ sst.container }}">
-      <div class="row">
-        <div class="col-3 pt-25 pb-25 pt-md-20 pb-md-20 d-flex align-items-center">
-          <div class="site-nav--btn d-flex d-xl-none align-items-center justify-content-center">
-            <span class="icon"><span></span></span>
-          </div>
-          <div class="contentsticky_logo d-flex align-items-center">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto d-flex align-items-center">
+          <div class="contentsticky_logo">
             {% if sst.logo %}
-              <a href="{{ routes.root_url }}" class="site-header__logo d-flex position-relative">
+              <a href="{{ routes.root_url }}" class="site-header__logo position-relative">
                 {%- assign image_size_2x = sst.w_logo | times: 2 | at_most: 5760 -%}
                 <img srcset="{{ sst.logo | image_url: width: sst.w_logo }} 1x, {{ sst.logo | image_url: width: image_size_2x }} 2x"
                   src="{{ sst.logo | image_url: width: sst.w_logo | append: 'x' }}"
-                  class="w-100 img-fluid" 
+                  class="w-100 img-fluid"
                   alt="{{ sst.logo.alt | default: shop.name | escape }}"
                   width="{{ sst.logo.width }}"
                   height="{{ sst.logo.height }}"
@@ -58,62 +55,73 @@
             {% endif %}
           </div>
         </div>
-        <div class="contentsticky_menu col-6 d-flex align-items-center justify-content-center" style="--color-menu: {{ sst.color_menu }};--color-menu-hover: {{ sst.color_menu_hover }};">
-          <nav id="AccessibleNav" class="text-center d-none d-xl-block h-100">{% render 'site-nav' color: sst.color_menu_dropdown, mainmenu: sst.main_linklist %}</nav>
-        </div>
-        <div class="col-3 d-flex justify-content-end align-items-center">
-          <div class="header-group-item d-flex align-items-center">
-            <div class="contentsticky_search">
-              <div class="search__btn-overlay header-icon align-items-center nov_btn_act" data-toggle="search_canvas" data-overlay="true">
-                {% render 'icon-search' %}
-              </div>
+        <div class="col-auto d-flex align-items-center justify-content-end header-right-wrapper">
+          <div class="btn-vertical btn-vertical-desktop">
+            <span class="icon"><span></span></span>
+          </div>
+          <div class="header-pill-wrapper d-none d-xl-flex align-items-center">
+            <div class="contentsticky_menu" style="--color-menu: {{ sst.color_menu }};--color-menu-hover: {{ sst.color_menu_hover }};">
+              <nav id="AccessibleNav" class="text-center d-none d-xl-block h-100">{% render 'site-nav' color: sst.color_menu_dropdown, mainmenu: sst.main_linklist %}</nav>
             </div>
-            <div class="contentsticky_account pointer">
-              <div class="header-icon nov_btn_act" data-toggle="header_settings" data-overlay="true" title="{{ 'layout.customer.account' | t }}">
-                {% if sst.account_svg %}
-                  {% render 'icon-account' %}
-                {% else %}
-                  <i class="{{ sst.account_icon }} position-relative"></i>
-                {% endif %}
+            <div class="header-group-item d-flex align-items-center">
+              {% if settings.search_enable %}
+              <div class="contentsticky_search">
+                <div class="search__btn-overlay header-icon align-items-center nov_btn_act" data-toggle="search_canvas" data-overlay="true">
+                  {% render 'icon-search' %}
+                </div>
               </div>
-            </div>
-            {% if settings.wishlist_enable %}
-              <div class="contentsticky_wishlist header--wishlist">
-                <a href="/pages/{{ settings.link_page_wishlist }}" class="header-icon align-items-center" rel="nofollow" title="{{ 'layout.customer.wishlists' | t }}">
-                  <span class="header-wishlist-icon position-relative d-inline-flex">
-                    {% if sst.wishlist_svg %}
-                      {% render 'icon-star' %}
+              {% endif %}
+              {% if shop.customer_accounts_enabled %}
+                <div class="contentsticky_account pointer">
+                  <div class="header-icon nov_btn_act" data-toggle="header_settings" data-overlay="true" title="{{ 'layout.customer.account' | t }}">
+                    {% if sst.account_svg %}
+                      {% render 'icon-account' %}
                     {% else %}
-                      <i class="{{ sst.wishlist }} position-relative"></i>
+                      <i class="{{ sst.account_icon }}{% if sst.account_icon_bold %} font-700{% endif %} position-relative"></i>
                     {% endif %}
-                    <span class="WishlistCount text-center">0</span>
-                  </span>
-                </a>
-              </div>
-            {% endif %}
-            <div class="contentsticky_cart">
-              <div id="cart_block">
-                <div class="header-cart d-flex justify-content-center">
-                  <div class="site-header__cart header-icon align-items-center pointer">
-                    <div class="site-header__cart-icon position-relative" title="{{ 'layout.cart.title_cart' | t }}">
-                      {% if sst.cart_svg %}
-                        {% render 'icon-cart' %}
+                  </div>
+                </div>
+              {% endif %}
+              {% if settings.wishlist_enable %}
+                <div class="contentsticky_wishlist header--wishlist">
+                  <a href="{{ settings.link_page_wishlist }}" class="header-icon align-items-center" rel="nofollow" title="{{ 'layout.customer.wishlists' | t }}">
+                    <span class="header-wishlist-icon position-relative d-inline-flex">
+                      {% if sst.wishlist_svg %}
+                        {% render 'icon-star' %}
                       {% else %}
-                        <i class="rbb-icon-shopping-{{ sst.cart_type }}-{{ sst.cart }} position-relative"></i>
+                        <i class="{{ sst.wishlist }}{% if sst.wishlist_icon_bold %} font-700{% endif %} position-relative"></i>
                       {% endif %}
-                      <span class="site-header__cart-count">
-                        <span class="CartCount">{{ cart.item_count }}</span>
-                      </span>
+                      <span class="WishlistCount text-center">0</span>
+                    </span>
+                  </a>
+                </div>
+              {% endif %}
+              {% if settings.cart_enable %}
+                <div class="contentsticky_cart">
+                  <div id="cart_block">
+                    <div class="header-cart d-flex justify-content-center">
+                      <div class="site-header__cart header-icon align-items-center pointer">
+                        <div class="site-header__cart-icon position-relative" title="{{ 'layout.cart.title_cart' | t }}">
+                          {% if sst.cart_svg %}
+                            {% render 'icon-cart' %}
+                          {% else %}
+                            <i class="rbb-icon-shopping-{{ sst.cart_type }}-{{ sst.cart }}{% if sst.cart_icon_bold %} font-700{% endif %} position-relative"></i>
+                          {% endif %}
+                          <span class="site-header__cart-count">
+                            <span class="CartCount">{{ cart.item_count }}</span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            {% for block in section.blocks %}
-              {% if block.type == '@app' %}
-                {% render block %}
               {% endif %}
-            {% endfor %}
+              {% for block in section.blocks %}
+                {% if block.type == '@app' %}
+                  {% render block %}
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
@@ -169,6 +177,11 @@
               </div>
             </div>
           </div>
+          <div class="btn-vertical btn-vertical-mobile"> 
+            <div class="icon">
+              <span></span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -198,7 +211,7 @@
     </div>
   </div>
 {% endif %}
-<div class="d-xl-none">{% render 'nov-mobile-canvas', mainmenu: sst.main_linklist %}</div>
+{% render 'nov-mobile-canvas', mainmenu: sst.main_linklist %}
 {% render 'nov-search-canvas' %}
 {% schema %}
   {
@@ -312,6 +325,12 @@
       },
       {
         "type": "checkbox",
+        "id": "account_icon_bold",
+        "label": "Account icon bold",
+        "info": "Account icon bold where possible."
+      },
+      {
+        "type": "checkbox",
         "id": "account_svg",
         "label": "Canvas icon svg",
         "info": "Icon svg replaces icon font where possible."
@@ -336,6 +355,12 @@
           {"value": "rbb-icon-rating-start-outline-1", "label": "Wishlist 8"},
           {"value": "rbb-icon-rating-start-outline-2", "label": "Wishlist 9"}
         ]
+      },
+      {
+        "type": "checkbox",
+        "id": "wishlist_icon_bold",
+        "label": "Wishlist icon bold",
+        "info": "Wishlist icon bold where possible."
       },
       {
         "type": "checkbox",
@@ -375,6 +400,12 @@
           {"value": "9", "label": "Cart 9"},
           {"value": "10", "label": "Cart 10"}
         ]
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_icon_bold",
+        "label": "Cart icon bold",
+        "info": "Cart icon bold where possible."
       },
       {
         "type": "checkbox",
@@ -570,33 +601,39 @@
               {"value": "col-xl-10", "label": "10/12"},
               {"value": "col-xl-11", "label": "11/12"},
               {"value": "col-xl-12", "label": "12/12"}
-            ]
+            ],
+            "visible_if": "{{ block.settings.novmenu_banner_enable1 }}"
           },
           {
             "type": "image_picker",
             "id": "novmenu_banner1",
-            "label": "Banner image"
+            "label": "Banner image",
+            "visible_if": "{{ block.settings.novmenu_banner_enable1 }}"
           },
           {
             "type": "url",
             "id": "novmenu_banner_link1",
-            "label": "Banner link"
+            "label": "Banner link",
+            "visible_if": "{{ block.settings.novmenu_banner_enable1 }}"
           },
           {
             "type": "richtext",
             "id": "novmenu_banner_text1",
-            "label": "Text"
+            "label": "Text",
+            "visible_if": "{{ block.settings.novmenu_banner_enable1 }}"
           },
           {
             "type": "color_scheme",
             "id": "novmenu_banner_text_color1",
             "label": "Text color",
-            "default": "background-1"
+            "default": "background-1",
+            "visible_if": "{{ block.settings.novmenu_banner_enable1 }}"
           },
           {
             "type": "text",
             "id": "class_bn1",
-            "label": "Banner class"
+            "label": "Banner class",
+            "visible_if": "{{ block.settings.novmenu_banner_enable1 }}"
           },
           {
             "type": "header",
@@ -625,33 +662,39 @@
               {"value": "col-xl-10", "label": "10/12"},
               {"value": "col-xl-11", "label": "11/12"},
               {"value": "col-xl-12", "label": "12/12"}
-            ]
+            ],
+            "visible_if": "{{ block.settings.novmenu_banner_enable2 }}"
           },
           {
             "type": "image_picker",
             "id": "novmenu_banner2",
-            "label": "Banner image"
+            "label": "Banner image",
+            "visible_if": "{{ block.settings.novmenu_banner_enable2 }}"
           },
           {
             "type": "url",
             "id": "novmenu_banner_link2",
-            "label": "Banner link"
+            "label": "Banner link",
+            "visible_if": "{{ block.settings.novmenu_banner_enable2 }}"
           },
           {
             "type": "richtext",
             "id": "novmenu_banner_text2",
-            "label": "Text"
+            "label": "Text",
+            "visible_if": "{{ block.settings.novmenu_banner_enable2 }}"
           },
           {
             "type": "color_scheme",
             "id": "novmenu_banner_text_color2",
             "label": "Text color",
-            "default": "background-1"
+            "default": "background-1",
+            "visible_if": "{{ block.settings.novmenu_banner_enable2 }}"
           },
           {
             "type": "text",
             "id": "class_bn2",
-            "label": "Banner class"
+            "label": "Banner class",
+            "visible_if": "{{ block.settings.novmenu_banner_enable2 }}"
           },
           {
             "type": "header",
@@ -680,33 +723,39 @@
               {"value": "col-xl-10", "label": "10/12"},
               {"value": "col-xl-11", "label": "11/12"},
               {"value": "col-xl-12", "label": "12/12"}
-            ]
+            ],
+            "visible_if": "{{ block.settings.novmenu_banner_enable3 }}"
           },
           {
             "type": "image_picker",
             "id": "novmenu_banner3",
-            "label": "Banner image"
+            "label": "Banner image",
+            "visible_if": "{{ block.settings.novmenu_banner_enable3 }}"
           },
           {
             "type": "url",
             "id": "novmenu_banner_link3",
-            "label": "Banner link"
+            "label": "Banner link",
+            "visible_if": "{{ block.settings.novmenu_banner_enable3 }}"
           },
           {
             "type": "richtext",
             "id": "novmenu_banner_text3",
-            "label": "Text"
+            "label": "Text",
+            "visible_if": "{{ block.settings.novmenu_banner_enable3 }}"
           },
           {
             "type": "color_scheme",
             "id": "novmenu_banner_text_color3",
             "label": "Text color",
-            "default": "background-1"
+            "default": "background-1",
+            "visible_if": "{{ block.settings.novmenu_banner_enable3 }}"
           },
           {
             "type": "text",
             "id": "class_bn3",
-            "label": "Banner class"
+            "label": "Banner class",
+            "visible_if": "{{ block.settings.novmenu_banner_enable3 }}"
           },
           {
             "type": "header",
@@ -735,62 +784,73 @@
               {"value": "col-xl-10", "label": "10/12"},
               {"value": "col-xl-11", "label": "11/12"},
               {"value": "col-xl-12", "label": "12/12"}
-            ]
+            ],
+            "visible_if": "{{ block.settings.collection_enable }}"
           },
           {
             "type": "text",
             "id": "name_collec_1",
             "label": "Title collection 1",
-            "default": "Best Sellers"
+            "default": "Best Sellers",
+            "visible_if": "{{ block.settings.collection_enable }}"
           },
           {
             "type": "url",
             "id": "link_1",
-            "label": "Link collection 1"
+            "label": "Link collection 1",
+            "visible_if": "{{ block.settings.collection_enable }}"
           },
           {
             "type": "text",
             "id": "name_collec_2",
             "label": "Title collection 2",
-            "default": "New Arrival"
+            "default": "New Arrival",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_1 != blank }}"
           },
           {
             "type": "url",
             "id": "link_2",
-            "label": "Link collection 2"
+            "label": "Link collection 2",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_1 != blank }}"
           },
           {
             "type": "text",
             "id": "name_collec_3",
             "label": "Title collection 3",
-            "default": "Top Trending"
+            "default": "Top Trending",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_2 != blank }}"
           },
           {
             "type": "url",
             "id": "link_3",
-            "label": "Link collection 3"
+            "label": "Link collection 3",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_2 != blank }}"
           },
           {
             "type": "text",
             "id": "name_collec_4",
             "label": "Title collection 4",
-            "default": "Top Trending"
+            "default": "Top Trending",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_3 != blank }}"
           },
           {
             "type": "url",
             "id": "link_4",
-            "label": "Link collection 4"
+            "label": "Link collection 4",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_3 != blank }}"
           },
           {
             "type": "text",
             "id": "name_collec_5",
             "label": "Title collection 5",
-            "default": "Denim Collection"
+            "default": "Denim Collection",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_4 != blank }}"
           },
           {
             "type": "url",
             "id": "link_5",
-            "label": "Link collection 5"
+            "label": "Link collection 5",
+            "visible_if": "{{ block.settings.collection_enable and block.settings.name_collec_4 != blank }}"
           },
           {
             "type": "header",
@@ -819,13 +879,15 @@
               {"value": "col-xl-10", "label": "10/12"},
               {"value": "col-xl-11", "label": "11/12"},
               {"value": "col-xl-12", "label": "12/12"}
-            ]
+            ],
+            "visible_if": "{{ block.settings.product_enable }}"
           },
           {
             "type": "text",
             "id": "title_product",
             "label": "Title product",
-            "default": "Featured Product"
+            "default": "Featured Product",
+            "visible_if": "{{ block.settings.product_enable }}"
           },
           {
             "type": "product_list",
@@ -836,7 +898,88 @@
             "type": "checkbox",
             "id": "autoplay",
             "label": "Auto play",
-            "default": true
+            "default": true,
+            "visible_if": "{{ block.settings.product_enable }}"
+          },
+          {
+            "type": "header",
+            "content": "Block Blog Slider"
+          },
+          {
+            "type": "checkbox",
+            "id": "blog_enable",
+            "label": "Enable Blog"
+          },
+          {
+            "type": "select",
+            "id": "blog_xl",
+            "label": "Width on megamenu large laptop 1200px ↑",
+            "default": "col-xl-4",
+            "options": [
+              {"value": "col-xl-1", "label": "1/12"},
+              {"value": "col-xl-2", "label": "2/12"},
+              {"value": "col-xl-3", "label": "3/12"},
+              {"value": "col-xl-4", "label": "4/12"},
+              {"value": "col-xl-5", "label": "5/12"},
+              {"value": "col-xl-6", "label": "6/12"},
+              {"value": "col-xl-7", "label": "7/12"},
+              {"value": "col-xl-8", "label": "8/12"},
+              {"value": "col-xl-9", "label": "9/12"},
+              {"value": "col-xl-10", "label": "10/12"},
+              {"value": "col-xl-11", "label": "11/12"},
+              {"value": "col-xl-12", "label": "12/12"}
+            ],
+            "visible_if": "{{ block.settings.blog_enable }}"
+          },
+          {
+            "type": "text",
+            "id": "title_blog",
+            "label": "Title Blog",
+            "default": "Featured Blog",
+            "visible_if": "{{ block.settings.blog_enable }}"
+          },
+          {
+            "type": "blog",
+            "id": "blog",
+            "label": "Blog"
+          },
+          {
+            "type": "range",
+            "id": "blog_limit",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "label": "Post count",
+            "default": 6,
+            "visible_if": "{{ block.settings.blog_enable }}"
+          },
+          {
+            "type": "checkbox",
+            "id": "author_enable",
+            "label": "Show author",
+            "default": true,
+            "visible_if": "{{ block.settings.blog_enable }}"
+          },
+          {
+            "type": "checkbox",
+            "id": "date_enable",
+            "label": "Show date",
+            "default": true,
+            "visible_if": "{{ block.settings.blog_enable }}"
+          },
+          {
+            "type": "checkbox",
+            "id": "comment_enable",
+            "label": "Show comment",
+            "default": true,
+            "visible_if": "{{ block.settings.blog_enable }}"
+          },
+          {
+            "type": "checkbox",
+            "id": "autoplay_blog",
+            "label": "Auto play",
+            "default": true,
+            "visible_if": "{{ block.settings.blog_enable }}"
           }
         ]
       },

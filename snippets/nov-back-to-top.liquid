@@ -1,0 +1,63 @@
+<div class="desktop_back_top d-flex align-items-center justify-content-center fixed pointer overflow-hidden duration-300 z-9">
+  <span id="NovBackTop" class="absolute w-100 b-0"></span>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708z"/>
+    <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+  </svg>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var current_width = window.innerWidth;
+
+    if (current_width > 767) {
+      var backToTopBtn     = document.getElementById('NovBackTop');
+      var backToTopParents = document.querySelector('.desktop_back_top');
+
+      window.addEventListener('scroll', function() {
+        var scrollPosition  = window.scrollY;
+        var documentHeight  = document.documentElement.scrollHeight;
+        var windowHeight    = window.innerHeight;
+        var scrollPercentage = (scrollPosition / (documentHeight - windowHeight)) * 100;
+
+        if (backToTopBtn) {
+          backToTopBtn.style.height = scrollPercentage + '%';
+        }
+        if (backToTopParents) {
+          if (scrollPosition > 100) {
+            backToTopParents.classList.add('show');
+          } else {
+            backToTopParents.classList.remove('show');
+          }
+        }
+      });
+
+      if (backToTopParents) {
+        backToTopParents.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+    } else {
+      var timer;
+      var backTopMobile = document.getElementById('back_top');
+
+      window.addEventListener('scroll', function() {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function() {
+          if (backTopMobile) {
+            backTopMobile.style.display = 'block';
+            backTopMobile.style.opacity = '1';
+          }
+        }, 200);
+      });
+
+      if (backTopMobile) {
+        backTopMobile.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    }
+  });
+</script>

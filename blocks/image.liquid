@@ -32,16 +32,8 @@
 -%}
 <div class="theme-blocks-item block-{{ block.id }} image-block position-relative{% if bst.parallax %} block__parallax{% endif %}{% if bst.img_animation != 'nov-sh-image-2' %} {{ bst.img_animation }}{% endif %}{% if bst.width_custom %} custom-width align-{{ bst.align }}{% endif %}{% if bst.height_custom %} custom-height{% endif %}" style="{{ image_style }}" {{ block.shopify_attributes }}>
   {% if bst.image != blank %}
-    {%- liquid
-      assign is_eager_block = false
-      if section.index == 1
-        if forloop == nil or forloop.first
-          assign is_eager_block = true
-        endif
-      endif
-    -%}
     <div class="image-wrapper position-relative overflow_hidden{% if bst.parallax %} js-img-parallax js-observe-act{% endif %}{% if bst.img_animation == 'nov-sh-image-2' %} {{ bst.img_animation }}{% endif %}" data-section-id="{{ block.id }}">
-      {% render 'nov-imgset', image: bst.image, aspect: aspect, class: class, eager: is_eager_block %}
+      {% render 'nov-imgset', image: bst.image, aspect: aspect, class: class %}
       {% if bst.link != blank %}<a href="{{ bst.link }}" class="d-block absolute t-0 l-0 w-100 h-100" title="{{ bst.image.alt }}"></a>{% endif %}
     </div>
     {% if bst.content %}

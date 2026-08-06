@@ -5,6 +5,7 @@
   #block-{{ block.id }} .slider-item-content {
     border-radius: {{ bst.item_corner_tl | append: 'px' }} {{ bst.item_corner_tr | append: 'px' }} {{ bst.item_corner_br | append: 'px' }} {{ bst.item_corner_bl | append: 'px' }};
     transform: translateZ(0);
+    overflow: hidden;
     {% if bst.show_item_boxshadow and bst.show_item_boxshadow_when_hover == false %}
       box-shadow: 5px 5px 20px rgba(0,0,0, 0.1);
     {% endif %}

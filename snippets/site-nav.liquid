@@ -1,4 +1,4 @@
-<ul class="site-nav">
+<ul class="site-nav d-flex align-items-center">
   {% for link in linklists[mainmenu].links %}
     {%- assign is_mega = false -%}
     {%- assign is_icon = false -%}
@@ -31,7 +31,7 @@
               </div>
             </a>
             <div class="nav-dropdown--lv1 megaMenu{% if block.settings.type_width == 'full' %} site-nav--fw{% endif %} color-{{ color }}" style="{% if block.settings.img_bg != blank %}background-image: url({{ block.settings.img_bg | image_url: width: 1024 }});background-repeat: no-repeat;background-size: cover;{% endif %}--width: {{ block.settings.custom_width | default: 1440 }}px;">
-              <div class="site-nav__mega--content {% if block.settings.type_width == 'full' %}{% if section.settings.container == 'container-full' %}container-fluid{% else %}{{ section.settings.container }}{% endif %}{% endif %}">
+              <div class="site-nav__mega--content{% if block.settings.type_width == 'full' %}{% if section.settings.container == 'container-full' %} container-fluid{% else %} container{% endif %}{% endif %}">
                 <div class="row">
                   {% if block.settings.collection_enable %}
                     <div class="{{ block.settings.collection_xl }} site--nav-collection">
@@ -276,6 +276,7 @@
         <li class="nav--lv1 parent--lv1 site-nav--Default{% if link.active %} site-nav--active{% endif %}">
           <a href="{{ link.url }}" class="site-nav__link--main {{ section.settings.menu_ff }}" title="{{ link.title }}">
             <span class="site-nav--title">{{- link.title -}}</span>
+            {% render 'icon-arrow-down' %}
           </a>
           <div class="nav-dropdown--lv1 MenuDefault color-{{ color }}">
             {% if three_level_nav %}

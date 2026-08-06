@@ -688,8 +688,8 @@ novtheme.SearchAutoComplete = function () {
         blockAutoComplete.slideDown();
     });
     $(document).on('click', function (e) {
-        if (!$(e.target).closest('.search-header__content, .search_autocomplete, .search-trend-item, .hot-search-item').length) {
-            if (currentWidth > 767) {
+        if (currentWidth > 767 && searchCanvas.length == 0) {
+            if (!$(e.target).closest('.search-header__input, .search_autocomplete').length) {
                 blockAutoComplete.slideUp();
             }
         }
