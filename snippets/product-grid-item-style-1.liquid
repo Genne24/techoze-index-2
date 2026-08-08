@@ -22,7 +22,7 @@
   endif
 -%}
 
-<div class="item-product{% if settings.show_border_product %} h_bd{% endif %}{% if settings.show_background_product %} bg{% endif %}{% if settings.product_shadow %} bgshadow{% endif %} {{ settings.quickadd_type | prepend: 'type-quick-add-' }} {{ settings.btn_addtocart_type }} duration-300" data-product-id="product-{{ product.id }}" data-json-product='{"variants": {{ product.variants | json | escape }},"media": {{ product.media | json }}}'>
+<div class="item-product{% if settings.show_border_product %} h_bd{% endif %}{% if settings.show_background_product %} bg{% endif %}{% if settings.product_shadow_hv %} bgshadow{% endif %} {{ settings.quickadd_type | prepend: 'type-quick-add-' }} {{ settings.btn_addtocart_type }} duration-300" data-product-id="product-{{ product.id }}" data-json-product='{"variants": {{ product.variants | json | escape }},"media": {{ product.media | json }}}'>
   <div class="inner-top">
     <div class="product-top thumbnail-container{% if settings.show_second_image_product and product.images.size > 1 %} has-multiimage{% endif %} relative">
       {% assign img_url = product.featured_image %}
@@ -55,9 +55,6 @@
       </div>
       {% if settings.badge_enable %}
         {% render 'nov-product-badge', product: product, current_variant: current_variant %}
-      {% endif %}
-      {% if settings.enable_product_countdowntime and product.metafields.sale.countdown != blank %}
-        <div class="countdownfree d-flex mt-30{% if settings.product_countdown_shadow %} shadow{% endif %}" data-countdown="{{ product.metafields.sale.countdown }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
       {% endif %}
       <div class="button--top">
         {% if settings.wishlist_enable %}

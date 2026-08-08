@@ -11,12 +11,10 @@
     --mb-sm: {{ bst.mb_sm }}px;
     {% if bst.enable_custom_style %}
       --product-color-border: {{ bst.product_border_color }};
-      --product-color-background: {{ bst.product_background_color }};
-      --product-color-title: {{ bst.product_title_color }};
-      --product-color-title-hover: {{ bst.product_title_color_hover }};
-      --product-color-price: {{ bst.product_price_color }};
-      --product-color-reduced-price: {{ bst.product_price_reduced_color }};
       --product-corner-radius: {{ bst.product_corner }}px
+      {% endif %}
+    {% if bst.product_bg_enable %}
+    --product-color-background: {{ bst.product_background_color }};
     {% endif %}
     {% if bst.show_nav %}
       --slider-arrow-color: {{ bst.slider_arrow_color }};
@@ -24,22 +22,22 @@
     {% endif %}
   }
 {% endstyle %}
-<div id="block-{{ block.id }}" class="theme-blocks-item product-list-block position-relative {{ bst.arrow_color }} {{ bst.dots_color }}{% if bst.disable_rating %} dis-ratings{% endif %}{% if bst.enable_custom_style %}{% if bst.product_border_enable %} item-product-show-bd{% endif %}{% if bst.product_bg_enable %} item-product-show-bg{% endif %}{% endif %}" data-section-id="{{ section.id }}" data-section-type="nov-slick">
-  <div class="{% if bst.product_item_style == 'grid' %}grid--view-items{% else %}list--view-items{% endif %} nov-slick-carousel spacing-{{ bst.spacing }} spacing-sm-15{% if bst.right_overflow %} overflow-right{% endif %}"
+<div id="block-{{ block.id }}" class="theme-blocks-item product-list-block position-relative {{ bst.arrow_color }} {{ bst.dots_color }}{% if bst.disable_rating %} dis-ratings{% endif %}{% if bst.disable_type %} dis-type{% endif %}{% if bst.enable_custom_style %}{% if bst.product_border_enable %} item-product-show-bd{% endif %}{% if bst.product_bg_enable %} item-product-show-bg{% endif %}{% endif %}" data-section-id="{{ section.id }}" data-section-type="nov-slick">
+  <div class="{% if bst.product_item_style == 'grid' %}grid--view-items{% else %}list--view-items{% endif %} nov-slick-carousel{% if settings.product_shadow_hv %} hv_box_shadow{% endif %} spacing-{{ bst.spacing }} spacing-sm-15{% if bst.right_overflow %} overflow-right{% endif %}"
     data-autoplay="false"
     data-autoplayTimeout="6000"
     data-loop="{{ bst.loop }}"
     data-dots="{{ bst.show_dots }}"
     data-nav="false"
-    data-row="{{ bst.row_number }}"
-    data-row_mobile="{{ bst.row_number }}"
     data-items_xxl="{{ bst.xxl }}"
     data-items_xl="{{ bst.xl }}"
     data-items_lg="{{ bst.lg }}"
     data-items_md="{{ bst.md }}"
     data-items_sm="{{ bst.sm }}"
     data-items_xs="{{ bst.xs }}"
-  >
+    data-row="{{ bst.row_number }}"
+    data-row_mobile="{{ bst.row_number }}"
+    style="--spacing: {{ bst.spacing | append: 'px' }}">
     {% for product in collections[bst.collection].products limit: bst.limit %}
       <div class="sp-item item">
         {% if bst.product_item_style == 'grid' %}
@@ -250,6 +248,15 @@
       },
       {
         "type": "header",
+        "content": "Type"
+      },
+      {
+        "type": "checkbox",
+        "id": "disable_type",
+        "label": "Disable type"
+      },
+      {
+        "type": "header",
         "content": "Product Item Custom Style"
       },
       {
@@ -293,42 +300,6 @@
         "label": "Background color",
         "default": "#d4d4d4",
         "visible_if": "{{ block.settings.enable_custom_style and block.settings.product_bg_enable }}"
-      },
-      {
-        "type": "color",
-        "id": "product_title_color",
-        "label": "Title color",
-        "default": "#222",
-        "visible_if": "{{ block.settings.enable_custom_style }}"
-      },
-      {
-        "type": "color",
-        "id": "product_title_color_hover",
-        "label": "Title color hover",
-        "default": "#000",
-        "visible_if": "{{ block.settings.enable_custom_style }}"
-      },
-      {
-        "type": "color",
-        "id": "product_type_color",
-        "label": "Type color",
-        "default": "#222",
-        "info": "In case the show type option is enabled",
-        "visible_if": "{{ block.settings.enable_custom_style }}"
-      },
-      {
-        "type": "color",
-        "id": "product_price_color",
-        "label": "Price color",
-        "default": "#222",
-        "visible_if": "{{ block.settings.enable_custom_style }}"
-      },
-      {
-        "type": "color",
-        "id": "product_price_reduced_color",
-        "label": "Reduced price color",
-        "default": "#222",
-        "visible_if": "{{ block.settings.enable_custom_style }}"
       },
       {
         "type": "header",

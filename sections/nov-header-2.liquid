@@ -199,12 +199,18 @@
         </div>
         <div class="col-3 d-flex align-items-center justify-content-end">
           <div class="header-group-item d-flex align-items-center justify-content-end">
-            <div class="contentstickynew_search"></div>
+            {% if settings.search_enable %}
+              <div class="contentstickynew_search"></div>
+            {% endif %}
+            {% if shop.customer_accounts_enabled %}
+              <div class="contentstickynew_account"></div>
+            {% endif %}
             {% if settings.wishlist_enable %}
               <div class="contentstickynew_wishlist"></div>
             {% endif %}
-            <div class="contentstickynew_cart"></div>
-            <div class="contentstickynew_account"></div>
+            {% if settings.cart_enable %}
+              <div class="contentstickynew_cart"></div>
+            {% endif %}
           </div>
         </div>
       </div>

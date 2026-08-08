@@ -167,10 +167,10 @@
       "title": "Language"
     },
     "countdown": {
-      "days": "Days",
-      "hours": "Hours",
-      "minutes": "Mins",
-      "seconds": "Secs"
+      "days": "d",
+      "hours": "h",
+      "minutes": "m",
+      "seconds": "s"
     }
   },
   "sections": {
@@ -640,6 +640,7 @@
       "quick_add": "Quick Add",
       "add_to_cart": "Add to cart",
       "add_to_bag": "Add to bag",
+      "add_to_bundle": "Add to bundle",
       "pre_order": "Pre - Order",
       "buy_now": "Buy now",
       "select_options": "Select Options",

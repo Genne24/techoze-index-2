@@ -50,21 +50,23 @@
           {% for block in section.blocks %}
             {% assign bst = block.settings %}
             <div class="{% if sst.type == 'grid' %}{% render 'number-to-col', xxl: sst.xxl, xl: sst.xl, lg: sst.lg, md: sst.md, sm: sst.sm, xs: sst.xs %} mb-30 mb-sm-15{% elsif sst.type == 'carousel' %}swiper-slide item{% endif %}">
-              <div class="collec-item relative nov-sh-image-2 overflow-initial{%  if sst.hv_box_shadow %} hv_box_shadow{% endif %} duration-300{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
-                <div class="block-image duration-300">
+              <div class="collec-item relative nov-sh-image-2 overflow-initial{%  if sst.hv_box_shadow %} hv_box_shadow{% endif %} duration-300">
+                <div class="block-image d-flex align-items-center justify-content-center w-100">
                   {% if bst.image != blank %}
                     {% render 'nov-imgset', image: bst.image %}
                   {% else %}
                     {%- capture current -%}{% cycle 1, 2, 3, 4 %}{%- endcapture -%}
                     {{ 'collection-apparel-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
+                  <a href="{{ bst.link }}" class="link absolute t-0 l-0 w-100 h-100" aria-label="{{ bst.title }}"></a>
                 </div>
                 <div class="block-bottom relative duration-300">
                   {% if bst.title != blank %}
-                    <div class="block-title h3 fs-16 fs-lg-14 font-700 color-title duration-300{% if bst.desc == blank %} w-100 text-center{% endif %}">{{ bst.title }}</div>
+                    <div class="block-title h3 fs-16 fs-lg-14 font-700 color-title duration-300{% if bst.desc == blank %} w-100 text-center{% endif %}">
+                      <a href="{{ bst.link }}" aria-label="{{ bst.title }}">{{ bst.title }}</a>
+                    </div>
                   {% endif %}
                 </div>
-                <a href="{{ bst.link }}" class="link absolute t-0 l-0 w-100 h-100" aria-label="{{ bst.title }}"></a>
               </div>
             </div>    
           {% else %}

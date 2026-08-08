@@ -253,13 +253,18 @@ var body                = $('body'),
                         tabLink.removeClass('active');
                         tabContent.removeClass('active');
 
-                        if (!curTabContent.find('.collection-carousel').hasClass('slick-initialized')) {
+                        if (!curTabContent.find('.nov-swiper-carousel').length || !curTabContent.find('.nov-swiper-carousel')[0].swiper) {
                             nov.doAjaxNovProductTabs(curTab.data('href'), curTabContent.find('.products-grid'), tabLink);
                         }
 
                         curTab.addClass('active');
                         curTabContent.addClass('active');
                         $(this).closest('.nav-mobile').find('.nav-mobile__title').text($(this).text());
+
+                        var swiperContainer = curTabContent.find('.nov-swiper-carousel')[0];
+                        if (swiperContainer && swiperContainer.swiper) {
+                            swiperContainer.swiper.update();
+                        }
                     }
                     const currentTabId = curTabContent.data('tab-id');
                     const $appendDots = curTabContent.closest('[data-product-tabs]').find('.append-dots .slick-dots');
@@ -284,14 +289,13 @@ var body                = $('body'),
                     }
                     var sectionHTML = $(data['nov-ajax_collection_tab']).find('.grid-item').html();
                     curTabContent.html(sectionHTML);
+                    curTabContent.children().addClass('swiper-slide');
 
                     var limit = tabLink.data('limit') - 1;
                     curTabContent.find('.block:gt('+ limit +')').remove();
 
-                    if (curTabContent.hasClass('collection-carousel')) {
-                        if (!curTabContent.hasClass('slick-initialized')) {
-                            nov.initNovProductTabsSlider(curTabContent.parent());
-                        };
+                    if (curTabContent.hasClass('nov-swiper-carousel') || curTabContent.closest('.nov-swiper-carousel').length || curTabContent.find('.nov-swiper-carousel').length) {
+                        nov.initNovProductTabsSlider(curTabContent.closest('.tab-content'));
                     }
                     if (show_wishlist == true) {
                         nov.initNovWishListIcons();
@@ -318,15 +322,15 @@ var body                = $('body'),
                         var finalDate = $countdown.data('countdown');
                         var showDays = showDays || false;
                         var restartCountdown = restartCountdown || false;
-                        var finalDateGetTime = new Date(finalDate).getTime();
-                        var NewfinalDate = "";
-                        var now = new Date();
-                        if (finalDateGetTime - now.getTime() < 0 && restartCountdown == true) {
-                            NewfinalDate = new Date(now.getTime() + (86400 - (now.getHours() * 60 * 60) - (now.getMinutes() * 60) - now.getSeconds()) * 1000);
+                        var NewfinalDate = new Date(finalDate).getTime();
+                        var dayString = showDays ? '<div class="item-time"><span class="data-number">%D</span><span class="name-time">'+ theme.strings.days +'</span></div>' : '';
+                        var dateNow = new Date();
+                        if ((NewfinalDate - dateNow.getTime() < 0) && (restartCountdown == true)) {
+                            var date_restart = new Date(dateNow.getTime() + 1000 * (86400 - 60 * dateNow.getHours() * 60 - 60 * dateNow.getMinutes() - dateNow.getSeconds()));
+                            NewfinalDate = date_restart;
                         } else {
                             NewfinalDate = finalDate;
                         }
-                        var dayString = showDays ? '<div class="item-time"><span class="data-number">%D</span><span class="name-time">'+ theme.strings.days +'</span></div>' : '';
                         var countdown_format = dayString
                                            + '<div class="item-time"><span class="data-number">%H</span><span class="name-time">'+ theme.strings.hours +'</span></div>'
                                            + '<div class="item-time"><span class="data-number">%M</span><span class="name-time">'+ theme.strings.minutes +'</span></div>'
@@ -351,86 +355,62 @@ var body                = $('body'),
         initNovProductTabsSlider: function (tabslider) {
             tabslider.each(function () {
                 var self = $(this),
-                    productGrid = self.find('.products-grid'),
-                    t = !!$("html").hasClass("lang-rtl"),
-                    nav = productGrid.data("nav");
-                if (productGrid.not('.slick-initialized')) {
-                    const tabId = self.closest('.tab-content').data('tab-id');
-                    var isSliding = false;
-                    productGrid.on("init", function(slick) {
-                        const $dots = productGrid.closest('[data-product-tabs]').find('.append-dots .slick-dots').last();
-                        $dots.attr('data-tab-id', tabId);
-                    })
-                    productGrid.slick({
-                        nextArrow: '<div class="arrow-next">' + theme.icon_next + '</div>',
-                        prevArrow: '<div class="arrow-prev">' + theme.icon_prev + '</div>',
-                        rtl: t,
-                        slidesToShow: productGrid.data("items_xxl"),
-                        slidesToScroll: productGrid.data("items_xxl"),
-                        rows: productGrid.data("row"),
-                        row_mobile: productGrid.data("row_mobile"),
-                        arrows: nav,
-                        dots: productGrid.data("dots"),
-                        infinite: productGrid.data("loop"),
-                        appendDots: productGrid.closest('[data-product-tabs]').find('.append-dots'),
-                        responsive: [
-                            { 
-                                breakpoint: 1441, 
-                                settings: { 
-                                    slidesToShow: productGrid.data("items_xl"),
-                                    slidesToScroll: productGrid.data("items_xl"),
-                                }
-                            },
-                            { 
-                                breakpoint: 1200, 
-                                settings: { 
-                                    slidesToShow: productGrid.data("items_lg"), 
-                                    slidesToScroll: productGrid.data("items_lg"),
-                                } 
-                            },
-                            { 
-                                breakpoint: 992, 
-                                settings: { 
-                                    slidesToShow: productGrid.data("items_md"), 
-                                    slidesToScroll: productGrid.data("items_md"),
-                                } 
-                            },
-                            { 
-                                breakpoint: 768, 
-                                settings: { 
-                                    slidesToShow: productGrid.data("items_sm"), 
-                                    slidesToScroll: productGrid.data("items_sm"),
-                                    arrows: false,
-                                } 
-                            },
-                            { 
-                                breakpoint: 480, 
-                                settings: { 
-                                    slidesToShow: productGrid.data("items_xs"), 
-                                    slidesToScroll: productGrid.data("items_xs"),
-                                    arrows: !1,
-                                    rows: productGrid.data("row_mobile")
-                                } 
-                            },
-                        ]
-                    });
+                    swiperEl = self.find('.nov-swiper-carousel'),
+                    section = self.closest('[data-product-tabs]'),
+                    nextBtn = section.find('.nav-next')[0],
+                    prevBtn = section.find('.nav-prev')[0],
+                    scrollbarEl = section.find('.swiper-scrollbar')[0];
 
-                    $('[data-product-tabs]').find('.nav-prev').click(function(){
-                       $(this).parents('[data-product-tabs]').find('.tab-content.active').find(productGrid).slick('slickPrev');
-                    });
-                    $('[data-product-tabs]').find('.nav-next').click(function(){
-                       $(this).parents('[data-product-tabs]').find('.tab-content.active').find(productGrid).slick('slickNext');
-                    })
-                    productGrid.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-                        isSliding = true;
-                        if (isSliding) {
-                            productGrid.addClass('sliding');
-                        }
-                    });
-                    productGrid.on('afterChange', function(event, slick, currentSlide, nextSlide){
-                        isSliding = false;
-                        productGrid.removeClass('sliding');
-                    });
+                if (swiperEl.length) {
+                    var el = swiperEl[0];
+                    if (!el.swiper && typeof Swiper !== 'undefined') {
+                        var items_xxl = swiperEl.data('items_xxl') || 4,
+                            items_xl = swiperEl.data('items_xl') || 4,
+                            items_lg = swiperEl.data('items_lg') || 3,
+                            items_md = swiperEl.data('items_md') || 3,
+                            items_sm = swiperEl.data('items_sm') || 2,
+                            items_xs = swiperEl.data('items_xs') || 2,
+                            spacing = swiperEl.data('spacing') || 30,
+                            spacing_mobile = swiperEl.data('spacing_mobile') || 15,
+                            loop = swiperEl.data('loop') || false;
+
+                        new Swiper(el, {
+                            slidesPerView: items_xxl,
+                            slidesPerGroup: 1,
+                            spaceBetween: spacing,
+                            watchSlidesProgress: true,
+                            observer: true,
+                            observeParents: true,
+                            loop: loop,
+                            grabCursor: true,
+                            navigation: {
+                                nextEl: nextBtn,
+                                prevEl: prevBtn
+                            },
+                            scrollbar: scrollbarEl ? {
+                                el: scrollbarEl,
+                                draggable: true,
+                                snapOnRelease: true
+                            } : false,
+                            breakpoints: {
+                                1441: { slidesPerView: items_xxl, spaceBetween: spacing },
+                                1200: { slidesPerView: items_xl, spaceBetween: spacing },
+                                992: { slidesPerView: items_lg, spaceBetween: spacing },
+                                768: { slidesPerView: items_md, spaceBetween: spacing },
+                                576: { slidesPerView: items_sm, spaceBetween: spacing_mobile },
+                                0: { slidesPerView: items_xs, spaceBetween: spacing_mobile }
+                            },
+                            on: {
+                                init: function () {
+                                    if (window.assignCascadeOrder) {
+                                        window.assignCascadeOrder(this.el);
+                                    }
+                                }
+                            }
+                        });
+                    } else if (el.swiper) {
+                        el.swiper.update();
+                    }
                 }
             });
         },

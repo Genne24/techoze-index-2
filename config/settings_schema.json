@@ -2425,6 +2425,12 @@
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "product_shadow_hv",
+        "label": "Show box shadow hover",
+        "default": true
+      },
+      {
         "type": "header",
         "content": "Product Button"
       },

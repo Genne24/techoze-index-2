@@ -17,37 +17,6 @@
 
 {% style %}
   {% render 'nov-section-style' %}
-
-  #shopify-section-{{ section.id }} .countdownfree .item-time {
-    background-color: {{ sst.bg_cd }};
-    box-shadow: 2px 2px {{ sst.bd_cd }};
-  }
-  #shopify-section-{{ section.id }} .countdownfree .data-number {
-    color: {{ sst.c_cd }};
-    border-bottom: 1px solid {{ sst.name_cd }};
-  }
-  #shopify-section-{{ section.id }} .countdownfree .name-time{
-    color: {{ sst.name_cd }};
-  }
-
-  {% if sst.enable_custom_style %}
-	  #shopify-section-{{ section.id }} {
-	    --product-color-border: {{ sst.product_border_color }};
-	    --product-color-background: {{ sst.product_background_color }};
-	    --product-color-type: {{ sst.product_type_color }};
-	    --product-color-title: {{ sst.product_title_color }};
-	    --product-color-title-hover: {{ sst.product_title_color_hover }};
-	    --product-color-price: {{ sst.product_price_color }};
-	    --product-color-reduced-price: {{ sst.product_price_reduced_color }};
-	  }
-	{% endif %}
-  {% if sst.heading_border_bottom != blank %}
-    #shopify-section-{{ section.id }} .title_section {
-      --color-border: {{ sst.heading_border_color }};
-      --color-border-act: {{ sst.heading_border_color_act }};
-    }
-  {% endif %}
-  
 {% endstyle %}
 <div class="{{ bg_class_full }}" data-section-id="{{ section.id }}" data-section-type="nov-swiper">
   <div class="{{ sst.container }}">
@@ -69,13 +38,62 @@
         data-spacing="{{ sst.spacing }}">
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
-            {% if block.type == 'item' and block.settings.product != blank and block.settings.countdown_timeend != blank %}
-              {% assign product = block.settings.product %}
-              {% assign countdown_timeend = block.settings.countdown_timeend %}
-            {% endif %}
-            <div class="swiper-slide item">
-              {% render 'product-grid-item-style-deal', product: product, section_id: section.id, countdown_timeend: countdown_timeend %}
-            </div>
+            {% assign bst = block.settings %}
+            {%- case block.type -%}
+              {%- when 'item' -%}
+                <div class="swiper-slide item">
+                  {% assign product = bst.product %}
+                  {% render 'product-grid-item-style-deal', product: product, section_id: section.id, show_countdown: sst.show_countdown, fz_title_product: sst.fz_title_product, fz_price_product: sst.fz_price_product, alignment_product: sst.alignment_product %}
+                </div>
+              {%- when 'banner' -%}
+                <div class="swiper-slide item">
+                  {% if bst.banner != blank %}
+                    <div class="block-banner d-flex relative">
+                      <div class="theme-blocks-item image-block relative {{ bst.img_animation }}" style="--image-radius: {{ bst.image_radius | append: 'px' }};">
+                        <div class="image-wrapper position-relative overflow_hidden">
+                          {% render 'nov-imgset', image: bst.banner %}
+                        </div>
+                        <div class="img-blocks-content position-absolute {{ bst.content_position }} {{ bst.content_visibility }}{% if bst.content_visibility == 'content-partial-reveal' %} js-height{% endif %}{% if bst.display_flex %} d-flex align-items-center justify-content-between{% endif %}" style="--horizontal: {{ bst.content_position_horizontal }}%;--vertical: {{ bst.content_position_vertical }}%; width: {{ bst.content_width }}%; --width-xs: {{ bst.content_width_xs }}%; --bg: {{ bst.content_bg }}; --corner: {{ bst.content_corner }}px; --padding: {{ bst.content_padding }}px; --blur: {{ bst.content_blur }}px;{% if bst.content_shadow %} box-shadow: 0 8px 20px rgba(0,0,0,0.08){% endif %}">
+                          {%- liquid
+                            assign class_text = bst.font_family | append: ' ' | append: bst.font_weight | append: ' fs-' | append: bst.font_size_xxl | append: ' fs-xl-' | append: bst.font_size_xl | append: ' fs-lg-' | append: bst.font_size_lg | append: ' fs-md-' | append: bst.font_size_md | append: ' fs-sm-' | append: bst.font_size_sm | append: ' fs-xs-' | append: bst.font_size_xs
+                          -%}
+                          <div class="theme-blocks-item blocks-heading text-block {{ class_text }} text-{{ bst.alignment }}{% if bst.responsive_alignment %} text-xl-{{ bst.alignment_xl }} text-lg-{{ bst.alignment_lg }} text-md-{{ bst.alignment_md }} text-sm-{{ bst.alignment_sm }}{% endif %} {{ bst.text_transform }}"
+                            style="color: {{ bst.color }};letter-spacing: {{ bst.letter_spacing }}px;{% if bst.line_height != blank and bst.line_height == 1 %}line-height: 1;{% else %}line-height: {{ bst.line_height | append: 'px' }};{% endif %}{% if bst.line_height_mb != blank and bst.line_height_mb == 1 %}--line-height-mb: 1;{% else %}--line-height-mb: {{ bst.line_height | append: 'px' }};{% endif %}--max-width: {{ bst.max_w }}px;--mb-xxl: {{ bst.mb_xxl }}px;--mb-xl: {{ bst.mb_xl }}px;--mb-lg: {{ bst.mb_lg }}px;--mb-md: {{ bst.mb_md }}px;--mb-sm: {{ bst.mb_sm }}px;">
+                            {{ bst.title | newline_to_br }}
+                          </div>
+                          {%- liquid
+                            assign class_text_sub = bst.font_family_sub | append: ' ' | append: bst.font_weight_sub | append: ' fs-' | append: bst.font_size_xxl_sub | append: ' fs-xl-' | append: bst.font_size_xl_sub | append: ' fs-lg-' | append: bst.font_size_lg_sub | append: ' fs-md-' | append: bst.font_size_md_sub | append: ' fs-sm-' | append: bst.font_size_sm_sub | append: ' fs-xs-' | append: bst.font_size_xs_sub
+                          -%}
+                          <div class="theme-blocks-item blocks-heading text-block {{ class_text_sub }} text-{{ bst.alignment_sub }}{% if bst.responsive_alignment_sub %} text-xl-{{ bst.alignment_xl_sub }} text-lg-{{ bst.alignment_lg_sub }} text-md-{{ bst.alignment_md_sub }} text-sm-{{ bst.alignment_sm_sub }}{% endif %} {{ bst.text_transform_sub }}"
+                            style="color: {{ bst.color_sub }};letter-spacing: {{ bst.letter_spacing_sub }}px;{% if bst.line_height_sub != blank and bst.line_height_sub == 1 %}line-height: 1;{% else %}line-height: {{ bst.line_height_sub | append: 'px' }};{% endif %}--max-width: {{ bst.max_w_sub }}px;--mb-xxl: {{ bst.mb_xxl_sub }}px;--mb-xl: {{ bst.mb_xl_sub }}px;--mb-lg: {{ bst.mb_lg_sub }}px;--mb-md: {{ bst.mb_md_sub }}px;--mb-sm: {{ bst.mb_sm_sub }}px;">
+                            {{ bst.text_sub | newline_to_br }}
+                          </div>
+                        </div>
+                        <div class="theme-blocks-item button-block position-absolute {{ bst.content_position_btn }} {{ bst.content_visibility }}{% if bst.content_visibility == 'content-partial-reveal' %} js-height{% endif %} d-flex align-items-center justify-content-{{ bst.text_alignment }} gap-10 color-{{ bst.color_scheme }} text-{{ bst.text_alignment }} z-2" style="--horizontal: {{ bst.content_position_horizontal_btn }}%;--vertical: {{ bst.content_position_vertical_btn }}%; width: {{ bst.content_width_btn }}%;{% if bst.btn_type == 'link' %}--color-link: {{ bst.link_color }};--color-hover: {{ bst.link_color_hover }}{% endif %}{% if bst.btn_cus_style and bst.btn_type == 'btn' %}--button-normal-height: {{ bst.btn_cus_height }}px;{% endif %}" {{ block.shopify_attributes }}>
+                          <a href="{{ bst.link_1 | default: '#' }}" class="{% if bst.btn_type == 'link' %}link d-inline-flex align-items-center fs-{{ bst.link_fs }} {{ bst.link_fw }}{% else %}btn {{ bst.button_size }} btn-primary btn-alternate {% if bst.button_full_width %}{% endif %}{% if bst.btn_cus_style %} fs-{{ bst.btn_cus_fs }} {{ bst.btn_cus_fw }}{% endif %}{% endif %}{% if bst.icon_svg_p == 'before' %} flex-row-reverse{% endif %}">
+                            <span>{{ bst.button_label_1 }}</span>
+                            {% if bst.show_arrow %}
+                              <i class="zmdi zmdi-long-arrow-right"></i>
+                            {% endif %}
+                            {% if bst.show_arrow == false and bst.icon_svg != blank %}
+                              <span class="icon-svg">{{ bst.icon_svg }}</span>
+                            {% endif %}
+                          </a>
+                          <a href="{{ bst.link_2 | default: '#' }}" class="{% if bst.btn_type == 'link' %}link d-inline-flex align-items-center fs-{{ bst.link_fs }} {{ bst.link_fw }}{% else %}btn {{ bst.button_size }} btn-secondary btn-alternate {% if bst.button_full_width %}{% endif %}{% if bst.btn_cus_style %} fs-{{ bst.btn_cus_fs }} {{ bst.btn_cus_fw }}{% endif %}{% endif %}{% if bst.icon_svg_p == 'before' %} flex-row-reverse{% endif %}">
+                            <span>{{ bst.button_label_2 }}</span>
+                            {% if bst.show_arrow %}
+                              <i class="zmdi zmdi-long-arrow-right"></i>
+                            {% endif %}
+                            {% if bst.show_arrow == false and bst.icon_svg != blank %}
+                              <span class="icon-svg">{{ bst.icon_svg }}</span>
+                            {% endif %}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+            {%- endcase -%}
           {% else %}
             {%- for i in (1..4) -%}
               <div class="item {% render 'number-to-col', xxl: sst.xxl, xl: sst.xl, lg: sst.lg, md: sst.md, sm: sst.sm, xs: sst.xs  %}">
@@ -289,28 +307,10 @@
       "content": "Countdown Style"
     },
     {
-      "type": "color",
-      "id": "bg_cd",
-      "label": "Background",
-      "default": "#d2d2d2"
-    },
-    {
-      "type": "color",
-      "id": "bd_cd",
-      "label": "Border",
-      "default": "#d2d2d2"
-    },
-    {
-      "type": "color",
-      "id": "c_cd",
-      "label": "Color number",
-      "default": "#000"
-    },
-    {
-      "type": "color",
-      "id": "name_cd",
-      "label": "Name color",
-      "default": "#222222"
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show countdown",
+      "default": true
     },
     {
       "type": "header",
@@ -327,14 +327,6 @@
 			"label": "Show border",
 			"visible_if": "{{ section.settings.enable_custom_style }}"
 		},
-    {
-			"type": "color",
-			"id": "product_border_color",
-			"label": "Border color",
-			"default": "#d2d2d2",
-			"info": "In case the show border option is enabled",
-			"visible_if": "{{ section.settings.enable_custom_style and section.settings.product_border_enable }}"
-		},
 		{
 			"type": "checkbox",
 			"id": "product_bg_enable",
@@ -349,42 +341,34 @@
 			"info": "In case the show background option is enabled",
 			"visible_if": "{{ section.settings.enable_custom_style and section.settings.product_bg_enable }}"
 		},
-		{
-			"type": "color",
-			"id": "product_title_color",
-			"label": "Title color",
-			"default": "#222",
-			"visible_if": "{{ section.settings.enable_custom_style }}"
-		},
-		{
-			"type": "color",
-			"id": "product_title_color_hover",
-			"label": "Title color hover",
-			"default": "#000",
-			"visible_if": "{{ section.settings.enable_custom_style }}"
-		},
-		{
-			"type": "color",
-			"id": "product_type_color",
-			"label": "Type color",
-			"default": "#222",
-			"info": "In case the show type option is enabled",
-			"visible_if": "{{ section.settings.enable_custom_style }}"
-		},
-		{
-			"type": "color",
-			"id": "product_price_color",
-			"label": "Price color",
-			"default": "#222",
-			"visible_if": "{{ section.settings.enable_custom_style }}"
-		},
-		{
-			"type": "color",
-			"id": "product_price_reduced_color",
-			"label": "Reduced price color",
-			"default": "#222",
-			"visible_if": "{{ section.settings.enable_custom_style }}"
-		},
+    {
+      "type": "range",
+      "id": "fz_title_product",
+      "min": 0,
+      "max": 70,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 20,
+      "info": "Font size product title"
+    },
+    {
+      "type": "range",
+      "id": "fz_price_product",
+      "min": 0,
+      "max": 70,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 24,
+      "info": "Font size product price"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment_product",
+      "label": "Alignment product",
+      "default": "center"
+    },
     {
       "type": "header",
       "content": "Section Style"
@@ -666,28 +650,980 @@
           "type": "product",
           "id": "product",
           "label": "Select Product"
-        },
-        {
-          "type": "text",
-          "id": "countdown_timeend",
-          "label": "Time end product",
-          "placeholder": "YYYY-MM-DD"
-        },
-        {
-          "type": "paragraph",
-          "content": "Format: 'Year-Month-Day'"
-        },
-        {
-          "type": "paragraph",
-          "content": "Example: '2030-01-30'"
         }
+      ]
+    },
+    {
+      "type": "banner",
+      "name": "Banner Item",
+      "settings": [
+				{
+					"type": "image_picker",
+					"id": "banner",
+					"label": "Banner image"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link Banner",
+					"visible_if": "{{ block.settings.banner != blank }}"
+				},
+				{
+					"type":  "header",
+					"content": "Config Banner",
+					"visible_if": "{{ block.settings.banner != blank }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_st_banner",
+					"label": "Config Banner",
+					"visible_if": "{{ block.settings.banner != blank }}"
+				},
+				{
+					"type": "header",
+					"content": "Image Config",
+					"visible_if": "{{ block.settings.show_st_banner }}"
+				},
+				{
+					"type": "number",
+					"id": "image_radius",
+					"label": "Image radius",
+					"default": 20,
+					"info": "Unit: px",
+					"visible_if": "{{ block.settings.show_st_banner }}"
+				},
+				{
+					"type": "select",
+					"id": "img_animation",
+					"label": "Image animation when hover",
+					"default": "nov-sh-image-1",
+					"options": [
+						{"value": "nov-sh-image-1","label": "Style 1"},
+						{"value": "nov-sh-image-2","label": "Style 2"},
+						{"value": "nov-sh-image-3","label": "Style 3"},
+						{"value": "nov-sh-image-4","label": "Style 4"},
+						{"value": "nov-sh-image-5","label": "Style 5"},
+						{"value": "nov-sh-image-6","label": "Style 6"},
+						{"value": "nov-sh-image-7","label": "Style 7"},
+						{"value": "nov-sh-image-none","label": "None"}
+					],
+					"visible_if": "{{ block.settings.show_st_banner }}"
+				},
+				{
+					"type":  "header",
+					"content": "Config Title"
+				},
+				{
+					"type": "richtext",
+					"id": "title",
+					"label": "Title",
+					"default": "<p>Galaxy S30 Ultra</p>"
+				},
+				{
+					"type": "color",
+					"id": "color",
+					"alpha": true,
+					"label": "Color",
+					"default": "#FFFFFF",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment",
+					"label": "Alignment",
+					"default": "left",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "responsive_alignment",
+					"label": "Responsive alignment",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_xl",
+					"label": "Large laptop",
+					"info": "Breakpoint 1200px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_lg",
+					"label": "Laptop",
+					"info": "Breakpoint 992px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_md",
+					"label": "Tablet",
+					"info": "Breakpoint 768px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_sm",
+					"label": "Large mobile",
+					"info": "Breakpoint 576px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment }}"
+				},
+				{
+					"type": "select",
+					"id": "font_family",
+					"label": "Font family",
+					"options": [
+						{ "value": "f_df", "label": "Body font" },
+						{ "value": "f_pr", "label": "Heading font" }
+					],
+					"default": "f_df",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "select",
+					"id": "font_weight",
+					"label": "Font weight",
+					"options": [
+						{"value": "font-100","label": "Thin - 100"},
+						{"value": "font-300","label": "Light - 300"},
+						{"value": "font-400","label": "Regular - 400"},
+						{"value": "font-500","label": "Medium - 500"},
+						{"value": "font-600","label": "SemiBold - 600"},
+						{"value": "font-700","label": "Bold - 700"},
+						{"value": "font-800","label": "ExtraBold - 800"},
+						{"value": "font-900","label": "Black - 900"}
+					],
+					"default": "font-900",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "select",
+					"id": "text_transform",
+					"label": "Text transform",
+					"options": [
+						{ "value": "text-capitalize", "label": "Capitalize" },
+						{ "value": "text-uppercase", "label": "Uppercase" },
+						{ "value": "none", "label": "None" }
+					],
+					"default": "none",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "letter_spacing",
+					"label": "Letter spacing",
+					"default": 0,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "line_height",
+					"label": "Line height",
+					"default": 50,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "line_height_mb",
+					"label": "Line height mobile",
+					"default": 1,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "max_w",
+					"label": "Max width",
+					"default": 570,
+					"info": "Unit: px",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "header",
+					"content": "Font Size",
+					"info": "Unit: px",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_xxl",
+					"label": "Desktop",
+					"info": "Breakpoint 1441px ↑",
+					"min": 7,
+					"max": 100,
+					"step": 1,
+					"unit": "px",
+					"default": 40,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_xl",
+					"label": "Large laptop",
+					"info": "Breakpoint 1200px ↑",
+					"min": 7,
+					"max": 100,
+					"step": 1,
+					"unit": "px",
+					"default": 40,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_lg",
+					"label": "Laptop",
+					"info": "Breakpoint 992px ↑",
+					"min": 7,
+					"max": 80,
+					"step": 1,
+					"unit": "px",
+					"default": 40,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_md",
+					"label": "Tablet",
+					"info": "Breakpoint 768px ↑",
+					"min": 7,
+					"max": 60,
+					"step": 1,
+					"unit": "px",
+					"default": 40,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_sm",
+					"label": "Large mobile",
+					"info": "Breakpoint 576px ↑",
+					"min": 7,
+					"max": 60,
+					"step": 1,
+					"unit": "px",
+					"default": 40,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_xs",
+					"label": "Mobile",
+					"min": 7,
+					"max": 60,
+					"step": 1,
+					"unit": "px",
+					"default": 40,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "header",
+					"content": "Spacing",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_xxl",
+					"label": "Desktop",
+					"default": 14,
+					"info": "Breakpoint 1441px",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_xl",
+					"label": "Large laptop",
+					"default": 14,
+					"info": "Breakpoint 1200px",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_lg",
+					"label": "Laptop",
+					"default": 14,
+					"info": "Breakpoint 992px",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_md",
+					"label": "Tablet",
+					"default": 14,
+					"info": "Breakpoint 768px",
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_sm",
+					"label": "Mobile",
+					"default": 14,
+					"visible_if": "{{ block.settings.title != blank }}"
+				},
+				{
+					"type": "header",
+					"content": "Config Subtitle"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_st_subtitle",
+					"label": "Config Subtitle"
+				},
+				{
+					"type": "richtext",
+					"id": "text_sub",
+					"label": "Subtitle",
+					"default": "<p>Starting at $479</p>",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "color",
+					"id": "color_sub",
+					"alpha": true,
+					"label": "Color",
+					"default": "#FFFFFF",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_sub",
+					"label": "Alignment",
+					"default": "left",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "responsive_alignment_sub",
+					"label": "Responsive alignment",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_xl_sub",
+					"label": "Large laptop",
+					"info": "Breakpoint 1200px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment_sub and block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_lg_sub",
+					"label": "Laptop",
+					"info": "Breakpoint 992px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment_sub and block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_md_sub",
+					"label": "Tablet",
+					"info": "Breakpoint 768px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment_sub and block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "alignment_sm_sub",
+					"label": "Large mobile",
+					"info": "Breakpoint 576px ↑",
+					"visible_if": "{{ block.settings.responsive_alignment_sub and block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "select",
+					"id": "font_family_sub",
+					"label": "Font family",
+					"options": [
+							{ "value": "f_df", "label": "Body font" },
+							{ "value": "f_pr", "label": "Heading font" }
+					],
+					"default": "f_df",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "select",
+					"id": "font_weight_sub",
+					"label": "Font weight",
+					"options": [
+							{"value": "font-100","label": "Thin - 100"},
+							{"value": "font-300","label": "Light - 300"},
+							{"value": "font-400","label": "Regular - 400"},
+							{"value": "font-500","label": "Medium - 500"},
+							{"value": "font-600","label": "SemiBold - 600"},
+							{"value": "font-700","label": "Bold - 700"},
+							{"value": "font-800","label": "ExtraBold - 800"},
+							{"value": "font-900","label": "Black - 900"}
+					],
+					"default": "font-400",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "select",
+					"id": "text_transform_sub",
+					"label": "Text transform",
+					"options": [
+							{ "value": "text-capitalize", "label": "Capitalize" },
+							{ "value": "text-uppercase", "label": "Uppercase" },
+							{ "value": "none", "label": "None" }
+					],
+					"default": "text-uppercase",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "letter_spacing_sub",
+					"label": "Letter spacing",
+					"default": 0,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "line_height_sub",
+					"label": "Line height",
+					"default": 20,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "max_w_sub",
+					"label": "Max width",
+					"default": 570,
+					"info": "Unit: px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "header",
+					"content": "Font Size",
+					"info": "Unit: px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_xxl_sub",
+					"label": "Desktop",
+					"info": "Breakpoint 1441px ↑",
+					"min": 7,
+					"max": 100,
+					"step": 1,
+					"unit": "px",
+					"default": 14,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_xl_sub",
+					"label": "Large laptop",
+					"info": "Breakpoint 1200px ↑",
+					"min": 7,
+					"max": 100,
+					"step": 1,
+					"unit": "px",
+					"default": 14,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_lg_sub",
+					"label": "Laptop",
+					"info": "Breakpoint 992px ↑",
+					"min": 7,
+					"max": 80,
+					"step": 1,
+					"unit": "px",
+					"default": 14,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_md_sub",
+					"label": "Tablet",
+					"info": "Breakpoint 768px ↑",
+					"min": 7,
+					"max": 60,
+					"step": 1,
+					"unit": "px",
+					"default": 14,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_sm_sub",
+					"label": "Large mobile",
+					"info": "Breakpoint 576px ↑",
+					"min": 7,
+					"max": 60,
+					"step": 1,
+					"unit": "px",
+					"default": 14,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "range",
+					"id": "font_size_xs_sub",
+					"label": "Mobile",
+					"min": 7,
+					"max": 60,
+					"step": 1,
+					"unit": "px",
+					"default": 14,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "header",
+					"content": "Spacing Top (px)",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mt_xxl_sub",
+					"label": "Desktop",
+					"default": 0,
+					"info": "Breakpoint 1441px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mt_xl_sub",
+					"label": "Large laptop",
+					"default": 0,
+					"info": "Breakpoint 1200px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mt_lg_sub",
+					"label": "Laptop",
+					"default": 0,
+					"info": "Breakpoint 992px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mt_md_sub",
+					"label": "Tablet",
+					"default": 0,
+					"info": "Breakpoint 768px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mt_sm_sub",
+					"label": "Mobile",
+					"default": 0,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "header",
+					"content": "Spacing Bottom (px)",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_xxl_sub",
+					"label": "Desktop",
+					"default": 25,
+					"info": "Breakpoint 1441px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_xl_sub",
+					"label": "Large laptop",
+					"default": 25,
+					"info": "Breakpoint 1200px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_lg_sub",
+					"label": "Laptop",
+					"default": 25,
+					"info": "Breakpoint 992px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_md_sub",
+					"label": "Tablet",
+					"default": 25,
+					"info": "Breakpoint 768px",
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "number",
+					"id": "mb_sm_sub",
+					"label": "Mobile",
+					"default": 25,
+					"visible_if": "{{ block.settings.show_st_subtitle }}"
+				},
+				{
+					"type": "header",
+					"content": "Config Button"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_button",
+					"label": "Show Button"
+				},
+				{
+					"type": "select",
+					"id": "content_position_btn",
+					"label": "Button position",
+					"default": "bottom-center",
+					"options": [
+						{"value": "left-center", "label": "Left center"},
+						{"value": "left-bottom", "label": "Left bottom"},
+						{"value": "right-center", "label": "Right center"},
+						{"value": "right-bottom", "label": "Right bottom"},
+						{"value": "center-center", "label": "Middle center"},
+						{"value": "bottom-center", "label": "Bottom center"}
+					]
+				},
+				{
+					"type": "range",
+					"id": "content_position_horizontal_btn",
+					"label": "Position horizontal",
+					"default": 0,
+					"min": -40,
+					"max": 60,
+					"step": 1,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "content_position_vertical_btn",
+					"label": "Position vertical",
+					"default": 8,
+					"min": -40,
+					"max": 60,
+					"step": 1,
+					"unit": "%",
+					"visible_if": "{{ block.settings.content_position_btn == 'bottom-left' or block.settings.content_position_btn == 'bottom-right' or block.settings.content_position_btn == 'bottom-center' }}"
+				},
+				{
+					"type": "range",
+					"id": "content_width_btn",
+					"label": "Width",
+					"default": 100,
+					"min": 10,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "text",
+					"id": "button_label_1",
+					"label": "Button label 1",
+					"default": "Explore",
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "url",
+					"id": "link_btn_1",
+					"label": "Link 1",
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "text",
+					"id": "button_label_2",
+					"label": "Button label 2",
+					"default": "Shop Now",
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "url",
+					"id": "link_btn_2",
+					"label": "Link 2",
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_arrow",
+					"label": "Show arrow",
+					"default": false,
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "html",
+					"id": "icon_svg",
+					"label": "Icon SVG",
+					"visible_if": "{{ block.settings.show_button and block.settings.show_arrow }}"
+				},
+				{
+					"type": "select",
+					"id": "icon_svg_p",
+					"label": "Icon SVG position",
+					"default": "after",
+					"options": [
+							{ "value": "before", "label": "Before" },
+							{ "value": "after", "label": "After" }
+					],
+					"visible_if": "{{ block.settings.show_button and block.settings.icon_svg != blank }}"
+				},
+				{
+					"type": "select",
+					"id": "btn_type",
+					"label": "Button type",
+					"options": [
+							{ "value": "btn", "label": "Button" },
+							{ "value": "link", "label": "Link" }
+					],
+					"default": "btn",
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "number",
+					"id": "link_fs",
+					"label": "Font size",
+					"default": 14,
+					"visible_if": "{{ block.settings.btn_type == 'link' and block.settings.show_button }}"
+				},
+				{
+					"type": "select",
+					"id": "link_fw",
+					"label": "Font weight",
+					"options": [
+							{"value": "font-100","label": "Thin - 100"},
+							{"value": "font-300","label": "Light - 300"},
+							{"value": "font-400","label": "Regular - 400"},
+							{"value": "font-500","label": "Medium - 500"},
+							{"value": "font-600","label": "SemiBold - 600"},
+							{"value": "font-700","label": "Bold - 700"},
+							{"value": "font-800","label": "ExtraBold - 800"},
+							{"value": "font-900","label": "Black - 900"}
+					],
+					"default": "font-400",
+					"visible_if": "{{ block.settings.btn_type == 'link' and block.settings.show_button }}"
+				},
+				{
+					"type": "color",
+					"id": "link_color",
+					"label": "Color",
+					"default": "#666",
+					"visible_if": "{{ block.settings.btn_type == 'link' and block.settings.show_button }}"
+				},
+				{
+					"type": "color",
+					"id": "link_color_hover",
+					"label": "Color hover",
+					"default": "#000",
+					"visible_if": "{{ block.settings.btn_type == 'link' and block.settings.show_button }}"
+				},
+				{
+					"type": "color_scheme",
+					"id": "color_scheme",
+					"label": "Color scheme",
+					"default": "background-1",
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.show_button }}"
+				},
+				{
+					"type": "select",
+					"id": "button_size",
+					"label": "Button size",
+					"options": [
+							{ "value": "btn-normal", "label": "Normal" },
+							{ "value": "btn-medium", "label": "Medium" },
+							{ "value": "btn-large", "label": "Large" }
+					],
+					"default": "btn-normal",
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.show_button }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "button_full_width",
+					"label": "Full width",
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.show_button }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "btn_cus_style",
+					"label": "Custom style",
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.show_button }}"
+				},
+				{
+					"type": "number",
+					"id": "btn_cus_height",
+					"label": "Height",
+					"default": 50,
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.btn_cus_style and block.settings.show_button }}"
+				},
+				{
+					"type": "number",
+					"id": "btn_cus_fs",
+					"label": "Font size",
+					"default": 14,
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.btn_cus_style and block.settings.show_button }}"
+				},
+				{
+					"type": "select",
+					"id": "btn_cus_fw",
+					"label": "Font weight",
+					"options": [
+							{"value": "font-300","label": "Light - 300"},
+							{"value": "font-400","label": "Regular - 400"},
+							{"value": "font-500","label": "Medium - 500"},
+							{"value": "font-600","label": "SemiBold - 600"},
+							{"value": "font-700","label": "Bold - 700"},
+							{"value": "font-800","label": "ExtraBold - 800"},
+							{"value": "font-900","label": "Black - 900"}
+					],
+					"default": "font-700",
+					"visible_if": "{{ block.settings.btn_type == 'btn' and block.settings.btn_cus_style and block.settings.show_button }}"
+				},
+				{
+					"type": "text_alignment",
+					"id": "text_alignment",
+					"label": "Alignment",
+					"default": "left",
+					"visible_if": "{{ block.settings.show_button }}"
+				},
+				{
+					"type": "header",
+					"content": "Content Style"
+				},
+				{
+					"type": "checkbox",
+					"id": "content",
+					"label": "Content",
+					"info": "Enable to show content"
+				},
+				{
+					"type": "select",
+					"id": "content_visibility",
+					"label": "Content visibility",
+					"default": "content-visible",
+					"options": [
+						{"value": "content-visible", "label": "Always Visible" },
+						{"value": "content-full-reveal", "label": "Full Reveal"},
+						{"value": "content-partial-reveal", "label": "Partial Reveal"}
+					],
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "select",
+					"id": "content_position",
+					"label": "Content position",
+					"default": "left-top",
+					"options": [
+						{"value": "left-top", "label": "Left top" },
+						{"value": "left-center", "label": "Left center"},
+						{"value": "left-bottom", "label": "Left bottom"},
+						{"value": "right-top", "label": "Right top" },
+						{"value": "right-center", "label": "Right center"},
+						{"value": "right-bottom", "label": "Right bottom"},
+						{"value": "top-center", "label": "Top center"},
+						{"value": "center-center", "label": "Middle center"},
+						{"value": "bottom-center", "label": "Bottom center"}
+					],
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "range",
+					"id": "content_position_horizontal",
+					"label": "Position horizontal",
+					"default": 7,
+					"min": -40,
+					"max": 60,
+					"step": 1,
+					"unit": "%",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "range",
+					"id": "content_position_vertical",
+					"label": "Position vertical",
+					"default": 8,
+					"min": -40,
+					"max": 60,
+					"step": 1,
+					"unit": "%",
+					"visible_if": "{{ block.settings.content != blank and block.settings.content_position == 'left-top' or block.settings.content_position == 'right-top' }}"
+				},
+				{
+					"type": "range",
+					"id": "content_width",
+					"label": "Width",
+					"default": 86,
+					"min": 10,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "range",
+					"id": "content_width_xs",
+					"label": "Width mobile 575px ↓",
+					"default": 86,
+					"min": 10,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "color",
+					"id": "content_bg",
+					"alpha": true,
+					"label": "Background color",
+					"default": "#fff",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "range",
+					"id": "content_blur",
+					"min": 0,
+					"max": 50,
+					"step": 1,
+					"unit": "px",
+					"label": "Background blur",
+					"default": 0,
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "content_shadow",
+					"label": "Box shadow",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "range",
+					"id": "content_corner",
+					"min": 0,
+					"max": 50,
+					"step": 1,
+					"unit": "px",
+					"label": "Corner radius",
+					"default": 0,
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "number",
+					"id": "content_padding",
+					"label": "Padding",
+					"default": 10,
+					"info": "Unit: px",
+					"visible_if": "{{ block.settings.content }}"
+				},
+				{
+					"type": "checkbox",
+					"id": "display_flex",
+					"label": "Display flex",
+					"visible_if": "{{ block.settings.content }}"
+				}
       ]
     }
   ],
   "presets": [
     {
       "name": "Vinova Product Deals",
-      "category": "Product"
+      "category": "Product",
+			"blocks": [
+				{
+					"type":"item"
+				},
+				{
+					"type":"banner"
+				},
+				{
+					"type":"item"
+				}
+			]
     }
   ]
 }

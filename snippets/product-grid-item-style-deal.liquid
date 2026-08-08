@@ -21,7 +21,7 @@
    assign swatch_color = true
   endif
 -%}
-<div class="item-product" data-product-id="product-{{ product.id }}" data-json-product='{"variants": {{ product.variants | json | escape }},"media": {{product.media | json}}}'>
+<div class="item-product{% if settings.show_background_product %} bg{% endif %}{% if settings.product_shadow_hv %} bgshadow{% endif %} {{ settings.quickadd_type | prepend: 'type-quick-add-' }} {{ settings.btn_addtocart_type }} duration-300" data-product-id="product-{{ product.id }}" data-json-product='{"variants": {{ product.variants | json | escape }},"media": {{ product.media | json }}}'>
   <div class="inner-top">
     <div class="product-top thumbnail-container h-100{% if settings.show_second_image_product and product.images.size > 1 %} has-multiimage{% endif %}">
       {% assign img_url = product.featured_image %}
@@ -56,9 +56,6 @@
       {% if settings.badge_enable %}
         {% render 'nov-product-badge', product: product, current_variant: current_variant %}
       {% endif %}
-      {% if settings.enable_product_countdowntime and product.metafields.sale.countdown != blank %}
-        <div class="countdownfree d-flex mt-30{% if settings.product_countdown_shadow %} shadow{% endif %}" data-countdown="{{ product.metafields.sale.countdown }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
-      {% endif %}
       <div class="button--top">
         {% if settings.wishlist_enable %}
           {% render 'nov-wishlist', id: product.id, handle: product.handle %}
@@ -81,17 +78,17 @@
         </div>
       {% endif %}
     </div>
-    <div class="product__info text-left">
+    <div class="product__info {{ alignment_product | prepend: 'text-' }}">
       {% if settings.product_type %}
         <div class="product__type">{{ product.type | link_to_type }}</div>
       {% endif %}
-      <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
+      <div class="product__title {{ settings.title_product_line }}" style="--fz-title-product: {{ fz_title_product | append: 'px' }};"><a href="{{ product.url }}">{{ product.title }}</a></div>
       {% if settings.review_enable %}
         <div class="product__review">
           <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
         </div>
       {% endif %}
-      <div class="product__price price-box price-st d-flex align-items-center">
+      <div class="product__price price-box price-st d-flex align-items-center justify-content-{{ alignment_product }}" style="--fz-price-product: {{ fz_price_product | append: 'px' }};--fz-reduced-price-product: {{ fz_price_product | minus: 6 | append: 'px' }};">
         {% render 'nov-product-price', product: product %}
       </div>
       {% if settings.addtocart_enable and available == true %}
@@ -124,6 +121,12 @@
               <div class="progress__bar position-absolute" style="width: {{ product_start_count | minus:available | times: 100 | divided_by : product_start_count }}%;background: {% if settings.enable_rtl and iso_rtl %}{{ settings.gradient_deal | replace: '90deg', '-90deg' }}{% else %}{{ settings.gradient_deal }}{% endif %}"></div>
             </div>
           {% endif %}
+        </div>
+      {% endif %}
+      {%- assign countdown = product.metafields.sale.countdown -%}
+      {% if show_countdown %}
+        <div class="product__countdown d-flex align-items-center mt-26">
+          <div class="countdownfree" data-countdown="{{ countdown }}" data-show-days="{{ settings.show_day }}" data-restart="{{ settings.restart }}"></div>
         </div>
       {% endif %}
     </div>

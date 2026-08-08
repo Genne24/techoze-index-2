@@ -9,7 +9,7 @@
       <div class="sub_title" style="--color-subheading: {{ section.settings.subheading_color }};">{{ section.settings.subheading }}</div>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <div class="title" style="--color-heading: {{ section.settings.heading_color }}">{{ section.settings.heading }}</div>
+      <div class="title" style="--color-heading: {{ section.settings.heading_color }};--color-strong: {{ section.settings.color_strong }};">{{ section.settings.heading }}</div>
     {% endif %}
     {% if section.settings.subheading != blank and sub_position != 'top' %}
       <div class="sub_title" style="--color-subheading: {{ section.settings.subheading_color }};">{{ section.settings.subheading }}</div>

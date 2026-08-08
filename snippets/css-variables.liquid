@@ -4,25 +4,25 @@
   to use throughout the stylesheet
 {% endcomment %}
 {%- liquid
-  assign body_font_light = settings.type_base_family | font_modify: 'weight', '300'
-  assign body_font_medium = settings.type_base_family | font_modify: 'weight', '500'
-  assign body_font_semibold = settings.type_base_family | font_modify: 'weight', '600'
-  assign body_font_bold = settings.type_base_family | font_modify: 'weight', '700'
-  assign body_font_extrabold = settings.type_base_family | font_modify: 'weight', '800'
-  assign body_font_black = settings.type_base_family | font_modify: 'weight', '900'
-  assign body_font_italic = settings.type_base_family | font_modify: 'style', 'italic'
-  assign body_font_light_italic = body_font_light | font_modify: 'style', 'italic'
-  assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
-  assign heading_font_light = settings.type_header_family | font_modify: 'weight', '300'
-  assign heading_font_medium = settings.type_header_family | font_modify: 'weight', '500'
-  assign heading_font_semibold = settings.type_header_family | font_modify: 'weight', '600'
-  assign heading_font_bold = settings.type_header_family | font_modify: 'weight', '700'
-  assign heading_font_extrabold = settings.type_header_family | font_modify: 'weight', '800'
-  assign heading_font_black = settings.type_header_family | font_modify: 'weight', '900'
-  assign heading_font_italic = settings.type_header_family | font_modify: 'style', 'italic'
-  assign heading_font_light_italic = heading_font_light | font_modify: 'style', 'italic'
-  assign heading_font_bold_italic = heading_font_bold | font_modify: 'style', 'italic'
-  assign heading_font_extrabold_italic = heading_font_extrabold | font_modify: 'style', 'italic'
+    assign body_font_light = settings.type_base_family | font_modify: 'weight', '300'
+    assign body_font_medium = settings.type_base_family | font_modify: 'weight', '500'
+    assign body_font_semibold = settings.type_base_family | font_modify: 'weight', '600'
+    assign body_font_bold = settings.type_base_family | font_modify: 'weight', '700'
+    assign body_font_extrabold = settings.type_base_family | font_modify: 'weight', '800'
+    assign body_font_black = settings.type_base_family | font_modify: 'weight', '900'
+    assign body_font_italic = settings.type_base_family | font_modify: 'style', 'italic'
+    assign body_font_light_italic = body_font_light | font_modify: 'style', 'italic'
+    assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    assign heading_font_light = settings.type_header_family | font_modify: 'weight', '300'
+    assign heading_font_medium = settings.type_header_family | font_modify: 'weight', '500'
+    assign heading_font_semibold = settings.type_header_family | font_modify: 'weight', '600'
+    assign heading_font_bold = settings.type_header_family | font_modify: 'weight', '700'
+    assign heading_font_extrabold = settings.type_header_family | font_modify: 'weight', '800'
+    assign heading_font_black = settings.type_header_family | font_modify: 'weight', '900'
+    assign heading_font_italic = settings.type_header_family | font_modify: 'style', 'italic'
+    assign heading_font_light_italic = heading_font_light | font_modify: 'style', 'italic'
+    assign heading_font_bold_italic = heading_font_bold | font_modify: 'style', 'italic'
+    assign heading_font_extrabold_italic = heading_font_extrabold | font_modify: 'style', 'italic'
 %}
 {% capture css_vars %}
     {%- if settings.type_google == false -%}
@@ -330,204 +330,6 @@
         --slider-arrow-bg: {{ settings.arrow_bg_on_no_bg }};
         --slider-arrow-border: {{ settings.arrow_bd_on_no_bg }};
         --slider-arrow-color-act: {{ settings.arrow_color_on_no_bg_act }};
-        --heading-font-size-h2: {{ settings.heading_font_size_h2 | divided_by: 10.0 | append: 'rem' }};
-        --heading-font-size-h3: {{ settings.heading_font_size_h3 | divided_by: 10.0 | append: 'rem' }};
-        --heading-font-size-h4: {{ settings.heading_font_size_h4 | divided_by: 10.0 | append: 'rem' }};
-        --heading-font-size-h5: {{ settings.heading_font_size_h5 | divided_by: 10.0 | append: 'rem' }};
-        --heading-font-size-h6: {{ settings.heading_font_size_h6 | divided_by: 10.0 | append: 'rem' }};
-        --heading-font-weight: {{ settings.heading_font_weight }};
-        --heading-font-style: {{ settings.heading_font_style }};
-        --heading-line-height: {{ settings.heading_line_height }};
-        {% if settings.heading_font_family == 'default' %}
-            --heading-font-family: var(--font-family-default);
-        {% else %}
-            --heading-font-family: var(--font-family-primary);
-        {% endif %}
-
-        --body-font-size: {{ settings.body_font_size | divided_by: 10.0 | append: 'rem' }};
-        --body-font-weight: {{ settings.body_font_weight }};
-        --body-font-style: {{ settings.body_font_style }};
-        --body-font-line-height: {{ settings.body_line_height }};
-
-
-        --section-heading-font-size: {{ settings.section_heading_font_size }}px;
-        --section-heading-font-size-lg: {{ settings.section_heading_font_size_lg }}px;
-        --section-heading-font-size-sm: {{ settings.section_heading_font_size_sm }}px;
-        --section-heading-font-weight: {{ settings.section_heading_font_weight }};
-        --section-subheading-font-size: {{ settings.section_subheading_font_size }}px;
-        --section-subheading-font-weight: {{ settings.section_subheading_font_weight }};
-        --section-subheading-letter-spacing: {{ settings.section_subheading_letter_spacing }}px;
-        --section-subheading-spacing: {{ settings.section_subheading_spacing }}px;
-        --section-descheading-font-size: {{ settings.section_descheading_font_size }}px;
-        --section-descheading-font-weight: {{ settings.section_descheading_font_weight }};
-        --section-descheading-spacing: {{ settings.section_descheading_spacing }}px;
-        --section-heading-spacing: {{ settings.section_heading_spacing }}px;
-        {% if settings.section_heading_font_family == 'default' %}
-            --section-heading-font-family: var(--font-family-default);
-        {% else %}
-            --section-heading-font-family: var(--font-family-primary);
-        {% endif %}
-        {% if settings.section_subheading_font_family == 'default' %}
-            --section-subheading-font-family: var(--font-family-default);
-        {% else %}
-            --section-subheading-font-family: var(--font-family-primary);
-        {% endif %}
-
-        --button-thickness: {{ settings.btn_thickness }}px;
-        --button-corner: {{ settings.btn_corner }}px;
-        --button-normal-width: {{ settings.btn_normal_width | divided_by: 10.0 | append: 'rem' }};
-        --button-normal-height: {{ settings.btn_normal_height | divided_by: 10.0 | append: 'rem' }};
-        --button-medium-width: {{ settings.btn_medium_width | divided_by: 10.0 | append: 'rem' }};
-        --button-medium-height: {{ settings.btn_medium_height | divided_by: 10.0 | append: 'rem' }};
-        --button-large-width: {{ settings.btn_large_width | divided_by: 10.0 | append: 'rem' }};
-        --button-large-height: {{ settings.btn_large_height | divided_by: 10.0 | append: 'rem' }};
-        --button-font-size:  {{ settings.btn_font_size | divided_by: 10.0 | append: 'rem' }};
-        --button-font-weight: {{ settings.btn_font_weight }};
-        --button-text-transform: {{ settings.btn_text_transform }};
-        {% if settings.btn_font_family == 'default' %}
-            --button-font-family: var(--font-family-default);
-        {% else %}
-            --button-font-family: var(--font-family-primary);
-        {% endif %}
-
-        --font-icon: "Material-Design-Iconic-Font";
-        --font-icons: "rbb-font";
-       
-        --product-corner-radius: {{ settings.corner_product }}px;
-        --product-corner-radius-image: {{ settings.corner_product_image }}px;
-        --product-color-border: {{ settings.product_border }};
-        --product-color-background: {{ settings.product_background }};
-        --bg-product-image: {{ settings.bg_product_img }};
-        --product-color-type: {{ settings.color_product_type }};
-        --product-color-title: {{ settings.product_title }};
-        --product-color-title-hover: {{ settings.product_title_hover }};
-        --product-color-price: {{ settings.product_price }};
-        --product-color-price-sale: {{ settings.product_price_sale }};
-        --product-color-reduced-price: {{ settings.product_reduced_price }};
-        --product-color-button: {{ settings.product_button }};
-        --product-color-button-text: {{ settings.on_product_button }};
-        --product-color-button-border: {{ settings.product_button_border }};
-        --product-color-button-hover: {{ settings.product_button_hover }};
-        --product-color-button-text-hover: {{ settings.on_product_button_hover }};
-        --product-color-button-border-hover: {{ settings.product_button_border_hover }};
-
-        --color-badge-new: {{ settings.color_badge_new }};
-        --bg-badge-new: {{ settings.bg_badge_new }};
-        --color-badge-discount: {{ settings.color_badge_discount }};
-        --bg-badge-discount: {{ settings.bg_badge_discount }};
-        --color-badge-status: {{ settings.color_badge_status }};
-        --bg-badge-status: {{ settings.bg_badge_status }};
-        --color-badge-custom: {{ settings.color_badge_custom }};
-        --bg-badge-custom: {{ settings.bg_badge_custom }};
-
-        --product-color-addtocart-pattern: {{ settings.addtocart_pattern_color }};
-
-        --product-countdown-color: {{ settings.product_countdown_color }};
-        --product-countdown-bg: {{ settings.product_countdown_bg }};
-        --product-countdown-border: {{ settings.product_countdown_border }};
-        --product-countdown-corner: {{ settings.product_countdown_corner }}px;
-        
-        --breadcrumb-product-bg: {{ settings.breadcrumb_product_bg }};
-        --breadcrumb-product-text-color: {{ settings.breadcrumb_product_text_color }};
-        --breadcrumb-product-top: {{ settings.breadcrumb_product_top }}px;
-        --breadcrumb-product-bottom: {{ settings.breadcrumb_product_bottom }}px;
-        --breadcrumb-product-margin-bottom: {{ settings.breadcrumb_product_margin_bottom }}px;
-        --breadcrumb-product-border-color: {{ settings.breadcrumb_product_border_color }};
-
-        --breadcrumb-collection-bg: {{ settings.breadcrumb_collection_bg }};
-        --breadcrumb-collection-heading-color: {{ settings.breadcrumb_collection_heading_color }};
-        --breadcrumb-collection-text-color: {{ settings.breadcrumb_collection_text_color }};
-        --breadcrumb-collection-top: {{ settings.breadcrumb_collection_top }}px;
-        --breadcrumb-collection-bottom: {{ settings.breadcrumb_collection_bottom }}px;
-        --breadcrumb-collection-bottom-lg: {{ settings.breadcrumb_collection_bottom_lg }}px;
-        --breadcrumb-collection-bottom-md: {{ settings.breadcrumb_collection_bottom_md }}px;
-        --breadcrumb-collection-bottom-sm: {{ settings.breadcrumb_collection_bottom_sm }}px;
-        --breadcrumb-collection-bottom-xs: {{ settings.breadcrumb_collection_bottom_xs }}px;
-        --breadcrumb-collection-margin-bottom: {{ settings.breadcrumb_collection_margin_bottom }}px;
-        --breadcrumb-collection-margin-bottom-lg: {{ settings.breadcrumb_collection_margin_bottom_lg }}px;
-        --breadcrumb-collection-margin-bottom-md: {{ settings.breadcrumb_collection_margin_bottom_md }}px;
-        --breadcrumb-collection-margin-bottom-sm: {{ settings.breadcrumb_collection_margin_bottom_sm }}px;
-        --breadcrumb-collection-margin-bottom-xs: {{ settings.breadcrumb_collection_margin_bottom_xs }}px;
-        --breadcrumb-collection-border-color: {{ settings.breadcrumb_collection_border_color }};
-
-        --breadcrumb-inner-bg: {{ settings.breadcrumb_inner_bg }};
-        --breadcrumb-inner-heading-color: {{ settings.breadcrumb_inner_heading_color }};
-        --breadcrumb-inner-text-color: {{ settings.breadcrumb_inner_text_color }};
-        --breadcrumb-inner-top: {{ settings.breadcrumb_inner_top }}px;
-        --breadcrumb-inner-bottom: {{ settings.breadcrumb_inner_bottom }}px;
-        --breadcrumb-inner-margin-bottom: {{ settings.breadcrumb_inner_margin_bottom }}px;
-        --breadcrumb-inner-border-color: {{ settings.breadcrumb_inner_border_color }};
-
-        --bg-overlay: {{ settings.background_overlay.red }},{{ settings.background_overlay.green }},{{ settings.background_overlay.blue }};
-        --bg-overlay-opacity: {{ settings.background_overlay_opacity }}%;
-        --bg-overlay-blur: {{ settings.background_overlay_blur }}px;
-        
-        --bg-loadpage: {{ settings.bg_loadpage }};
-        --loadpage-img-width: {{ settings.loadpage_icon_width }}px;
-
-        --transition-drawer: all 0.45s cubic-bezier(0.29, 0.63, 0.44, 1);
-        --width-drawer-slide-in: calc(-1 * 45rem, 45rem));
-        --animation-speed: 0.3s;
-        --theme-drawer-width: 45rem;
-        --animation-timing-in: cubic-bezier(0.16, 1, 0.3, 1);
-        --animation-timing-out: cubic-bezier(0.4, 0, 0.2, 1);
-
-        --slider-dot-width: {{ settings.slider_dot_width }}px;
-        --slider-dot-width-act: {{ settings.slider_dot_width_act }}px;
-        --slider-dot-height: {{ settings.slider_dot_height }}px;
-        --slider-dot-height-act: {{ settings.slider_dot_height_act }}px;
-        --slider-dot-corner: {{ settings.slider_dot_corner }}px;
-        --slider-dot-color: {{ settings.slider_dot_color_on_light }};
-        --slider-dot-color-act: {{ settings.slider_dot_color_on_light_act }};
-        --slider-dot-border-size: {{ settings.slider_dot_border_size }}px;
-        --slider-dot-border-color: {{ settings.slider_dot_border_color_on_light }};
-
-        --slider-arrow-size: {{ settings.slider_arrow_size }}px;
-        --slider-arrow-corner: {{ settings.slider_arrow_corner }}px;
-        --slider-arrow-color: {{ settings.slider_arrow_color_on_light }};
-        --slider-arrow-bg: {{ settings.slider_arrow_bg_on_light }};
-        --slider-arrow-border: {{ settings.slider_arrow_bd_on_light }};
-        --slider-arrow-color-act: {{ settings.slider_arrow_color_on_light_act }};
-        --slider-arrow-bg-act: {{ settings.slider_arrow_bg_on_light_act }};
-        --slider-arrow-border-act: {{ settings.slider_arrow_bd_on_light_act }};
-
-        {% if settings.slider_arrow_boxshadow %}
-            --slider-arrow-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-        {% endif %}
-        --bg-news: {{ settings.bg_newsletter }};
-        {% if settings.bg_news_img != blank %}
-            --bg-news-img: url("{{ settings.bg_news_img | image_url: width: 1440 }}");
-        {% endif %}
-    }
-    .btn-secondary {
-        --color-button: var(--color-secondary-button);
-        --color-button-text: var(--color-secondary-button-text);
-        --color-button-border: var(--color-secondary-button-border);
-        --color-button-hover: var(--color-secondary-button-hover);
-        --color-button-text-hover: var(--color-secondary-button-text-hover);
-        --color-button-border-hover: var(--color-secondary-button-border-hover);
-    }
-    .dots_on_dark {
-        --slider-dot-color: {{ settings.slider_dot_color_on_dark }};
-        --slider-dot-color-act: {{ settings.slider_dot_color_on_dark_act }};
-        --slider-dot-border-color: {{ settings.slider_dot_border_color_on_dark }};
-    }
-    .arrow_on_dark {
-        --slider-arrow-color: {{ settings.slider_arrow_color_on_dark }};
-        --slider-arrow-bg: {{ settings.slider_arrow_bg_on_dark }};
-        --slider-arrow-border: {{ settings.slider_arrow_bd_on_dark }};
-        --slider-arrow-color-act: {{ settings.slider_arrow_color_on_dark_act }};
-        --slider-arrow-bg-act: {{ settings.slider_arrow_bg_on_dark_act }};
-        --slider-arrow-border-act: {{ settings.slider_arrow_bd_on_dark_act }};
-    }
-    .arrow_on_no_bg {
-        --slider-arrow-color: {{ settings.arrow_color_on_no_bg }};
-        --slider-arrow-bg: {{ settings.arrow_bg_on_no_bg }};
-        --slider-arrow-border: {{ settings.arrow_bd_on_no_bg }};
-        --slider-arrow-color-act: {{ settings.arrow_color_on_no_bg_act }};
-        --slider-arrow-bg-act: {{ settings.arrow_bg_on_no_bg_act }};
-        --slider-arrow-border-act: {{ settings.arrow_bd_on_no_bg_act }};
-        --slider-arrow-size: 50px;
     }
 {% endcapture %}
 <style>

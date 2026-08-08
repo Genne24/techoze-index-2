@@ -1,6 +1,6 @@
 {%- assign bst = block.settings -%}
 <div class="theme-blocks-item button-block color-{{ bst.color_scheme }} text-{{ bst.text_alignment }}" style="--mt-xxl: {{ bst.mt_xxl }}px;--mt-xl: {{ bst.mt_xl }}px; --mt-lg: {{ bst.mt_lg }}px; --mt-md: {{ bst.mt_md }}px; --mt-sm: {{ bst.mt_sm }}px; --mb-xxl: {{ bst.mb_xxl }}px; --mb-xl: {{ bst.mb_xl }}px; --mb-lg: {{ bst.mb_lg }}px; --mb-md: {{ bst.mb_md }}px; --mb-sm: {{ bst.mb_sm }}px;{% if bst.btn_type == 'link' %}--color-link: {{ bst.link_color }};--color-hover: {{ bst.link_color_hover }}{% endif %}{% if bst.btn_cus_style and bst.btn_type == 'btn' %}--button-normal-height: {{ bst.btn_cus_height }}px;{% endif %}" {{ block.shopify_attributes }}>
-  <a href="{{ bst.link | default: '#' }}" class="{% if bst.btn_type == 'link' %}link d-inline-flex align-items-center fs-{{ bst.link_fs }} {{ bst.link_fw }}{% else %}btn {{ bst.button_size }} {{ bst.button_type_color }} btn-alternate {% if bst.button_full_width %} w-100{% endif %}{% if bst.btn_cus_style %} fs-{{ bst.btn_cus_fs }} {{ bst.btn_cus_fw }}{% endif %}{% endif %}{% if bst.icon_svg_p == 'before' %} flex-row-reverse{% endif %}">
+  <a href="{{ bst.link | default: '#' }}" class="{% if bst.btn_type == 'link' %}link{% if bst.show_line %} btn_line{% endif %} d-inline-flex align-items-center fs-{{ bst.link_fs }} {{ bst.link_fw }}{% else %}btn {{ bst.button_size }} {{ bst.button_type_color }} btn-alternate {% if bst.button_full_width %} w-100{% endif %}{% if bst.btn_cus_style %} fs-{{ bst.btn_cus_fs }} {{ bst.btn_cus_fw }}{% endif %}{% endif %}{% if bst.icon_svg_p == 'before' %} flex-row-reverse{% endif %}">
   <span>{{ bst.button_label }}</span>
   {% if bst.show_arrow %}
     <i class="zmdi zmdi-long-arrow-right"></i>
@@ -42,12 +42,19 @@
       {
         "type": "select",
         "id": "icon_svg_p",
-        "label": "Icon SVG positiob",
+        "label": "Icon SVG position",
         "default": "after",
         "options": [
           { "value": "before", "label": "Before" },
           { "value": "after", "label": "After" }
-        ]
+        ],
+        "visible_if": "{{ block.settings.show_arrow }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_line",
+        "label": "Show line",
+        "default": false
       },
       {
         "type": "select",

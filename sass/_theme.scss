@@ -243,7 +243,7 @@ button {
 		}
 	}
 	&.btn {
-		border: none;
+		// border: none;
 		z-index: 0;
 	}
 }
@@ -2051,17 +2051,18 @@ speech-search-button {
 	}
 }
 .swiper-scrollbar {
-	height: 2px !important;
-	margin-bottom: 2px;
+	height: 6px !important;
 	width: 100% !important;
+	background: var(--slider-dot-color) !important;
+	cursor: pointer;
 	&:has(+ .slider-nav) {
 		padding-inline-end: 114px;
 	}
 	.swiper-scrollbar-drag {
-		height: 2px !important;
+		height: 6px !important;
 		top: 0;
-		background: var(--color-hover) !important;
-		cursor: pointer;
+		background: var(--slider-dot-color-act) !important;
+		cursor: grab;
 	}
 }
 .swiper-pagination {
