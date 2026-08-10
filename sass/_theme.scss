@@ -2033,9 +2033,44 @@ speech-search-button {
 			}
 		}
 	}
+	.products-grid {
+		&.swiper-wrapper {
+			display: flex !important;
+			flex-wrap: nowrap !important;
+			width: 100% !important;
+			.swiper-slide {
+				height: auto !important;
+				max-width: none !important;
+				flex-shrink: 0 !important;
+				.sp-item {
+					height: 100%;
+					display: flex;
+					flex-direction: column;
+					.item-product {
+						height: 100%;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+						.product__info {
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
+						}
+					}
+				}
+			}
+		}
+	}
 }
-.nov-slick-carousel[data-vertical="true"]:not(.slick-initialized) {
-	flex-direction: column;
+.nov-slick-carousel {
+	&[data-vertical="true"]:not(.slick-initialized) {
+		flex-direction: column;
+	}
+	&[data-row="2"] {
+		.product__title {
+			min-height: 42px;
+		}
+	}
 }
 .nov-swiper-carousel, .collection-carousel {
 	&:not(.swiper-initialized) .swiper-wrapper {

@@ -130,7 +130,9 @@
                       
                       <div class="product__info"> 
                         {% if settings.review_enable %}
-                          <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+                          <div class="product__review">
+                            <div class="AirReviews-Widget AirReviews-Widget--Stars" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+                          </div>
                         {% endif %}
                         <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
                         <div class="price-box price-st">

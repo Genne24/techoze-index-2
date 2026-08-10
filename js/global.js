@@ -2458,13 +2458,13 @@ novtheme.ProductBundle = function() {
 
                     var qtyHtml = '';
                     if (allowQty) {
-                        qtyHtml = '<div class="bundle-item-qty d-flex align-items-center justify-content-center">' +
+                        qtyHtml = '<div class="bundle-item-qty d-flex align-items-center justify-content-center mb-5">' +
                             '<button type="button" class="qty-btn bundle-qty-minus" data-index="' + i + '">-</button>' +
                             '<input type="number" class="bundle-item-qty-input" data-index="' + i + '" value="' + item.qty + '" min="' + qtyMin + '" step="' + qtyIncrement + '" readonly>' +
                             '<button type="button" class="qty-btn bundle-qty-plus" data-index="' + i + '">+</button>' +
                             '</div>';
                     } else {
-                        qtyHtml = '<div class="bundle-item-qty-single">Qty: ' + item.qty + '</div>';
+                        qtyHtml = '<div class="bundle-item-qty-single d-none mb-5">Qty: ' + item.qty + '</div>';
                     }
 
                     var itemHtml = '<div class="nov-bundle-item item-filled d-flex align-items-center justify-content-between" data-index="' + i + '" data-variant-id="' + item.variantId + '">' +
@@ -2480,7 +2480,7 @@ novtheme.ProductBundle = function() {
                         '</div>' +
                         '<div class="bundle-item-actions d-flex flex-column align-items-end flex-shrink-0">' +
                         qtyHtml +
-                        '<button type="button" class="bundle-item-remove mt-5" data-index="' + i + '">Remove</button>' +
+                        '<button type="button" class="bundle-item-remove" data-index="' + i + '">' + theme.icon_close + '</button>' +
                         '</div>' +
                         '</div>';
                     $itemsContainer.append(itemHtml);

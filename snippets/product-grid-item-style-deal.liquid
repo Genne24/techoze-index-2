@@ -85,7 +85,7 @@
       <div class="product__title {{ settings.title_product_line }}" style="--fz-title-product: {{ fz_title_product | append: 'px' }};"><a href="{{ product.url }}">{{ product.title }}</a></div>
       {% if settings.review_enable %}
         <div class="product__review">
-          <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+          <div class="AirReviews-Widget AirReviews-Widget--Stars" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
         </div>
       {% endif %}
       <div class="product__price price-box price-st d-flex align-items-center justify-content-{{ alignment_product }}" style="--fz-price-product: {{ fz_price_product | append: 'px' }};--fz-reduced-price-product: {{ fz_price_product | minus: 6 | append: 'px' }};">

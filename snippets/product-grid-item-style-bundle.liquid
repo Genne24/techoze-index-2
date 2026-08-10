@@ -1,15 +1,17 @@
 {%- liquid
-  assign option_color_swatch = settings.option_color_swatch | downcase
-  for option in product.options_with_values
-      assign option_name = option.name | downcase
-      if option_color_swatch contains option_name
-        assign product_option = option
-        assign index = forloop.index0
-        break
-      endif
-  endfor
-  assign available = product.variants.first.available
   assign current_variant = product.selected_or_first_available_variant
+  assign available = current_variant.available
+  assign option_color_swatch = settings.option_color_swatch | downcase
+  assign product_option = nil
+  assign index = 0
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_color_swatch contains option_name
+      assign product_option = option
+      assign index = forloop.index0
+      break
+    endif
+  endfor
 -%}
 
 <div class="item-product{% if settings.show_border_product %} h_bd{% endif %}{% if settings.show_background_product %} bg{% endif %}{% if settings.product_shadow_hv %} bgshadow{% endif %} {{ settings.quickadd_type | prepend: 'type-quick-add-' }} {{ settings.btn_addtocart_type }} duration-300" 
@@ -27,28 +29,34 @@
       {% assign img_url = product.featured_image %}
       <div class="card_media relative overflow-hidden" style="aspect-ratio: {{ settings.aspect_product_image }}">
         <img class="product__thumbnail"
-          src="{{ img_url | image_url: width: 360 }}"
-          srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w"
-          sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, 25vw"
-          alt="{{ img_url.alt | escape }}"
+          src="{{ img_url | image_url: width: 260 }}"
+          srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w, {{ img_url | image_url: width: 900 }} 900w, {{ img_url | image_url: width: 1080 }} 1080w, {{ img_url | image_url: width: 1400 }} 1400w"
+          sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+          alt="{{ img_url.alt }}"
           width="{{ img_url.width }}"
           height="{{ img_url.height }}"
           loading="lazy"
           style="height: auto;">
-        {% if settings.show_second_image_product and product.images.size > 1 %}
-          <img class="product__thumbnail-second"
-            src="{{ product.images[1] | image_url: width: 360 }}"
-            alt="{{ product.images[1].alt | escape }}"
-            loading="lazy"
-            style="height: auto;">
-        {% endif %}
+        {% for image in product.images %}
+          {% assign img_url = image %}
+          {% if forloop.first != true and settings.show_second_image_product %}
+            <img class="product__thumbnail-second"
+              src="{{ img_url | image_url: width: 260 }}"
+              srcset="{{ img_url | image_url: width: 360 }} 360w, {{ img_url | image_url: width: 540 }} 540w, {{ img_url | image_url: width: 720 }} 720w, {{ img_url | image_url: width: 900 }} 900w, {{ img_url | image_url: width: 1080 }} 1080w, {{ img_url | image_url: width: 1400 }} 1400w"
+              sizes="(max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw"
+              alt="{{ img_url.alt }}"
+              width="{{ img_url.width }}"
+              height="{{ img_url.height }}"
+              loading="lazy"
+              style="height: auto;">
+            {% break %}
+          {% endif %}
+        {% endfor %}
         <a href="{{ product.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
       </div>
-      
       {% if settings.badge_enable %}
         {% render 'nov-product-badge', product: product, current_variant: current_variant %}
       {% endif %}
-
       <div class="button--top">
         {% if settings.wishlist_enable %}
           {% render 'nov-wishlist', id: product.id, handle: product.handle %}
@@ -57,32 +65,35 @@
           {% render 'nov-quickview', id: product.variants.first.id, handle: product.handle %}
         {% endif %}
       </div>
+      <div class="nov-add-bundle-wrap">
+        {% if available %}
+          <button class="btn btn-add-to-bundle btn-alternate" type="button"><span>{{ 'products.product.add_to_bundle' | t }}</span></button>
+        {% else %}
+          <button class="btn btn-add-to-bundle btn-alternate disabled" type="button" disabled="disabled"><span>{{ 'products.product.sold_out' | t }}</span></button>
+        {% endif %}
+      </div>
+      {% if settings.addtocart_enable and product.has_only_default_variant == false %}
+        <div class="product__popup-swatch">
+          {% render 'add-to-cart-form', product: product, id: 'grid-product-form-', position: position, section_id: section_id, block_id: block_id %}
+        </div>
+      {% endif %}
     </div>
     <div class="product__info">
-      {% if settings.product_type and product.type != blank %}
+      {% if settings.product_type %}
         <div class="product__type">{{ product.type | link_to_type }}</div>
-      {% elsif product.vendor != blank %}
-        <div class="product__type">{{ product.vendor | link_to_vendor }}</div>
       {% endif %}
       <div class="product__title {{ settings.title_product_line }}"><a href="{{ product.url }}">{{ product.title }}</a></div>
       {% if settings.review_enable %}
         <div class="product__review">
-          <div class="AirReviews-Widget AirReviews-Widget--Stars mb-10" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
+          <div class="AirReviews-Widget AirReviews-Widget--Stars" data-review-avg="{{ product.metafields.air_reviews_product.review_avg }}" data-review-count="{{ product.metafields.air_reviews_product.review_count }}"></div>
         </div>
       {% endif %}
-      <div class="product__price price-box price-st d-flex align-items-center mb-10">
+      <div class="product__price price-box price-st d-flex align-items-center">
         {% render 'nov-product-price', product: product %}
       </div>
-      {% if available and product_option != nil %}
+      {% if product_option != nil and available == true %}
         {% render 'item-swatch', product: product, option_color_swatch: option_color_swatch, downcased_option: option_name, product_option: product_option, index: index %}
       {% endif %}
-      <div class="nov-add-bundle-wrap mt-15">
-        {% if available %}
-          <button class="btn btn-add-to-bundle w-100" type="button"><span>{{ 'products.product.add_to_bundle' | t }}</span></button>
-        {% else %}
-          <button class="btn btn-add-to-bundle disabled w-100" type="button" disabled="disabled"><span>{{ 'products.product.sold_out' | t }}</span></button>
-        {% endif %}
-      </div>
     </div>
   </div>
 </div>

@@ -40,13 +40,12 @@
 	}
 	{% if sst.enable_custom_style %}
 	  #shopify-section-{{ section.id }} {
-	    --product-color-border: {{ sst.product_border_color }};
-	    --product-color-background: {{ sst.product_background_color }};
-	    --product-color-type: {{ sst.product_type_color }};
-	    --product-color-title: {{ sst.product_title_color }};
-	    --product-color-title-hover: {{ sst.product_title_color_hover }};
-	    --product-color-price: {{ sst.product_price_color }};
-	    --product-color-reduced-price: {{ sst.product_price_reduced_color }};
+	    {% if sst.enable_custom_style %}
+      --product-color-border: {{ sst.product_border_color }};
+      {% endif %}
+			{% if sst.product_bg_enable %}
+				--product-color-background: {{ sst.product_background_color }};
+			{% endif %}
 	  }
 	{% endif %}
 	#shopify-section-{{ section.id }} .nav-tabs {
@@ -637,42 +636,6 @@
 				"default": "#d4d4d4",
 				"info": "In case the show background option is enabled",
 				"visible_if": "{{ section.settings.enable_custom_style and section.settings.product_bg_enable }}"
-			},
-			{
-				"type": "color",
-				"id": "product_title_color",
-				"label": "Title color",
-				"default": "#222",
-				"visible_if": "{{ section.settings.enable_custom_style }}"
-			},
-			{
-				"type": "color",
-				"id": "product_title_color_hover",
-				"label": "Title color hover",
-				"default": "#000",
-				"visible_if": "{{ section.settings.enable_custom_style }}"
-			},
-			{
-				"type": "color",
-				"id": "product_type_color",
-				"label": "Type color",
-				"default": "#222",
-				"info": "In case the show type option is enabled",
-				"visible_if": "{{ section.settings.enable_custom_style }}"
-			},
-			{
-				"type": "color",
-				"id": "product_price_color",
-				"label": "Price color",
-				"default": "#222",
-				"visible_if": "{{ section.settings.enable_custom_style }}"
-			},
-			{
-				"type": "color",
-				"id": "product_price_reduced_color",
-				"label": "Reduced price color",
-				"default": "#222",
-				"visible_if": "{{ section.settings.enable_custom_style }}"
 			},
 			{
 				"type": "header",
