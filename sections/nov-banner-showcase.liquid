@@ -1,0 +1,464 @@
+{%- liquid 
+  assign sst = section.settings
+
+  if section.settings.ss_bg_enable
+    assign bg = " bg"
+  endif
+  if section.settings.class_section != blank
+    assign class_section = section.settings.class_section | prepend: ' '
+  endif
+  assign class = 'distance' | append: bg | append: ' ' | append: section.settings.background_position | append: class_section
+  if section.settings.background_size == 'full'
+    assign bg_class_full = class | prepend: ' '
+  else
+    assign bg_class_contain = class | prepend: ' '
+  endif
+-%}
+
+{% style %}
+  {% render 'nov-section-style' %}
+
+  #shopify-section-{{ section.id }} .nov-banner-showcase {
+    --card-radius: {{ sst.card_radius }}px;
+    --card-bg: {{ sst.card_bg }};
+    --ticker-bg: {{ sst.ticker_bg }};
+    --ticker-color: {{ sst.ticker_color }};
+    --ticker-speed: {{ sst.ticker_speed }}s;
+    --top-title-stroke: {{ sst.top_title_stroke }};
+  }
+{% endstyle %}
+
+<div class="container-outer{{ bg_class_full }}">
+  <div class="{{ sst.container }}">
+    <div class="container-inner{{ bg_class_contain }}">
+      {% render 'heading-section', sub_position: sst.subheading_position %}
+      <div class="nov-banner-showcase position-relative" data-section-id="{{ section.id }}">
+        
+        {% if sst.top_title != blank %}
+          <div class="showcase-top-title-wrapper text-center">
+            <div class="showcase-top-title">
+              <span data-text="{{ sst.top_title | escape }}">{{ sst.top_title }}</span>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="showcase-card position-relative overflow_hidden">
+          {% if sst.link != blank %}
+            <a href="{{ sst.link }}" class="showcase-card__link position-absolute t-0 l-0 w-100 h-100" aria-label="{{ sst.top_title | escape }}"></a>
+          {% endif %}
+
+          <div class="showcase-card__image-wrapper">
+            {% if sst.image != blank %}
+              {% render 'nov-imgset', image: sst.image %}
+              {% if sst.image_mobile != blank %}
+                {% render 'nov-imgset', image: sst.image_mobile, class: 'd-md-none' %}
+              {% endif %}
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg showcase-card__placeholder' }}
+            {% endif %}
+          </div>
+
+          {% if sst.ticker_text != blank or section.blocks.size > 0 %}
+            <div class="showcase-ticker relative w-100 overflow_hidden">
+              <div class="showcase-ticker__track d-flex align-items-center">
+                <div class="showcase-ticker__content d-flex align-items-center">
+                  {% if section.blocks.size > 0 %}
+                    {% for block in section.blocks %}
+                      <span class="showcase-ticker__item d-inline-flex align-items-center">
+                        {{ block.settings.text }}
+                        <span class="showcase-ticker__dot">•</span>
+                      </span>
+                    {% endfor %}
+                  {% else %}
+                    <span class="showcase-ticker__item d-inline-flex align-items-center">
+                      {{ sst.ticker_text }}
+                    </span>
+                  {% endif %}
+                </div>
+                <div class="showcase-ticker__content d-flex align-items-center" aria-hidden="true">
+                  {% if section.blocks.size > 0 %}
+                    {% for block in section.blocks %}
+                      <span class="showcase-ticker__item d-inline-flex align-items-center">
+                        {{ block.settings.text }}
+                        <span class="showcase-ticker__dot">•</span>
+                      </span>
+                    {% endfor %}
+                  {% else %}
+                    <span class="showcase-ticker__item d-inline-flex align-items-center">
+                      {{ sst.ticker_text }}
+                    </span>
+                  {% endif %}
+                </div>
+                <div class="showcase-ticker__content d-flex align-items-center" aria-hidden="true">
+                  {% if section.blocks.size > 0 %}
+                    {% for block in section.blocks %}
+                      <span class="showcase-ticker__item d-inline-flex align-items-center">
+                        {{ block.settings.text }}
+                        <span class="showcase-ticker__dot">•</span>
+                      </span>
+                    {% endfor %}
+                  {% else %}
+                    <span class="showcase-ticker__item d-inline-flex align-items-center">
+                      {{ sst.ticker_text }}
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initBannerShowcase() {
+      var elems = document.querySelectorAll('.nov-banner-showcase');
+      if (!elems.length) return;
+      
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in-view');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      elems.forEach(function(el) {
+        observer.observe(el);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBannerShowcase);
+    } else {
+      initBannerShowcase();
+    }
+    document.addEventListener('shopify:section:load', initBannerShowcase);
+  })();
+</script>
+
+{% schema %}
+  {
+    "name": "Vinova Banner Showcase",
+    "class": "section-banner-showcase",
+    "disabled_on": {
+      "groups": ["header", "footer", "custom.system"]
+    },
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "#222222",
+        "visible_if": "{{ section.settings.heading != blank }}"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Sub heading"
+      },
+      {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Sub heading color",
+        "default": "#666666",
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "select",
+        "id": "subheading_position",
+        "label": "Sub heading position",
+        "default": "bottom",
+        "options": [
+          { "value": "top", "label": "Top" },
+          { "value": "bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.subheading != blank }}"
+      },
+      {
+        "type": "header",
+        "content": "Top Title Settings"
+      },
+      {
+        "type": "text",
+        "id": "top_title",
+        "label": "Top title text",
+        "default": "STRONGER & FASTER"
+      },
+      {
+        "type": "color",
+        "id": "top_title_stroke",
+        "label": "Outline stroke color",
+        "default": "rgba(255, 255, 255, 0.35)"
+      },
+      {
+        "type": "header",
+        "content": "Showcase Card Settings"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image Desktop"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image Mobile"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link"
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "min": 0,
+        "max": 50,
+        "step": 2,
+        "unit": "px",
+        "label": "Card corner radius",
+        "default": 24
+      },
+      {
+        "type": "color",
+        "id": "card_bg",
+        "label": "Card background",
+        "default": "#111222"
+      },
+      {
+        "type": "header",
+        "content": "Ticker Scrolling Settings"
+      },
+      {
+        "type": "text",
+        "id": "ticker_text",
+        "label": "Ticker text",
+        "default": "Intel Core Ultra 9 275HX Turbo Speed 5.4GHz  •  NVIDIA GeForce RTX 5070 Ti 12GB GDDR7  •  Ram 32GB CSODIMM DDR5-6400  •  1TB SSD M.2 2242 PCIe 4.0x4  •"
+      },
+      {
+        "type": "color",
+        "id": "ticker_color",
+        "label": "Ticker text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "ticker_bg",
+        "alpha": true,
+        "label": "Ticker background",
+        "default": "rgba(22, 21, 37, 0.85)"
+      },
+      {
+        "type": "range",
+        "id": "ticker_speed",
+        "min": 5,
+        "max": 60,
+        "step": 1,
+        "unit": "s",
+        "label": "Ticker speed",
+        "default": 25
+      },
+      {
+        "type": "header",
+        "content": "Section Layout & Container"
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Container",
+        "default": "container",
+        "options": [
+          { "value": "container", "label": "Container" },
+          { "value": "container-fluid", "label": "Container fluid" },
+          { "value": "container-full", "label": "Container full width" }
+        ]
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_section",
+        "label": "Color scheme",
+        "default": "background-1"
+      },
+      {
+        "type": "text",
+        "id": "class_section",
+        "label": "Class name"
+      },
+      {
+        "type": "header",
+        "content": "Section Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "ss_bg_enable",
+        "label": "Enable background"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#ffffff",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image",
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_position",
+        "label": "Background position",
+        "default": "bg-center",
+        "options": [
+          { "value": "bg-top", "label": "Top" },
+          { "value": "bg-center", "label": "Center" },
+          { "value": "bg-bottom", "label": "Bottom" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_size",
+        "label": "Background size",
+        "default": "full",
+        "options": [
+          { "value": "full", "label": "Full width" },
+          { "value": "contain", "label": "Container width" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "select",
+        "id": "background_img_size",
+        "label": "Image scale size",
+        "default": "cover",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" }
+        ],
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_background_img_size_custom",
+        "label": "Enable custom background size",
+        "default": false,
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank }}"
+      },
+      {
+        "type": "text",
+        "id": "background_img_size_custom",
+        "label": "Custom background size",
+        "default": "100% 100%",
+        "visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_image != blank and section.settings.enable_background_img_size_custom }}"
+      },
+      {
+        "type": "range",
+        "id": "background_corner",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Background corner radius",
+        "default": 0,
+        "visible_if": "{{ section.settings.ss_bg_enable }}"
+      },
+      {
+        "type": "header",
+        "content": "Spacing Top (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_top_sm",
+        "label": "Mobile",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Spacing Bottom (px)"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_xl",
+        "label": "Large laptop",
+        "default": 30,
+        "info": "Breakpoint 1200px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_lg",
+        "label": "Laptop",
+        "default": 30,
+        "info": "Breakpoint 992px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_md",
+        "label": "Tablet",
+        "default": 30,
+        "info": "Breakpoint 768px"
+      },
+      {
+        "type": "number",
+        "id": "distance_bottom_sm",
+        "label": "Mobile",
+        "default": 30
+      }
+    ],
+    "blocks": [
+      {
+        "type": "ticker_item",
+        "name": "Ticker item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text",
+            "default": "Intel Core Ultra 9 275HX Turbo Speed 5.4GHz"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Banner Showcase",
+        "category": "Banner"
+      }
+    ]
+  }
+{% endschema %}

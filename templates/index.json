@@ -3763,14 +3763,87 @@
         "height_background_md": 100,
         "height_background_sm": 100,
         "height_background_xs": 100,
-        "distance_top_xl": 30,
-        "distance_top_lg": 30,
-        "distance_top_md": 30,
-        "distance_top_sm": 30,
-        "distance_bottom_xl": 30,
-        "distance_bottom_lg": 30,
-        "distance_bottom_md": 30,
-        "distance_bottom_sm": 30
+        "distance_top_xl": 70,
+        "distance_top_lg": 70,
+        "distance_top_md": 70,
+        "distance_top_sm": 70,
+        "distance_bottom_xl": 80,
+        "distance_bottom_lg": 80,
+        "distance_bottom_md": 80,
+        "distance_bottom_sm": 80
+      }
+    },
+    "nov_banner_showcase_h4jTb8": {
+      "type": "nov-banner-showcase",
+      "blocks": {
+        "ticker_item_FnTM94": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Intel Core Ultra 9 275HX Turbo Speed ​​5.4GHz"
+          }
+        },
+        "ticker_item_H3UTkk": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "NVIDIA GeForce RTX 5070 Ti 12GB GDDR7"
+          }
+        },
+        "ticker_item_UCKqdL": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "Ram 32GB CSODIMM DDR5-6400"
+          }
+        },
+        "ticker_item_RJYBbE": {
+          "type": "ticker_item",
+          "settings": {
+            "text": "1TB SSD M.2 2242 PCIe 4.0x4 NVMe"
+          }
+        }
+      },
+      "block_order": [
+        "ticker_item_FnTM94",
+        "ticker_item_H3UTkk",
+        "ticker_item_UCKqdL",
+        "ticker_item_RJYBbE"
+      ],
+      "name": "Vinova Banner Showcase",
+      "settings": {
+        "heading": "",
+        "heading_color": "#222222",
+        "subheading": "",
+        "subheading_color": "#666666",
+        "subheading_position": "bottom",
+        "top_title": "STRONGER & FASTER",
+        "top_title_stroke": "#ffffff59",
+        "image": "shopify://shop_images/banner-5-homepage-2.jpg",
+        "image_mobile": "shopify://shop_images/banner-5-homepage-2.jpg",
+        "link": "",
+        "card_radius": 20,
+        "card_bg": "#111222",
+        "ticker_text": "Intel Core Ultra 9 275HX Turbo Speed 5.4GHz  •  NVIDIA GeForce RTX 5070 Ti 12GB GDDR7  •  Ram 32GB CSODIMM DDR5-6400  •  1TB SSD M.2 2242 PCIe 4.0x4  •",
+        "ticker_color": "#ffffff",
+        "ticker_bg": "#161525d9",
+        "ticker_speed": 25,
+        "container": "container",
+        "color_section": "",
+        "class_section": "",
+        "ss_bg_enable": false,
+        "background_color": "#ffffff",
+        "background_position": "bg-center",
+        "background_size": "full",
+        "background_img_size": "cover",
+        "enable_background_img_size_custom": false,
+        "background_img_size_custom": "100% 100%",
+        "background_corner": 0,
+        "distance_top_xl": 33,
+        "distance_top_lg": 33,
+        "distance_top_md": 33,
+        "distance_top_sm": 33,
+        "distance_bottom_xl": 10,
+        "distance_bottom_lg": 10,
+        "distance_bottom_md": 10,
+        "distance_bottom_sm": 10
       }
     },
     "nov_brand_9APmey": {
@@ -3849,10 +3922,9 @@
         "item_RpWweM",
         "item_wD3YfU"
       ],
-      "disabled": true,
       "name": "Vinova Brand",
       "settings": {
-        "heading": "<p>Shop by Brands</p>",
+        "heading": "",
         "heading_color": "#222222",
         "subheading": "",
         "subheading_color": "#666666",
@@ -3861,7 +3933,7 @@
         "descheading_color": "#666666",
         "img_heading_animate": false,
         "alignment": "left",
-        "view_all_label": "View all",
+        "view_all_label": "",
         "link": "shopify://collections",
         "viewall_color": "#000000",
         "viewall_color_hv": "#f43777",
@@ -3910,27 +3982,39 @@
     "nov_blog_b4t9aW": {
       "type": "nov-blog",
       "blocks": {
-        "author_date_PmYr4F": {
-          "type": "author_date",
-          "settings": {
-            "padding_block_start": 0,
-            "padding_block_end": 12
-          }
-        },
         "title_GFdyX3": {
           "type": "title",
           "settings": {
             "line_clamp": "line-clamp-2",
+            "color": "#000000",
+            "color_hover": "#ffffff",
+            "font_family": "f_df",
+            "font_weight": "font-700",
+            "text_transform": "none",
+            "letter_spacing": 0,
+            "line_height": 24,
+            "line_height_mb": 1.5,
+            "font_size_xxl": 18,
+            "font_size_xl": 18,
+            "font_size_lg": 18,
+            "font_size_md": 18,
+            "font_size_sm": 18,
+            "font_size_xs": 18,
             "padding_block_start": 0,
-            "padding_block_end": 3
+            "padding_block_end": 0
           }
         },
-        "excerpt_J7PYNg": {
-          "type": "excerpt",
+        "author_date_PmYr4F": {
+          "type": "author_date",
           "settings": {
-            "line_clamp": "line-clamp-2",
+            "color_author": "#000000",
+            "bg_author": "#f7f7f7",
+            "color_author_active": "#ffffff",
+            "bg_author_active": "#ffffff26",
+            "color_date": "#000000",
+            "bg_date": "#ffffff",
             "padding_block_start": 0,
-            "padding_block_end": 21
+            "padding_block_end": 0
           }
         },
         "button_x7dR4g": {
@@ -3938,36 +4022,36 @@
           "settings": {
             "button_size": "btn-medium",
             "button_type_color": "btn-secondary",
-            "padding_block_start": 0,
+            "padding_block_start": 10,
             "padding_block_end": 0
           }
         }
       },
       "block_order": [
-        "author_date_PmYr4F",
         "title_GFdyX3",
-        "excerpt_J7PYNg",
+        "author_date_PmYr4F",
         "button_x7dR4g"
       ],
-      "disabled": true,
       "name": "Vinova Blog",
       "settings": {
         "heading": "<p>Latest News</p>",
-        "heading_color": "#1c1c1c",
+        "heading_color": "#000000",
         "subheading": "",
         "subheading_color": "#1c1c1c",
         "subheading_position": "bottom",
         "descheading": "",
         "descheading_color": "#666666",
         "alignment": "left",
-        "color_sections": "scheme-3b448b07-562c-47f0-b6bc-504aa49eb76a",
-        "blog": "news",
-        "layout": "split_card",
-        "type": "horizontal",
         "show_view_all_blog": true,
         "viewall_color": "#000000",
         "viewall_color_hv": "#f43777",
         "viewall_color_line": "#000000",
+        "color_sections": "scheme-3b448b07-562c-47f0-b6bc-504aa49eb76a",
+        "blog": "news",
+        "layout": "hover_image",
+        "type": "horizontal",
+        "bg": "#ffffff",
+        "bg_hover": "#000000",
         "corner_radius": 20,
         "enable_border": true,
         "border_size": 1,
@@ -3979,7 +4063,7 @@
         "md": 1,
         "sm": 1,
         "row": 1,
-        "limit": 10,
+        "limit": 4,
         "spacing": 30,
         "show_dots": false,
         "dots_color": "dots_on_dark",
@@ -3989,8 +4073,8 @@
         "animate": true,
         "container": "container",
         "color_section": "scheme-3b448b07-562c-47f0-b6bc-504aa49eb76a",
-        "ss_bg_enable": false,
-        "background_color": "#ffffff",
+        "ss_bg_enable": true,
+        "background_color": "#f7f7f7",
         "background_img_size": "cover",
         "enable_background_img_size_custom": false,
         "background_img_size_custom": "",
@@ -4009,10 +4093,10 @@
         "distance_top_lg": 70,
         "distance_top_md": 70,
         "distance_top_sm": 70,
-        "distance_bottom_xl": 49,
-        "distance_bottom_lg": 49,
-        "distance_bottom_md": 49,
-        "distance_bottom_sm": 49
+        "distance_bottom_xl": 80,
+        "distance_bottom_lg": 80,
+        "distance_bottom_md": 80,
+        "distance_bottom_sm": 80
       }
     },
     "nov_policy_akHNTU": {
@@ -4089,7 +4173,6 @@
         "item_policy_KcRKdP",
         "item_policy_JRAxmL"
       ],
-      "disabled": true,
       "custom_css": [],
       "name": "Vinova Policy",
       "settings": {
@@ -4145,7 +4228,7 @@
         "container": "container",
         "color_section": "scheme-feccfb6c-3d45-4dfa-a03c-d4c8d6fd725f",
         "class_section": "",
-        "ss_bg_enable": true,
+        "ss_bg_enable": false,
         "background_color": "#f7f7f7",
         "background_img_size": "cover",
         "enable_background_img_size_custom": false,
@@ -4161,14 +4244,14 @@
         "height_background_md": 100,
         "height_background_sm": 100,
         "height_background_xs": 100,
-        "distance_top_xl": 20,
-        "distance_top_lg": 20,
-        "distance_top_md": 20,
-        "distance_top_sm": 20,
-        "distance_bottom_xl": 40,
-        "distance_bottom_lg": 40,
-        "distance_bottom_md": 40,
-        "distance_bottom_sm": 40
+        "distance_top_xl": 60,
+        "distance_top_lg": 60,
+        "distance_top_md": 60,
+        "distance_top_sm": 60,
+        "distance_bottom_xl": 60,
+        "distance_bottom_lg": 60,
+        "distance_bottom_md": 60,
+        "distance_bottom_sm": 60
       }
     }
   },
@@ -4180,6 +4263,7 @@
     "nov_custom_section_d474gY",
     "nov_custom_section_qbL3Tq",
     "nov_product_bundle_QhRK3n",
+    "nov_banner_showcase_h4jTb8",
     "nov_brand_9APmey",
     "nov_blog_b4t9aW",
     "nov_policy_akHNTU"

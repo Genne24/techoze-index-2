@@ -84,7 +84,7 @@
 {% endstyle %}
 
 <div id="block-{{ block.id }}" class="col-block{% if wu == '%' %} unit-percent{% endif %}{% if wu == 'column' %} {{ style_width_column }}{% endif %} {{ class_col }}">
-  <div class="block-container h-100{{ class_align }}{% if bst.show_border %}{{ class_border }}{% endif %} overflow-hidden position-relative">
+  <div class="block-container h-100{{ class_align }}{% if bst.show_border %}{{ class_border }}{% endif %} overflow-initial position-relative">
     <div class="col-block-content position-relative{% unless bst.align_content_enable %} h-100{% endunless %}{% if bst.pl_enable %} pl{% endif %}{% if bst.pr_enable %} pr{% endif %}{% if block.settings.width_type == 'custom' and block.settings.align_content_enable %} width-custom{% endif %} duration-300">
       {% content_for 'blocks' %}
     </div>

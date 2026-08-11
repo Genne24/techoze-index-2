@@ -6,7 +6,7 @@
 	.template-index .site-header {
 		position: absolute;
 		top: 0;
-		left: 0;
+		inset-inline-start: 0;
 		width: 100%;
 		z-index: 99;
 		background: transparent;
@@ -39,7 +39,7 @@
     height: calc(100% + 12px);
     border-radius: 100%;
     top: -6px;
-    left: -6px;
+    inset-inline-start: -6px;
     background-color: rgba(var(--color-button-rgb), 0.1);
 		animation: AnimationBtn 2s ease infinite;
 	}
@@ -63,7 +63,7 @@
 		&:after {
 			content: "";
 			position: absolute;
-			left: 0;
+			inset-inline-start: 0;
 			height: 2px;
 			background-color: var(--color-button-text);
 			border-radius: 2px;

@@ -30,10 +30,14 @@
         </div>
       </div>
     {% endif %}
-
-    {% if template.name == "index" %}
-      {% sections 'nov-system-group' %}
-    {% endif %}
+    {% case settings.header_layout %}
+      {% when 'header-1' %}
+        {% if template.name == "index" %}
+          {% sections 'nov-system-group' %}
+        {% endif %}
+      {% when 'header-2' %}
+        {% sections 'nov-system-group' %}
+    {% endcase %}
     
     <div class="wb-wp">
       {% case settings.header_layout %}
@@ -142,15 +146,18 @@
           }, 0);
         }
       });
-      {% if template.name == "index" %}
-        var hasVerticalMenu = document.querySelector('.shopify-section-group-nov-system-group.section-vertical-menu');
-        var wbWp = document.querySelector('.btn-vertical-desktop');
-        var wbMb = document.querySelector('.btn-vertical-mobile');
-        if (hasVerticalMenu) {
-          if (wbWp) wbWp.classList.add('open');
-          if (wbMb) wbMb.classList.add('active');
-        }
-      {% endif %}
+      {% case settings.header_layout %}
+        {% when 'header-1' %}
+          {% if template.name == "index" %}
+            var hasVerticalMenu = document.querySelector('.shopify-section-group-nov-system-group.section-vertical-menu');
+            var wbWp = document.querySelector('.btn-vertical-desktop');
+            var wbMb = document.querySelector('.btn-vertical-mobile');
+            if (hasVerticalMenu) {
+              if (wbWp) wbWp.classList.add('open');
+              if (wbMb) wbMb.classList.add('active');
+            }
+          {% endif %}
+      {% endcase %}
       document.querySelectorAll('.btn-alternate').forEach((btn) => {
         btn.addEventListener('mouseenter', () => {
             btn.classList.remove('is-leave');

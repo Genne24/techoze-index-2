@@ -90,7 +90,7 @@
 
                   {% if bst[pin_product_id] != blank or bst[pin_title_id] != blank or bst[pin_desc_id] != blank %}
                     {% assign product = all_products[bst[pin_product_id]] %}
-                    <div class="item-lookbook position-absolute grid--view-items d-flex" style="top: {{ bst[pin_position_top_id] }}%; left: {{ bst[pin_position_left_id] }}%">
+                    <div class="item-lookbook position-absolute grid--view-items d-flex" style="top: {{ bst[pin_position_top_id] }}%; inset-inline-start: {{ bst[pin_position_left_id] }}%">
                       <span class="number-lookbook"></span>
                       <div class="content-lookbook position-absolute">
                         {% if bst[pin_product_id] != blank %}

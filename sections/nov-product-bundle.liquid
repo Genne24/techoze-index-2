@@ -35,6 +35,7 @@
 	{% endif %}
 {% endstyle %}
 
+
 <div class="{{ bg_class_full }}" data-section-id="{{ section.id }}" >
   <div class="{{ sst.container }}">
     <div class="container-inner{{ bg_class_contain }} position-relative" style="{% if sst.enable_custom_style %}{% if sst.product_border_enable %} item-product-show-bd{% endif %}{% if sst.product_bg_enable %} item-product-show-bg{% endif %}{% endif %}">
@@ -52,15 +53,17 @@
           <div class="col-lg-9 col-md-7 nov-bundle-left">
             <div class="row spacing-{{ sst.spacing }} spacing-sm-15 nov-bundle-grid sticky">
               {% if bundle_products != blank %}
+                {% assign grid_num = sst.grid_number | default: 3 %}
                 {% for product in bundle_products limit: product_limit %}
-                  <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-lg-3 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %} mb-{{ sst.spacing }} mb-sm-15">
+                  <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-lg-3 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %}{% if forloop.rindex > grid_num %} mb-{{ sst.spacing }} mb-sm-15{% endif %}">
                     {% render 'product-grid-item-style-bundle', product: product, section_id: section.id %}
                   </div>
                 {% endfor %}
               {% else %}
                 {% assign limit_num = sst.limit %}
+                {% assign grid_num = sst.grid_number | default: 3 %}
                 {% for i in (1..limit_num) %}
-                  <div class="sp-item item col-lg-4 col-md-6 col-12 mb-{{ sst.spacing }} mb-sm-15">
+                  <div class="sp-item item col-lg-4 col-md-6 col-12{% if forloop.rindex > grid_num %} mb-{{ sst.spacing }} mb-sm-15{% endif %}">
                     <div class="item-product">
                       <div class="inner-top">
                         <div class="product-top thumbnail-container">
@@ -109,9 +112,9 @@
               <div class="nov-bundle-footer">
                 <div class="bundle-total-row d-flex align-items-center justify-content-between">
                   <span class="total-label">{{ 'cart.general.total' | t }}:</span>
-                  <span class="total-price">$0.00 USD</span>
+                  <span class="total-price">{{ 0 | money }}</span>
                 </div>
-                <button class="btn btn-medium btn-bundle-add-to-cart w-100 disabled" type="button" disabled="disabled">
+                <button class="btn btn-medium btn-bundle-add-to-cart btn-alternate w-100 disabled" type="button" disabled="disabled">
                   <span class="btn-text">{{ 'products.product.add_to_cart' | t }}</span>
                   <span class="load"></span>
                 </button>

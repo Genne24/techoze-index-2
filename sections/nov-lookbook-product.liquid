@@ -73,7 +73,7 @@
             {% for block in section.blocks %}
               {% assign bst = block.settings %}
               {% if block.type == 'item' %}
-                <div class="number nov_btn_act position-absolute d-flex align-items-center justify-content-center r-100 pointer{% if forloop.first %} act{% endif %}" data-toggle="{{ section.id }}{{ forloop.index }}" style="top: {{ bst.pin_position_top }}%; left: {{ bst.pin_position_left }}%">
+                <div class="number nov_btn_act position-absolute d-flex align-items-center justify-content-center r-100 pointer{% if forloop.first %} act{% endif %}" data-toggle="{{ section.id }}{{ forloop.index }}" style="top: {{ bst.pin_position_top }}%; inset-inline-start: {{ bst.pin_position_left }}%">
                   <span class="position-relative d-flex align-items-center justify-content-center">{{ forloop.index }}</span>
                 </div>
               {% endif %}

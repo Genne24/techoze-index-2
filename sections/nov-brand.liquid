@@ -21,16 +21,18 @@
 
 <div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }}" data-section-id="{{ section.id }}" data-section-type="nov-swiper">
   <div class="{{ sst.container }}">
-    <div class="d-flex align-items-center justify-content-between w-100 {{ settings.section_heading_spacing | prepend: 'mb-' }}">
-      {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-0' %}
-      {% if sst.view_all_label != blank %}
-        <div class="view_all relative duration-300">
-          <a href="{{ sst.view_all_link }}" class="fs-16 font-700 lh-22">
-            <span>{{ sst.view_all_label }}</span>
-          </a>
-        </div>
-      {% endif %}
-    </div>
+    {% if section.settings.heading != blank or section.settings.subheading != blank or section.settings.descheading != blank or sst.view_all_label != blank %}
+      <div class="d-flex align-items-center justify-content-between w-100 {{ settings.section_heading_spacing | prepend: 'mb-' }}">
+        {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-0' %}
+        {% if sst.view_all_label != blank %}
+          <div class="view_all relative duration-300">
+            <a href="{{ sst.view_all_link }}" class="fs-16 font-700 lh-22">
+              <span>{{ sst.view_all_label }}</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
     <div class="container-inner{{ bg_class_contain }} {{ sst.arrow_color }} relative">
       <div class="grid--view-items{% if sst.type == 'carousel' %} nov-swiper-carousel swiper overflow-hidden{% endif %}{%  if sst.hv_box_shadow %} hv_box_shadow{% endif %}"
         {% if sst.type == 'carousel' %}

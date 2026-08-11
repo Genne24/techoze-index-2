@@ -139,10 +139,10 @@
                       <div class="filter__price--bar__bg"></div>
                       <div class="progress"></div>
                       <div class="progress-number position-absolute">0</div>
-                      <div class="progress-number position-absolute inner" style="left: 25%">{{ 25 | times: max | divided_by: 100 | ceil }}</div>
-                      <div class="progress-number position-absolute inner" style="left: 50%">{{ 50 | times: max | divided_by: 100 | ceil }}</div>
-                      <div class="progress-number position-absolute inner" style="left: 75%">{{ 75 | times: max | divided_by: 100 | ceil }}</div>
-                      <div class="progress-number position-absolute" style="right: 0">{{ max }}</div>
+                      <div class="progress-number position-absolute inner" style="inset-inline-start: 25%">{{ 25 | times: max | divided_by: 100 | ceil }}</div>
+                      <div class="progress-number position-absolute inner" style="inset-inline-start: 50%">{{ 50 | times: max | divided_by: 100 | ceil }}</div>
+                      <div class="progress-number position-absolute inner" style="inset-inline-start: 75%">{{ 75 | times: max | divided_by: 100 | ceil }}</div>
+                      <div class="progress-number position-absolute" style="inset-inline-end: 0">{{ max }}</div>
                     </div>
                     <div class="filter__price--input d-flex align-items-center position-relative">
                       <input class="field__input field__input--min"

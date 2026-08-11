@@ -39,7 +39,7 @@
     data-row_mobile="{{ bst.row_number }}"
     style="--spacing: {{ bst.spacing | append: 'px' }}">
     {% for product in collections[bst.collection].products limit: bst.limit %}
-      <div class="sp-item item">
+      <div class="sp-item item {{ bst.spacing | prepend: 'mb-' }}">
         {% if bst.product_item_style == 'grid' %}
           {% render 'product-grid-item-style-1', product: product, section_id: section.id %}
         {% else %}

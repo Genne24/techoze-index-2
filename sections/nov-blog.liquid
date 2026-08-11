@@ -25,15 +25,15 @@
 
 <div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }} position-relative" data-section-id="{{ section.id }}" data-section-type="nov-slick">
   <div class="{{ sst.container }}">
-    <div class="d-flex align-items-center justify-content-between{% if sst.hv_box_shadow %} mb-8{% else %} {{ settings.section_heading_spacing | prepend: 'mb-' }}{% endif %}">
+    <div class="d-flex align-items-center justify-content-between{% if sst.hv_box_shadow %} mb-27{% else %} {{ settings.section_heading_spacing | prepend: 'mb-' }}{% endif %}">
       {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-0' %}
-      {% if sst.show_nav and sst.arrow_postion == 'arrow_on_top' %}
+      {% if sst.show_nav and sst.arrow_postion == 'arrow_on_top' and sst.layout != 'hover_image' %}
         <div class="block-nav {{ sst.arrow_color }} {{ sst.arrow_postion }} d-flex justify-content-center">
           <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
           <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
         </div>
       {% endif %}
-      {% if sst.show_view_all_blog %}
+      {% if sst.show_view_all_blog and sst.layout != 'hover_image' %}
         <div class="view_all relative duration-300" style="--color-viewall: {{ sst.viewall_color }}; --color-viewall-hover: {{ sst.viewall_color_hv }}; --color-viewall-line: {{ sst.viewall_color_line }}">
           <a href="{{ collection_blog.url }}">
             <span class="fs-16 font-700 lh-22">{{ 'sections.blog.view_all_blog' | t }}</span>
@@ -41,72 +41,136 @@
         </div>
       {% endif %}
     </div>
+
     <div class="container-inner{{ bg_class_contain }} {{ sst.dots_color }} {{ sst.arrow_color }} {{ sst.arrow_postion }} relative"> 
-      <div class="nov-slick-carousel row {{ sst.spacing | prepend: 'spacing-' }} {{ sst.layout }}{% if sst.hv_box_shadow %} hv_box_shadow{% endif %} overflow-hidden"
-        data-loop       ="false"
-        data-dots       ="{{ sst.show_dots }}"
-        data-nav        ="false"
-        data-items_xxl  ="{{ sst.xxl }}"
-        data-items_xl   ="{{ sst.xl }}"
-        data-items_lg   ="{{ sst.lg }}"
-        data-items_md   ="{{ sst.md }}"
-        data-items_sm   ="{{ sst.sm }}"
-        data-items_xs   ="1"
-        data-row        ="{{ sst.row }}"
-        data-row_mobile ="{{ sst.row }}"
-        data-speed      ="700"
-        style="--spacing-post: -{{ sst.spacing | divided_by: 2 | append: 'px' }};">
-        {% for article in collection_blog.articles limit: blog_limit %}
-          <div class="item{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
-            <div class="sp-item">
-              <div class="item-article{% if sst.layout == 'split_card' and sst.type == 'horizontal' %} row spacing-0{% endif %} {{ sst.type }} {{ sst.layout }} color-{{ sst.color_sections }} overflow_hidden duration-300" style="--corner-radius: {{ sst.corner_radius | append: 'px' }};--border-style: {{ sst.border_style }};--border-size: {{ sst.border_size | append: 'px' }};--spacing-post: {{ sst.spacing_post | append: 'px' }}">
-                {% if article.image %}
-                  <div class="{% if sst.layout == 'split_card' and sst.type == 'horizontal' %}col-md-6 col-12 {% endif %}article__card position-relative overflow_hidden h-100">
-                    {% render 'nov-imgset', image: article.image %}
-                    <a href="{{ article.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
-                  </div>
-                {% endif %}
-                <div class="{% if sst.layout == 'split_card' and sst.type == 'horizontal' %}col-md-6 col-12 {% else %}mt-20 mb-20  {% endif %}article__info">
+      {% if sst.layout == 'hover_image' %}
+        <div class="blog-hover-image-layout row">
+          <div class="col-lg-6 col-12 blog-hover-image-left">
+            <div class="active-image-wrapper position-relative overflow_hidden" style="--corner-radius: {{ sst.corner_radius | append: 'px' }}">
+              {% for article in collection_blog.articles limit: blog_limit %}
+                <div class="blog-image-item absolute t-0 l-0 w-100 h-100 duration-500{% if forloop.first %} active{% endif %}" data-blog-index="{{ forloop.index0 }}">
+                  {% if article.image %}
+                    <div class="article__card position-relative overflow_hidden h-100">
+                      {% render 'nov-imgset', image: article.image %}
+                      <a href="{{ article.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+                    </div>
+                  {% endif %}
+                  {% for block in section.blocks %}
+                    {%- case block.type -%}
+                      {%- when 'author_date' %}
+                        <div class="blog-date-badge article__date absolute d-flex flex-column align-items-center justify-content-center m-0" style="--c-date: {{ block.settings.color_date }};--bg-date: {{ block.settings.bg_date }};" {{ block.shopify_attributes }}>
+                          <span class="day fs-30 font-700 lh-32 text-uppercase mb-4">{{ article.published_at | date: "%d" }}</span>
+                          <span class="month text-uppercase fs-14 font-700 lh-20 text-uppercase">{{ article.published_at | date: "%b" }}</span>
+                        </div>
+                    {%- endcase -%}
+                  {% endfor %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="col-lg-6 col-12 blog-hover-image-right d-flex flex-column">
+            <div class="blog-titles-list w-100">
+              {% for article in collection_blog.articles limit: blog_limit %}
+                <div class="blog-title-row item-article d-flex align-items-center justify-content-between duration-300{% if forloop.first %} active{% endif %}" data-blog-index="{{ forloop.index0 }}" style="{% if section.settings.layout == 'hover_image' %}--bg: {{ sst.bg }};--bg-hover: {{ sst.bg_hover }};{% endif %}--corner-radius: {{ sst.corner_radius | append: 'px' }};--border-style: {{ sst.border_style }};--border-size: {{ sst.border_size | append: 'px' }};">
                   {% for block in section.blocks %}
                     {%- case block.type -%}
                       {%- when 'title' %}
+                        {%- liquid
+                          assign bst = block.settings
+                          assign class_text = bst.font_family | append: ' ' | append: bst.font_weight | append: ' fs-' | append: bst.font_size_xxl | append: ' fs-xl-' | append: bst.font_size_xl | append: ' fs-lg-' | append: bst.font_size_lg | append: ' fs-md-' | append: bst.font_size_md | append: ' fs-sm-' | append: bst.font_size_sm | append: ' fs-xs-' | append: bst.font_size_xs
+                        -%}
                         <div class="article__title {{ block.settings.line_clamp }} line-clamp-xs-1 {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
-                          <a href="{{ article.url }}" class="fs-24 fs-md-16 font-700 lh-32 color-title">{{ article.title | truncate: 70 }}</a>
+                          <a href="{{ article.url }}" class="{{ class_text }} {{ bst.text_transform }}" style="--color-text: {{ bst.color }};--color-hover: {{ bst.color_hover }};letter-spacing: {{ bst.letter_spacing | append: 'px' }};{% if bst.line_height != blank and bst.line_height == 1 %}line-height: 1;{% else %}line-height: {{ bst.line_height | append: 'px' }};{% endif %}{% if bst.line_height_mb != blank and bst.line_height_mb == 1 %}--line-height-mb: 1.5;{% else %}--line-height-mb: {{ bst.line_height_mb | append: 'px' }};{% endif %}">{{ article.title | truncate: 70 }}</a>
                         </div>
                       {%- when 'author_date' %}
                         <div class="article_cs d-flex align-items-center {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
-                          <span class="article__author fs-12 font-400 lh-20 text-uppercase d-flex align-items-center">{{ article.author }}</span>
-                          <span class="article__date fs-12 font-400 lh-20 text-uppercase">{{ article.published_at | date: "%B" }} {{ article.published_at | date: "%d" }}, {{ article.published_at | date: "%Y" }}</span>
+                          <span class="article__author fs-12 font-400 lh-20 text-uppercase d-flex align-items-center" style="--color-author: {{ block.settings.color_author }};--bg-author: {{ block.settings.bg_author }};--color-author-active: {{ block.settings.color_author_active }};--bg-author-active: {{ block.settings.bg_author_active }};">{{ article.author }}</span>
                         </div>
-                      {%- when 'excerpt' %}
-                        <div class="article__excerpt {{ block.settings.line_clamp }} fs-16 lh-22 font-400 color-subtitle {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
-                          {% if article.excerpt.size > 0 %}
-                          {{ article.excerpt | truncate: 160 }}
-                          {% else %}
-                          {{ article.content | strip_html | truncate: 160 }}
-                          {% endif %}
-                        </div>
-                      {%- when 'button' %}
-                        <a href="{{ article.url }}" class="btn {{ block.settings.button_size }} {{ block.settings.button_type_color }} btn-alternate link {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} fs-14 font-700 lh-20 d-inline-flex align-items-center" aria-label="Read more about {{ article.title }}" {{ block.shopify_attributes }}>
-                          <span>{{ 'sections.button.read_more' | t }}</span>
-                          <span class="visually-hidden"> {{ 'sections.button.read_more' | t }} {{ article.title }}</span>
-                        </a>
-                    {% endcase %}
+                    {%- endcase -%}
                   {% endfor %}
                 </div>
+              {% endfor %}
+            </div>
+            {% for block in section.blocks %}
+              {%- case block.type -%}
+                {%- when 'button' %}
+                  <div class="blog-view-all-wrap w-100">
+                    <a href="{{ article.url }}" class="btn {{ block.settings.button_size }} {{ block.settings.button_type_color }} btn-alternate link {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} fs-14 font-700 lh-20 d-inline-flex align-items-center w-100" aria-label="Read more about {{ article.title }}" {{ block.shopify_attributes }}>
+                      <span>{{ 'sections.blog.view_all_blog' | t }}</span>
+                      <span class="visually-hidden"> {{ 'sections.blog.view_all_blog' | t }} {{ article.title }}</span>
+                    </a>
+                  </div>
+              {%- endcase -%}
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="nov-slick-carousel row {{ sst.spacing | prepend: 'spacing-' }} {{ sst.layout }}{% if sst.hv_box_shadow %} hv_box_shadow{% endif %} overflow-hidden"
+          data-loop       ="false"
+          data-dots       ="{{ sst.show_dots }}"
+          data-nav        ="false"
+          data-items_xxl  ="{{ sst.xxl }}"
+          data-items_xl   ="{{ sst.xl }}"
+          data-items_lg   ="{{ sst.lg }}"
+          data-items_md   ="{{ sst.md }}"
+          data-items_sm   ="{{ sst.sm }}"
+          data-items_xs   ="1"
+          data-row        ="{{ sst.row }}"
+          data-row_mobile ="{{ sst.row }}"
+          data-speed      ="700"
+          style="--spacing-post: -{{ sst.spacing | divided_by: 2 | append: 'px' }};">
+          {% for article in collection_blog.articles limit: blog_limit %}
+            <div class="item{% if settings.animate %} scroll-trigger animate--slide-in{% endif %}"{% if settings.animate %} data-cascade style="--animation-order: {{ forloop.index0 }};"{% endif %}>
+              <div class="sp-item">
+                <div class="item-article{% if sst.layout == 'split_card' and sst.type == 'horizontal' %} row spacing-0{% endif %} {{ sst.type }} {{ sst.layout }} color-{{ sst.color_sections }} overflow_hidden duration-300" style="--corner-radius: {{ sst.corner_radius | append: 'px' }};--border-style: {{ sst.border_style }};--border-size: {{ sst.border_size | append: 'px' }};">
+                  {% if article.image %}
+                    <div class="{% if sst.layout == 'split_card' and sst.type == 'horizontal' %}col-md-6 col-12 {% endif %}article__card position-relative overflow_hidden h-100">
+                      {% render 'nov-imgset', image: article.image %}
+                      <a href="{{ article.url }}" class="absolute t-0 l-0 z-2 w-100 h-100"></a>
+                    </div>
+                  {% endif %}
+                  <div class="{% if sst.layout == 'split_card' and sst.type == 'horizontal' %}col-md-6 col-12 {% else %}mt-20 mb-20  {% endif %}article__info">
+                    {% for block in section.blocks %}
+                      {%- case block.type -%}
+                        {%- when 'title' %}
+                          <div class="article__title {{ block.settings.line_clamp }} line-clamp-xs-1 {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
+                            <a href="{{ article.url }}" class="fs-24 fs-md-16 font-700 lh-32 color-title">{{ article.title | truncate: 70 }}</a>
+                          </div>
+                        {%- when 'author_date' %}
+                          <div class="article_cs d-flex align-items-center {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
+                            <span class="article__author fs-12 font-400 lh-20 text-uppercase d-flex align-items-center" style="--color-author: {{ block.settings.color_author }};--bg-author: {{ block.settings.bg_author }};--color-author-active: {{ block.settings.color_author_active }};--bg-author-active: {{ block.settings.bg_author_active }};">{{ article.author }}</span>
+                            <span class="article__date fs-12 font-400 lh-20 text-uppercase" style="--c-date: {{ block.settings.color_date }};--bg-date: {{ block.settings.bg_date }};">{{ article.published_at | date: "%B" }} {{ article.published_at | date: "%d" }}, {{ article.published_at | date: "%Y" }}</span>
+                          </div>
+                        {%- when 'excerpt' %}
+                          <div class="article__excerpt {{ block.settings.line_clamp }} fs-16 lh-22 font-400 color-subtitle {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }}" {{ block.shopify_attributes }}>
+                            {% if article.excerpt.size > 0 %}
+                            {{ article.excerpt | truncate: 160 }}
+                            {% else %}
+                            {{ article.content | strip_html | truncate: 160 }}
+                            {% endif %}
+                          </div>
+                        {%- when 'button' %}
+                          <a href="{{ article.url }}" class="btn {{ block.settings.button_size }} {{ block.settings.button_type_color }} btn-alternate link {{ block.settings.padding_block_start | prepend: 'mt-' }} {{ block.settings.padding_block_end | prepend: 'mb-' }} fs-14 font-700 lh-20 d-inline-flex align-items-center" aria-label="Read more about {{ article.title }}" {{ block.shopify_attributes }}>
+                            <span>{{ 'sections.button.read_more' | t }}</span>
+                            <span class="visually-hidden"> {{ 'sections.button.read_more' | t }} {{ article.title }}</span>
+                          </a>
+                      {% endcase %}
+                    {% endfor %}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>    
-        {% else %}
-          {%- for i in (1..4) -%}
-            {%- capture current -%}{% cycle 1, 2, 3 %}{%- endcapture -%}
-            <div class="sp-item item">
-              {{ 'blog-apparel-' | append: current | placeholder_svg_tag : 'placeholder-svg' }}
-            </div>
-          {%- endfor -%}
-        {% endfor %}
-      </div>
-      {% if sst.show_nav and sst.arrow_postion == 'arrow_on_center' %}
+            </div>    
+          {% else %}
+            {%- for i in (1..4) -%}
+              {%- capture current -%}{% cycle 1, 2, 3 %}{%- endcapture -%}
+              <div class="sp-item item">
+                {{ 'blog-apparel-' | append: current | placeholder_svg_tag : 'placeholder-svg' }}
+              </div>
+            {%- endfor -%}
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if sst.show_nav and sst.arrow_postion == 'arrow_on_center' and sst.layout != 'hover_image' %}
         <div class="block-nav {{ sst.arrow_color }} {{ sst.arrow_postion }} d-flex justify-content-center">
           <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
           <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
@@ -115,7 +179,42 @@
     </div>
   </div>
 </div>
-
+{% if sst.layout == 'hover_image' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var section = document.querySelector('#shopify-section-{{ section.id }}');
+      if (!section) return;
+      var rows = section.querySelectorAll('.blog-title-row');
+      var imgs = section.querySelectorAll('.blog-image-item');
+      rows.forEach(function(row) {
+        row.addEventListener('mouseenter', function() {
+          var index = this.getAttribute('data-blog-index');
+          rows.forEach(function(r) { r.classList.remove('active'); });
+          imgs.forEach(function(i) { i.classList.remove('active'); });
+          this.classList.add('active');
+          var targetImg = section.querySelector('.blog-image-item[data-blog-index="' + index + '"]');
+          if (targetImg) targetImg.classList.add('active');
+        });
+      });
+    });
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId !== '{{ section.id }}') return;
+      var section = e.target;
+      var rows = section.querySelectorAll('.blog-title-row');
+      var imgs = section.querySelectorAll('.blog-image-item');
+      rows.forEach(function(row) {
+        row.addEventListener('mouseenter', function() {
+          var index = this.getAttribute('data-blog-index');
+          rows.forEach(function(r) { r.classList.remove('active'); });
+          imgs.forEach(function(i) { i.classList.remove('active'); });
+          this.classList.add('active');
+          var targetImg = section.querySelector('.blog-image-item[data-blog-index="' + index + '"]');
+          if (targetImg) targetImg.classList.add('active');
+        });
+      });
+    });
+  </script>
+{% endif %}
 {% schema %}
   {
     "name": "Vinova Blog",
@@ -187,6 +286,33 @@
         "default": "left"
       },
       {
+        "type": "checkbox",
+        "id": "show_view_all_blog",
+        "label": "Button view all blog",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
+      },
+      {
+        "type": "color",
+        "id": "viewall_color",
+        "label": "Color",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.show_view_all_blog and section.settings.layout != 'hover_image' }}"
+      },
+      {
+        "type": "color",
+        "id": "viewall_color_hv",
+        "label": "Color Hover",
+        "default": "#F43777",
+        "visible_if": "{{ section.settings.show_view_all_blog and section.settings.layout != 'hover_image' }}"
+      },
+      {
+        "type": "color",
+        "id": "viewall_color_line",
+        "label": "Color Line",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.show_view_all_blog and section.settings.layout != 'hover_image' }}"
+      },
+      {
         "type": "header",
         "content": "Blog"
       },
@@ -218,6 +344,10 @@
           {
             "value": "default",
             "label": "Default"
+          },
+          {
+            "value": "hover_image",
+            "label": "Hover Image List"
           }
         ]
       },
@@ -235,37 +365,27 @@
             "value": "vertical",
             "label": "Vertical"
           }
-        ]
-      },
-      {
-        "type": "checkbox",
-        "id": "show_view_all_blog",
-        "label": "Button view all blog"
-      },
-      {
-        "type": "color",
-        "id": "viewall_color",
-        "label": "Color",
-        "default": "#000000",
-        "visible_if": "{{ section.settings.show_view_all_blog }}"
-      },
-      {
-        "type": "color",
-        "id": "viewall_color_hv",
-        "label": "Color Hover",
-        "default": "#F43777",
-        "visible_if": "{{ section.settings.show_view_all_blog }}"
-      },
-      {
-        "type": "color",
-        "id": "viewall_color_line",
-        "label": "Color Line",
-        "default": "#000000",
-        "visible_if": "{{ section.settings.show_view_all_blog }}"
+        ],
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type":  "header",
         "content": "Blog Item Settings"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "alpha": true,
+        "label": "Background",
+        "default": "#FFFFFF",
+        "visible_if": "{{ section.settings.layout == 'hover_image' }}"
+      },
+      {
+        "type": "color",
+        "id": "bg_hover",
+        "label": "Background hover",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.layout == 'hover_image' }}"
       },
       {
         "type": "range",
@@ -314,7 +434,8 @@
       },
       {
         "type":  "header",
-        "content": "Carousel Columns"
+        "content": "Carousel Columns",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -324,7 +445,8 @@
         "step": 1,
         "label": "Desktop",
         "default": 1,
-        "info": "Breakpoint 1441px"
+        "info": "Breakpoint 1441px",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -334,7 +456,8 @@
         "step": 1,
         "label": "Large laptop",
         "default": 1,
-        "info": "Breakpoint 1200px"
+        "info": "Breakpoint 1200px",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -344,7 +467,8 @@
         "step": 1,
         "label": "Laptop",
         "default": 1,
-        "info": "Breakpoint 992px"
+        "info": "Breakpoint 992px",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -354,7 +478,8 @@
         "step": 1,
         "label": "Tablet",
         "default": 1,
-        "info": "Breakpoint 768px"
+        "info": "Breakpoint 768px",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -363,7 +488,8 @@
         "max": 6,
         "step": 1,
         "label": "Mobile",
-        "default": 1
+        "default": 1,
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -372,7 +498,8 @@
         "max": 4,
         "step": 1,
         "label": "Rows",
-        "default": 1
+        "default": 1,
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "range",
@@ -395,13 +522,15 @@
       },
       {
         "type": "header",
-        "content": "Carousel dot"
+        "content": "Carousel dot",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "checkbox",
         "id": "show_dots",
         "label": "Show dots",
-        "default": false
+        "default": false,
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "select",
@@ -412,17 +541,19 @@
           {"value": "dots_on_light","label": "Dots on light background"},
           {"value": "dots_on_dark","label": "Dots on dark background"}
         ],
-        "visible_if": "{{ section.settings.show_dots }}"
+        "visible_if": "{{ section.settings.show_dots and section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "header",
-        "content": "Carousel navigation"
+        "content": "Carousel navigation",
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "checkbox",
         "id": "show_nav",
         "label": "Show prev/next arrow",
-        "default": true
+        "default": true,
+        "visible_if": "{{ section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "select",
@@ -433,7 +564,7 @@
           {"value": "arrow_on_light","label": "Arrow on light background"},
           {"value": "arrow_on_dark","label": "Arrow on dark background"}
         ],
-        "visible_if": "{{ section.settings.show_nav }}"
+        "visible_if": "{{ section.settings.show_nav and section.settings.layout != 'hover_image' }}"
       },
       {
         "type": "select",
@@ -444,7 +575,7 @@
           {"value": "arrow_on_center","label": "Arrow on center"},
           {"value": "arrow_on_top","label": "Arrow on top"}
         ],
-        "visible_if": "{{ section.settings.show_nav }}"
+        "visible_if": "{{ section.settings.show_nav and section.settings.layout != 'hover_image' }}"
       },
       {
         "type":  "header",
@@ -750,6 +881,144 @@
             ]
           },
           {
+            "type": "color",
+            "id": "color",
+            "alpha": true,
+            "label": "Color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "color_hover",
+            "label": "Color hover",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "select",
+            "id": "font_family",
+            "label": "Font family",
+            "options": [
+              { "value": "f_df", "label": "Body font" },
+              { "value": "f_pr", "label": "Heading font" }
+            ],
+            "default": "f_df"
+          },
+          {
+            "type": "select",
+            "id": "font_weight",
+            "label": "Font weight",
+            "options": [
+              {"value": "font-100","label": "Thin - 100"},
+              {"value": "font-300","label": "Light - 300"},
+              {"value": "font-400","label": "Regular - 400"},
+              {"value": "font-500","label": "Medium - 500"},
+              {"value": "font-600","label": "SemiBold - 600"},
+              {"value": "font-700","label": "Bold - 700"},
+              {"value": "font-800","label": "ExtraBold - 800"},
+              {"value": "font-900","label": "Black - 900"}
+            ],
+            "default": "font-400"
+          },
+          {
+            "type": "select",
+            "id": "text_transform",
+            "label": "Text transform",
+            "options": [
+              { "value": "text-capitalize", "label": "Capitalize" },
+              { "value": "text-uppercase", "label": "Uppercase" },
+              { "value": "none", "label": "None" }
+            ],
+            "default": "none"
+          },
+          {
+            "type": "number",
+            "id": "letter_spacing",
+            "label": "Letter spacing",
+            "default": 0
+          },
+          {
+            "type": "number",
+            "id": "line_height",
+            "label": "Line height",
+            "default": 1
+          },
+          {
+            "type": "number",
+            "id": "line_height_mb",
+            "label": "Line height mobile",
+            "default": 1
+          },
+          {
+            "type": "header",
+            "content": "Font Size",
+            "info": "Unit: px"
+          },
+          {
+            "type": "range",
+            "id": "font_size_xxl",
+            "label": "Desktop",
+            "info": "Breakpoint 1441px ↑",
+            "min": 10,
+            "max": 110,
+            "step": 1,
+            "unit": "px",
+            "default": 18
+          },
+          {
+            "type": "range",
+            "id": "font_size_xl",
+            "label": "Large laptop",
+            "info": "Breakpoint 1200px ↑",
+            "min": 10,
+            "max": 110,
+            "step": 1,
+            "unit": "px",
+            "default": 18
+          },
+          {
+            "type": "range",
+            "id": "font_size_lg",
+            "label": "Laptop",
+            "info": "Breakpoint 992px ↑",
+            "min": 10,
+            "max": 110,
+            "step": 1,
+            "unit": "px",
+            "default": 18
+          },
+          {
+            "type": "range",
+            "id": "font_size_md",
+            "label": "Tablet",
+            "info": "Breakpoint 768px ↑",
+            "min": 7,
+            "max": 60,
+            "step": 1,
+            "unit": "px",
+            "default": 18
+          },
+          {
+            "type": "range",
+            "id": "font_size_sm",
+            "label": "Large mobile",
+            "info": "Breakpoint 576px ↑",
+            "min": 7,
+            "max": 60,
+            "step": 1,
+            "unit": "px",
+            "default": 18
+          },
+          {
+            "type": "range",
+            "id": "font_size_xs",
+            "label": "Mobile",
+            "min": 7,
+            "max": 60,
+            "step": 1,
+            "unit": "px",
+            "default": 18
+          },
+          {
             "type": "range",
             "id": "padding_block_start",
             "min": 0,
@@ -828,6 +1097,47 @@
         "limit": 1,
         "settings": [
           {
+            "type": "color",
+            "id": "color_author",
+            "alpha": true,
+            "label": "Author Color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "bg_author",
+            "alpha": true,
+            "label": "Author Background",
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "id": "color_author_active",
+            "alpha": true,
+            "label": "Author Color Active",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "bg_author_active",
+            "alpha": true,
+            "label": "Author Background Active",
+            "default": "#f7f7f7"
+          },
+          {
+            "type": "color",
+            "id": "color_date",
+            "alpha": true,
+            "label": "Date Color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "bg_date",
+            "label": "Date Background",
+            "default": "#FFFFFF"
+          },
+          {
             "type": "range",
             "id": "padding_block_start",
             "min": 0,
@@ -835,7 +1145,8 @@
             "step": 1,
             "label": "Top",
             "default": 10,
-            "unit": "px"
+            "unit": "px",
+            "visible_if": "{{ section.settings.layout != 'hover_image' }}"
           },
           {
             "type": "range",
@@ -845,7 +1156,8 @@
             "step": 1,
             "label": "Bottom",
             "default": 10,
-            "unit": "px"
+            "unit": "px",
+            "visible_if": "{{ section.settings.layout != 'hover_image' }}"
           }
         ]
       },

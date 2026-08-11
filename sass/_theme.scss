@@ -252,7 +252,6 @@ button {
 .title_section {
 	margin-bottom: var(--section-heading-spacing);
 	position: relative;
-	width: 100%;
 	.title {
 		color: var(--color-heading);
 		font-family: var(--section-heading-font-family);
@@ -1677,6 +1676,16 @@ speech-search-button {
 			background: var(--slider-arrow-bg);
 			border: 1px solid var(--slider-arrow-border);
 			color: var(--slider-arrow-color);
+		}
+	}
+	&.hv_box_shadow {
+		.slick-list .slick-slide {
+			opacity: 0;
+			visibility: hidden;
+			&.slick-active {
+				opacity: 1;
+				visibility: initial;
+			}
 		}
 	}
 }

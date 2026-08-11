@@ -39,7 +39,7 @@
     }
   {% endif %}
 {% endstyle %}
-<div id="group-{{ block.id }}" class="group-block sp-{{ bst.row_spacing }}{% if bst.show_style %} group-style overflow_hidden{% endif %}{% if bst.hover_effect %} hover-effect{% endif %}" style="--bg-hover: {{ bst.bg_hover }};--text-hover: {{ bst.text_hover }};">
+<div id="group-{{ block.id }}" class="group-block sp-{{ bst.row_spacing }}{% if bst.show_style %} group-style{% endif %}{% if bst.hover_effect %} hover-effect{% endif %}" style="--bg-hover: {{ bst.bg_hover }};--text-hover: {{ bst.text_hover }};">
   <div class="row-block row spacing-{{ bst.row_spacing }} spacing-lg-{{ bst.row_spacing_lg }} spacing-md-{{ bst.row_spacing_md }}{% if bst.sticky_content != 'row-sticky-none' %} {{ bst.sticky_content }} align-items-start{% else %} align-items-{{ bst.align }}{% endif %} justify-content-{{ bst.justify }}{% if bst.direction_reverse %} {{ bst.direction_row }}{% endif %}" {{ block.shopify_attributes }}>
     {% content_for 'blocks' %}
   </div>

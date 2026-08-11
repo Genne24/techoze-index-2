@@ -28,15 +28,15 @@
             "sticky_content": "row-sticky-none",
             "sticky_top": 0,
             "show_style": true,
-            "bg_color": "#FFFFFF08",
+            "bg_color": "#ffffff08",
             "corner_radius": 0,
             "hover_effect": false,
-            "bg_hover": "#FFFFFF",
+            "bg_hover": "#ffffff",
             "text_hover": "#000000",
-            "pt_xl": 40,
-            "pt_lg": 40,
-            "pt_md": 40,
-            "pt_sm": 40,
+            "pt_xl": 33,
+            "pt_lg": 33,
+            "pt_md": 33,
+            "pt_sm": 33,
             "pb_xl": 40,
             "pb_lg": 40,
             "pb_md": 40,
@@ -122,9 +122,9 @@
                   "name": "Text",
                   "settings": {
                     "text": "<p>Sign up newsletter & Get 30% OFF coupon today subscibers.</p>",
-                    "color": "#FFFFFF",
-                    "color_link": "#FFFFFF",
-                    "color_link_hover": "#FFFFFF",
+                    "color": "#ffffff",
+                    "color_link": "#ffffff",
+                    "color_link_hover": "#ffffff",
                     "alignment": "center",
                     "responsive_alignment": false,
                     "alignment_xl": "left",
@@ -171,7 +171,7 @@
                     "style_line_bottom": false,
                     "input_color": "#000",
                     "input_place_color": "#666",
-                    "input_bg": "#FFFFFF",
+                    "input_bg": "#ffffff",
                     "input_border_color": "rgba(0,0,0,0)",
                     "shadow_input": false,
                     "input_height": 50,
@@ -236,7 +236,7 @@
         "pattern_vertical3": 0,
         "pattern_width3": 20,
         "animate": true,
-        "container": "container",
+        "container": "container-full",
         "class_section": "",
         "ss_bg_enable": true,
         "background_color": "#03030a",
@@ -259,10 +259,10 @@
         "distance_top_lg": 0,
         "distance_top_md": 0,
         "distance_top_sm": 0,
-        "distance_bottom_xl": 33,
-        "distance_bottom_lg": 33,
-        "distance_bottom_md": 33,
-        "distance_bottom_sm": 85
+        "distance_bottom_xl": 0,
+        "distance_bottom_lg": 0,
+        "distance_bottom_md": 0,
+        "distance_bottom_sm": 0
       }
     },
     "nov_custom_section_CdLtiN": {
@@ -1083,6 +1083,27 @@
         "distance_bottom_sm": 20
       }
     },
+    "nov_line_HWLrxP": {
+      "type": "nov-line",
+      "name": "Vinova Line",
+      "settings": {
+        "height": 1,
+        "color": "#FFFFFF1A",
+        "style": "solid",
+        "animate": false,
+        "container": "container-full",
+        "background_color": "#03030A",
+        "class": "",
+        "distance_top_xl": 0,
+        "distance_top_lg": 0,
+        "distance_top_md": 0,
+        "distance_top_sm": 0,
+        "distance_bottom_xl": 0,
+        "distance_bottom_lg": 0,
+        "distance_bottom_md": 0,
+        "distance_bottom_sm": 0
+      }
+    },
     "nov_custom_section_JMXPEW": {
       "type": "nov-custom-section",
       "blocks": {
@@ -1390,16 +1411,17 @@
         "distance_top_lg": 0,
         "distance_top_md": 0,
         "distance_top_sm": 0,
-        "distance_bottom_xl": 33,
-        "distance_bottom_lg": 33,
-        "distance_bottom_md": 33,
-        "distance_bottom_sm": 85
+        "distance_bottom_xl": 22,
+        "distance_bottom_lg": 22,
+        "distance_bottom_md": 22,
+        "distance_bottom_sm": 74
       }
     }
   },
   "order": [
     "nov_custom_section_zTwCgL",
     "nov_custom_section_CdLtiN",
+    "nov_line_HWLrxP",
     "nov_custom_section_JMXPEW"
   ]
 }

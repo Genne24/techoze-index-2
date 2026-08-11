@@ -59,7 +59,7 @@
                 {% assign pin_position_left_id = 'pin_position_left_' | append: i %}
                 {% assign product = all_products[block.settings[pin_product_id]] %}
                 {% if product != blank %}
-                  <div class="number nov_btn_act position-absolute d-flex align-items-center justify-content-center r-100 pointer{% if forloop.first %} act{% endif %}" data-toggle="{{ section.id }}{{ block.id }}{{ forloop.index }}" style="top: {{ block.settings[pin_position_top_id] }}%; left: {{ block.settings[pin_position_left_id] }}%">
+                  <div class="number nov_btn_act position-absolute d-flex align-items-center justify-content-center r-100 pointer{% if forloop.first %} act{% endif %}" data-toggle="{{ section.id }}{{ block.id }}{{ forloop.index }}" style="top: {{ block.settings[pin_position_top_id] }}%; inset-inline-start: {{ block.settings[pin_position_left_id] }}%">
                     <span></span>
                   </div>
                 {% endif %}

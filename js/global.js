@@ -2425,6 +2425,77 @@ novtheme.PageMenuService = function() {
     updateSidebarPosition();
     updateActiveItem();
 }
+novtheme.BundleConfetti = function(originEl) {
+    var colors = ['#f94144','#f3722c','#f8961e','#f9c74f','#90be6d','#43aa8b','#577590','#e040fb','#ff4081','#00bcd4'];
+    var canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999;';
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var rect = originEl ? originEl.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0};
+    var ox = rect.left + rect.width / 2;
+    var oy = rect.top + rect.height / 2;
+
+    var particles = [];
+    var count = 120;
+    for (var i = 0; i < count; i++) {
+        var angle = (Math.random() * Math.PI * 2);
+        var speed = 4 + Math.random() * 8;
+        particles.push({
+            x: ox, y: oy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 5,
+            w: 6 + Math.random() * 8,
+            h: 4 + Math.random() * 6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rot: Math.random() * 360,
+            rotV: (Math.random() - 0.5) * 10,
+            alpha: 1,
+            shape: Math.random() > 0.4 ? 'rect' : 'circle'
+        });
+    }
+
+    var startTime = null;
+    var duration = 2200;
+
+    function draw(ts) {
+        if (!startTime) startTime = ts;
+        var elapsed = ts - startTime;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var alive = false;
+        particles.forEach(function(p) {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.35;
+            p.vx *= 0.98;
+            p.rot += p.rotV;
+            p.alpha = Math.max(0, 1 - elapsed / duration);
+            if (p.alpha > 0) alive = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            if (p.shape === 'circle') {
+                ctx.beginPath();
+                ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+            }
+            ctx.restore();
+        });
+        if (alive && elapsed < duration + 500) {
+            requestAnimationFrame(draw);
+        } else {
+            canvas.parentNode && canvas.parentNode.removeChild(canvas);
+        }
+    }
+    requestAnimationFrame(draw);
+};
+
 novtheme.ProductBundle = function() {
     $('.section-product-bundle').each(function() {
         var $section = $(this);
@@ -2436,6 +2507,7 @@ novtheme.ProductBundle = function() {
         var qtyMin = parseInt($section.data('qty-min')) || 1;
 
         var bundleItems = [];
+        var _confettiFired = false;
 
         function updateBundleUI() {
             var $itemsContainer = $section.find('.nov-bundle-items');
@@ -2467,18 +2539,37 @@ novtheme.ProductBundle = function() {
                         qtyHtml = '<div class="bundle-item-qty-single d-none mb-5">Qty: ' + item.qty + '</div>';
                     }
 
-                    var itemHtml = '<div class="nov-bundle-item item-filled d-flex align-items-center justify-content-between" data-index="' + i + '" data-variant-id="' + item.variantId + '">' +
-                        '<div class="d-flex align-items-center gap-12 flex-grow-1 overflow-hidden mr-10">' +
+                    // Build variant selector if multiple variants exist
+                    var variantSelectHtml = '';
+                    if (item.variants && item.variants.length > 1) {
+                        variantSelectHtml = '<div class="bundle-variant-wrap mb-4">' +
+                            '<select class="bundle-variant-select" data-index="' + i + '">';
+                        item.variants.forEach(function(v) {
+                            var isSelected = String(v.id) === String(item.variantId);
+                            var isAvail = v.available !== false;
+                            variantSelectHtml += '<option value="' + v.id + '"' +
+                                (isSelected ? ' selected' : '') +
+                                (isAvail ? '' : ' disabled') +
+                                ' data-price="' + v.price + '"' +
+                                ' data-image="' + (v.featured_image && v.featured_image.src ? v.featured_image.src : item.image) + '"' +
+                                ' data-title="' + (v.title || '').replace(/"/g, '&quot;') + '">' +
+                                (v.title || '') + '</option>';
+                        });
+                        variantSelectHtml += '</select></div>';
+                    }
+
+                    var itemHtml = '<div class="nov-bundle-item item-filled d-flex align-items-center justify-content-between relative" data-index="' + i + '" data-variant-id="' + item.variantId + '">' +
+                        '<div class="d-flex align-items-center gap-19 flex-grow-1 overflow-hidden mr-10">' +
                         '<div class="bundle-item-media flex-shrink-0">' +
-                        '<img src="' + item.image + '" alt="' + (item.title || '').replace(/"/g, '&quot;') + '" class="w-100 h-100 object-cover">' +
+                        '<img src="' + item.image + '" alt="' + (item.title || '').replace(/"/g, '&quot;') + '" class="w-100 h-100 object-cover bundle-item-img">' +
                         '</div>' +
                         '<div class="bundle-item-info flex-grow-1 overflow-hidden">' +
-                        '<div class="bundle-item-title text-truncate">' + item.title + '</div>' +
-                        (item.variantTitle ? '<div class="bundle-item-variant text-truncate">' + item.variantTitle + '</div>' : '') +
+                        '<div class="bundle-item-title">' + item.title + '</div>' +
+                        variantSelectHtml +
                         '<div class="bundle-item-price">' + itemMoney + '</div>' +
                         '</div>' +
                         '</div>' +
-                        '<div class="bundle-item-actions d-flex flex-column align-items-end flex-shrink-0">' +
+                        '<div class="bundle-item-actions absolute d-flex flex-column align-items-end flex-shrink-0">' +
                         qtyHtml +
                         '<button type="button" class="bundle-item-remove" data-index="' + i + '">' + theme.icon_close + '</button>' +
                         '</div>' +
@@ -2497,15 +2588,20 @@ novtheme.ProductBundle = function() {
             }
 
             var formattedTotal = typeof Shopify !== 'undefined' && Shopify.formatMoney ? Shopify.formatMoney(totalCents, theme.moneyFormat) : '$' + (totalCents / 100).toFixed(2);
-            if (formattedTotal && !formattedTotal.toLowerCase().includes('usd')) {
-                formattedTotal += ' USD';
-            }
             $totalPrice.text(formattedTotal);
 
             if (count >= minItems) {
                 $cartBtn.removeClass('disabled').prop('disabled', false).css('pointer-events', 'auto');
             } else {
                 $cartBtn.addClass('disabled').prop('disabled', true).css('pointer-events', 'none');
+            }
+
+            if (count >= maxItems && !_confettiFired) {
+                _confettiFired = true;
+                var $box = $section.find('.nov-bundle-box');
+                novtheme.BundleConfetti($box.length ? $box[0] : null);
+            } else if (count < maxItems) {
+                _confettiFired = false;
             }
 
             $section.find('.item-product').each(function() {
@@ -2536,6 +2632,10 @@ novtheme.ProductBundle = function() {
             var price = parseInt($card.attr('data-price')) || 0;
             var image = $card.find('.product__thumbnail').attr('src') || $card.attr('data-image') || '';
 
+            // Collect full variants list for in-bundle selector
+            var jsonProduct = $card.data('json-product') || null;
+            var variants = (jsonProduct && jsonProduct.variants) ? jsonProduct.variants : [];
+
             if (preventDuplicate && bundleItems.some(function(it) { return String(it.variantId) === String(variantId); })) {
                 return;
             }
@@ -2547,10 +2647,54 @@ novtheme.ProductBundle = function() {
                 variantTitle: variantTitle,
                 price: price,
                 image: image,
-                qty: qtyMin
+                qty: qtyMin,
+                variants: variants
             });
 
             updateBundleUI();
+        });
+
+        // Handle variant change inside bundle box
+        $section.on('change', '.bundle-variant-select', function() {
+            var index = parseInt($(this).data('index'));
+            if (isNaN(index) || !bundleItems[index]) return;
+            var $opt = $(this).find('option:selected');
+            var newVarId = $(this).val();
+            var newPrice = parseInt($opt.attr('data-price')) || bundleItems[index].price;
+            var newImage = $opt.attr('data-image') || bundleItems[index].image;
+            var newTitle = $opt.attr('data-title') || '';
+
+            bundleItems[index].variantId    = newVarId;
+            bundleItems[index].price        = newPrice;
+            bundleItems[index].image        = newImage;
+            bundleItems[index].variantTitle = newTitle;
+
+            // Update image in DOM without full re-render
+            var $item = $section.find('.nov-bundle-item[data-index="' + index + '"]');
+            $item.attr('data-variant-id', newVarId);
+            $item.find('.bundle-item-img').attr('src', newImage);
+            $item.find('.bundle-item-price').text(
+                typeof Shopify !== 'undefined' && Shopify.formatMoney
+                    ? Shopify.formatMoney(newPrice, theme.moneyFormat)
+                    : '$' + (newPrice / 100).toFixed(2)
+            );
+
+            // Recalculate total
+            var totalCents = 0;
+            bundleItems.forEach(function(it) { totalCents += it.price * it.qty; });
+            $section.find('.total-price').text(
+                typeof Shopify !== 'undefined' && Shopify.formatMoney
+                    ? Shopify.formatMoney(totalCents, theme.moneyFormat)
+                    : '$' + (totalCents / 100).toFixed(2)
+            );
+
+            // Sync back to product card if available
+            $section.find('.item-product').each(function() {
+                var pid = $(this).attr('data-product-id');
+                if (String(pid) === String(bundleItems[index].productId)) {
+                    $(this).attr('data-variant-id', newVarId);
+                }
+            });
         });
 
         $section.on('click', '.bundle-item-remove', function(e) {
