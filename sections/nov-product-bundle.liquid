@@ -50,12 +50,12 @@
         data-qty-increment="{{ sst.qty_increment | default: 1 }}"
         data-qty-min="{{ sst.qty_min | default: 1 }}">
         <div class="row">
-          <div class="col-lg-9 col-md-7 nov-bundle-left">
+          <div class="col-xl-9 col-lg-8 col-12 nov-bundle-left">
             <div class="row spacing-{{ sst.spacing }} spacing-sm-15 nov-bundle-grid sticky">
               {% if bundle_products != blank %}
                 {% assign grid_num = sst.grid_number | default: 3 %}
                 {% for product in bundle_products limit: product_limit %}
-                  <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-lg-3 col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %}{% if forloop.rindex > grid_num %} mb-{{ sst.spacing }} mb-sm-15{% endif %}">
+                  <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-xl-4 col-lg-6 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-lg-3 col-lg-6 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %}{% if forloop.rindex > grid_num %} mb-{{ sst.spacing }}{% endif %} mb-lg-{{ sst.spacing }}">
                     {% render 'product-grid-item-style-bundle', product: product, section_id: section.id %}
                   </div>
                 {% endfor %}
@@ -86,10 +86,13 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-5 nov-bundle-right {{ sst.color_box_bundle | prepend: 'color-' }}">
+          <div class="col-xl-3 col-lg-4 col-12 nov-bundle-right {{ sst.color_box_bundle | prepend: 'color-' }}">
             <div class="nov-bundle-box sticky">
               <div class="nov-bundle-header">
-                <div class="bundle-title title">{{ sst.heading_discount }}</div>
+                <div class="bundle-title title d-flex align-items-center justify-content-between">
+                  {{ sst.heading_discount }}
+                  {% render 'icon-arrow-up' %}
+                </div>
                 <div class="bundle-subtitle sub_title">{{ sst.subheading_discount }}</div>
                 <div class="bundle-progress-bar">
                   <div class="bundle-progress-fill" style="width: 0%;"></div>
@@ -110,11 +113,12 @@
               </div>
 
               <div class="nov-bundle-footer">
-                <div class="bundle-total-row d-flex align-items-center justify-content-between">
+                <div class="bundle-total-row d-none d-lg-flex align-items-center justify-content-between">
                   <span class="total-label">{{ 'cart.general.total' | t }}:</span>
                   <span class="total-price">{{ 0 | money }}</span>
                 </div>
                 <button class="btn btn-medium btn-bundle-add-to-cart btn-alternate w-100 disabled" type="button" disabled="disabled">
+                  <span class="total-price d-block d-lg-none">{{ 0 | money }}</span>
                   <span class="btn-text">{{ 'products.product.add_to_cart' | t }}</span>
                   <span class="load"></span>
                 </button>

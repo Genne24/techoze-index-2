@@ -19,68 +19,70 @@
 	gap: 16px;
 }
 .header-group-item>div:not(:last-child) {margin-inline-end: 2rem;}
-.btn-vertical {
-	position: relative;
-	width: 48px;
-	height: 48px;
-	min-width: 48px;
-	border-radius: 50%;
-	background-color: var(--color-button);
-	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: background-color var(--animation-speed) ease;
-	&::before {
-		content: "";
-    position: absolute;
-    width: calc(100% + 12px);
-    height: calc(100% + 12px);
-    border-radius: 100%;
-    top: -6px;
-    inset-inline-start: -6px;
-    background-color: rgba(var(--color-button-rgb), 0.1);
-		animation: AnimationBtn 2s ease infinite;
-	}
-	&:hover {
-		background-color: var(--color-button-hover);
+@media screen and (min-width: 768px) {
+	.btn-vertical {
+		position: relative;
+		width: 48px;
+		height: 48px;
+		min-width: 48px;
+		border-radius: 50%;
+		background-color: var(--color-button);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background-color var(--animation-speed) ease;
+		&::before {
+			content: "";
+			position: absolute;
+			width: calc(100% + 12px);
+			height: calc(100% + 12px);
+			border-radius: 100%;
+			top: -6px;
+			inset-inline-start: -6px;
+			background-color: rgba(var(--color-button-rgb), 0.1);
+			animation: AnimationBtn 2s ease infinite;
+		}
+		&:hover {
+			background-color: var(--color-button-hover);
+			.icon {
+				span,
+				&:before,
+				&:after {
+					background-color: var(--color-button-text-hover);
+				}
+			}
+		}
 		.icon {
+			width: 16px;
+			height: 14px;
+			position: relative;
+			display: inline-block;
 			span,
 			&:before,
 			&:after {
-				background-color: var(--color-button-text-hover);
+				content: "";
+				position: absolute;
+				inset-inline-start: 0;
+				height: 2px;
+				background-color: var(--color-button-text);
+				border-radius: 2px;
+				transition: all var(--animation-speed) ease;
 			}
-		}
-	}
-	.icon {
-		width: 16px;
-		height: 14px;
-		position: relative;
-		display: inline-block;
-		span,
-		&:before,
-		&:after {
-			content: "";
-			position: absolute;
-			inset-inline-start: 0;
-			height: 2px;
-			background-color: var(--color-button-text);
-			border-radius: 2px;
-			transition: all var(--animation-speed) ease;
-		}
-		span {
-			top: 50%;
-			transform: translateY(-50%);
-			width: 16px;
-		}
-		&:before {
-			top: 0;
-			width: 16px;
-		}
-		&:after {
-			bottom: 0;
-			width: 16px;
+			span {
+				top: 50%;
+				transform: translateY(-50%);
+				width: 16px;
+			}
+			&:before {
+				top: 0;
+				width: 16px;
+			}
+			&:after {
+				bottom: 0;
+				width: 16px;
+			}
 		}
 	}
 }
@@ -139,5 +141,11 @@
 	}
 	.header-pill-wrapper {
 		padding: 6px 16px;
+		padding-inline-end: 5px;
+	}
+	.site-nav--btn .icon {
+		span, &:before, &:after {
+			background: #FFFFFF !important;
+		}
 	}
 }

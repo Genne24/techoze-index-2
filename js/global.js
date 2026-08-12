@@ -2620,7 +2620,7 @@ novtheme.ProductBundle = function() {
             });
         }
 
-        $section.on('click', '.btn-add-to-bundle', function(e) {
+        $section.off('click', '.btn-add-to-bundle').on('click', '.btn-add-to-bundle', function(e) {
             e.preventDefault();
             if (bundleItems.length >= maxItems) return;
 
@@ -2654,8 +2654,7 @@ novtheme.ProductBundle = function() {
             updateBundleUI();
         });
 
-        // Handle variant change inside bundle box
-        $section.on('change', '.bundle-variant-select', function() {
+        $section.off('change', '.bundle-variant-select').on('change', '.bundle-variant-select', function() {
             var index = parseInt($(this).data('index'));
             if (isNaN(index) || !bundleItems[index]) return;
             var $opt = $(this).find('option:selected');
@@ -2697,7 +2696,7 @@ novtheme.ProductBundle = function() {
             });
         });
 
-        $section.on('click', '.bundle-item-remove', function(e) {
+        $section.off('click', '.bundle-item-remove').on('click', '.bundle-item-remove', function(e) {
             e.preventDefault();
             var index = $(this).data('index');
             if (index !== undefined && index >= 0 && index < bundleItems.length) {
@@ -2706,7 +2705,7 @@ novtheme.ProductBundle = function() {
             }
         });
 
-        $section.on('click', '.bundle-qty-plus', function(e) {
+        $section.off('click', '.bundle-qty-plus').on('click', '.bundle-qty-plus', function(e) {
             e.preventDefault();
             var index = $(this).data('index');
             if (index !== undefined && bundleItems[index]) {
@@ -2715,7 +2714,7 @@ novtheme.ProductBundle = function() {
             }
         });
 
-        $section.on('click', '.bundle-qty-minus', function(e) {
+        $section.off('click', '.bundle-qty-minus').on('click', '.bundle-qty-minus', function(e) {
             e.preventDefault();
             var index = $(this).data('index');
             if (index !== undefined && bundleItems[index]) {
@@ -2726,7 +2725,7 @@ novtheme.ProductBundle = function() {
             }
         });
 
-        $section.on('click change', '.item-swatch li .label, .selector-wrapper :radio, select.single-option-selector', function() {
+        $section.off('click change', '.item-swatch li .label, .selector-wrapper :radio, select.single-option-selector').on('click change', '.item-swatch li .label, .selector-wrapper :radio, select.single-option-selector', function() {
             var $card = $(this).closest('.item-product');
             setTimeout(function() {
                 var newVarId = $card.find('input[name="id"]').val();
@@ -2747,7 +2746,7 @@ novtheme.ProductBundle = function() {
             }, 120);
         });
 
-        $section.on('click', '.btn-bundle-add-to-cart', function(e) {
+        $section.off('click', '.btn-bundle-add-to-cart').on('click', '.btn-bundle-add-to-cart', function(e) {
             e.preventDefault();
             var $btn = $(this);
             if ($btn.hasClass('disabled') || bundleItems.length < minItems) return;
@@ -2816,6 +2815,15 @@ novtheme.ProductBundle = function() {
                     alert(errorMessage);
                 }
             });
+        });
+
+        $section.off('click', '.bundle-title').on('click', '.bundle-title', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if ($(window).width() < 992) {
+                $section.find('.nov-bundle-box').toggleClass('open');
+                $section.find('.nov-bundle-items').toggleClass('open');
+            }
         });
 
         updateBundleUI();

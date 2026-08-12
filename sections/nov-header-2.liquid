@@ -17,6 +17,13 @@
     --menu-fw: {{ sst.menu_fw }};
     --menu-ff: {{ sst.menu_ff }};
   }
+  .header-content {
+    {% if request.page_type == 'index' %}
+      background: {{ sst.abs_bg }};
+    {% else %}
+      background: var(--color-background);
+    {% endif %}
+  }
   #header-sticky, .header-mobile .header-mobile-content , .header-content {
     background: {{ sst.header_bg }};
   }
@@ -33,10 +40,13 @@
   }
 </script>
 <header class="site-header{% if sst.stickymenu %} sticky-header{% endif %}">
-  <div class="header-content header-search__parent d-none d-md-block{% if request.page_type == 'index' %} color-{{ sst.header_color_index }}{% else %} color-{{ sst.header_color_inner }}{% endif %}">
+  <div class="header-content header-search__parent d-none d-md-block{% if template.name == "index" %} color-{{ sst.abs_color }}{% else %} color-{{ sst.header_color_inner }}{% endif %}">
     <div class="{{ sst.container }}">
       <div class="row align-items-center justify-content-between">
         <div class="col-auto d-flex align-items-center">
+          <div class="site-nav--btn d-flex d-xl-none align-items-center justify-content-center">
+            <span class="icon"><span></span></span>
+          </div>
           <div class="contentsticky_logo">
             {% if sst.logo %}
               <a href="{{ routes.root_url }}" class="site-header__logo position-relative">
@@ -59,9 +69,9 @@
           <div class="btn-vertical btn-vertical-desktop">
             <span class="icon"><span></span></span>
           </div>
-          <div class="header-pill-wrapper d-none d-xl-flex align-items-center">
-            <div class="contentsticky_menu" style="--color-menu: {{ sst.color_menu }};--color-menu-hover: {{ sst.color_menu_hover }};">
-              <nav id="AccessibleNav" class="text-center d-none d-xl-block h-100">{% render 'site-nav' color: sst.color_menu_dropdown, mainmenu: sst.main_linklist %}</nav>
+          <div class="header-pill-wrapper d-flex align-items-center">
+            <div class="contentsticky_menu d-none d-xl-block" style="--color-menu: {{ sst.color_menu }};--color-menu-hover: {{ sst.color_menu_hover }};">
+              <nav id="AccessibleNav" class="text-center h-100">{% render 'site-nav' color: sst.color_menu_dropdown, mainmenu: sst.main_linklist %}</nav>
             </div>
             <div class="header-group-item d-flex align-items-center">
               {% if settings.search_enable %}
@@ -188,7 +198,7 @@
   </div>
 </header>
 {% if sst.stickymenu %}
-  <div id="header-sticky" class="d-none d-md-block header-search__parent color-{{ sst.header_bottom_color }}">
+  <div id="header-sticky" class="d-none d-lg-block header-search__parent color-{{ sst.header_bottom_color }}">
     <div class="{{ sst.container }}">
       <div class="bl_content row align-items-center">
         <div class="col-3 d-flex align-items-center">
@@ -275,13 +285,23 @@
       },
       {
         "type": "header",
-        "content": "Header Color"
+        "content": "Header Absolute Color"
+      },
+      {
+        "type": "color",
+        "id": "abs_bg",
+        "label": "Background",
+        "default": "#fff"
       },
       {
         "type": "color_scheme",
-        "id": "header_color_index",
-        "label": "Color page index",
+        "id": "abs_color",
+        "label": "Color",
         "default": "background-1"
+      },
+      {
+        "type": "header",
+        "content": "Header Color"
       },
       {
         "type": "color_scheme",

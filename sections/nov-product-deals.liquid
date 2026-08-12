@@ -35,7 +35,8 @@
         data-items_sm="{{ sst.sm }}"
         data-items_xs="{{ sst.xs }}"
         data-speed="700"
-        data-spacing="{{ sst.spacing }}">
+        data-spacing="{{ sst.spacing }}"
+        data-spacing_mobile="15">
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
             {% assign bst = block.settings %}
@@ -107,7 +108,7 @@
       </div>
 
       {%- if sst.show_nav -%}
-        <div class="block-nav d-flex justify-content-center mt-40">
+        <div class="block-nav {{ sst.arrow_postion }} d-flex justify-content-center mt-40">
           <div class="nav-arrow nav-prev pointer">{% render 'icon-arrow-prev' %}</div>
           <div class="nav-arrow nav-next pointer">{% render 'icon-arrow-next' %}</div>
         </div>
@@ -302,6 +303,17 @@
       ],
       "visible_if": "{{ section.settings.show_nav }}"
     },
+		{
+			"type": "select",
+			"id": "arrow_postion",
+			"label": "Arrow Postion",
+			"default": "arrow_on_center",
+			"options": [
+				{"value": "arrow_on_center","label": "Arrow on center"},
+				{"value": "arrow_on_bottom","label": "Arrow on bottom"}
+			],
+			"visible_if": "{{ section.settings.show_nav }}"
+		},
     {
       "type": "header",
       "content": "Countdown Style"

@@ -21,7 +21,7 @@
 
 <div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }} position-relative" data-section-id="{{ section.id }}"{% if sst.type == 'carousel' %} data-section-type="nov-swiper"{% endif %}>
   <div class="{{ sst.container }}">
-    <div class="d-flex align-items-center justify-content-between w-100">
+    <div class="{% if sst.view_all_label != blank %}d-flex align-items-center justify-content-between {% endif %}w-100">
       {% render 'heading-section', sub_position: sst.subheading_position %}
       {% if sst.view_all_label != blank %}
         <div class="view_all relative duration-300">

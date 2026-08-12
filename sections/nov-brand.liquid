@@ -22,7 +22,7 @@
 <div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }}" data-section-id="{{ section.id }}" data-section-type="nov-swiper">
   <div class="{{ sst.container }}">
     {% if section.settings.heading != blank or section.settings.subheading != blank or section.settings.descheading != blank or sst.view_all_label != blank %}
-      <div class="d-flex align-items-center justify-content-between w-100 {{ settings.section_heading_spacing | prepend: 'mb-' }}">
+      <div class="{% if sst.view_all_label != blank %}d-flex align-items-center justify-content-between {% endif %}w-100 {{ settings.section_heading_spacing | prepend: 'mb-' }}">
         {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-0' %}
         {% if sst.view_all_label != blank %}
           <div class="view_all relative duration-300">

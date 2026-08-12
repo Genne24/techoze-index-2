@@ -117,10 +117,11 @@
 		}
 		input {
 			background: white;
+			color: #000;
 			border: none;
 			border-top: 1px solid #c7d4e0;
 			border-bottom: 1px solid #c7d4e0;
-			border-radius: 0;
+			border-radius: 0 !important;
 			padding: 0 15px;
 			height: 60px;
 			text-align: center;
@@ -147,9 +148,23 @@
 			color: white;
 			display: none !important;
 		}
+		.search-header__actions {inset-inline-end: 15px;}
 		.search-w__animate,
 		.icon {
 			display: none !important;
+		}
+		.search_autocomplete {
+			border-top: none;
+			box-shadow: none;
+		}
+		.search_autocomplete-content {
+			flex-direction: column;
+			.search_trend {width: 100%;}
+			.search_trend-content {border: none !important;}
+			.search-results__block {
+				box-shadow: none;
+				width: 100%;
+			}
 		}
 	}
 	.mobile_cart {

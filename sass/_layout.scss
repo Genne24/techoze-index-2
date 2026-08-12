@@ -393,7 +393,7 @@
 	background: white;
 	top: 0;
 	inset-inline-end: calc(-1 * var(--theme-drawer-width) - 20px);
-	transition: inset-inline-end .3s var(--animation-timing-out);
+	transition: inset-inline-end .6s cubic-bezier(.7, 0, .2, 1);
 	box-shadow: 0 0 6px rgba(black, .1);
 	perspective: 1000px;
 	.extend--label__item {
@@ -408,7 +408,6 @@
 	}
 	&.active {
 		inset-inline-end: 0;
-		transition-timing-function: var(--animation-timing-in);
 		.extend--label__item {
 			animation: flipBook 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 		}

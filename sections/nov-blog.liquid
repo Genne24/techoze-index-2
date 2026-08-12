@@ -25,7 +25,7 @@
 
 <div class="container-outer{{ bg_class_full }} color-{{ sst.color_section }} position-relative" data-section-id="{{ section.id }}" data-section-type="nov-slick">
   <div class="{{ sst.container }}">
-    <div class="d-flex align-items-center justify-content-between{% if sst.hv_box_shadow %} mb-27{% else %} {{ settings.section_heading_spacing | prepend: 'mb-' }}{% endif %}">
+    <div class="{% if sst.view_all_label != blank %}d-flex align-items-center justify-content-between {% endif %}{% if sst.hv_box_shadow %}mb-27{% else %}{{ settings.section_heading_spacing | prepend: 'mb-' }}{% endif %}">
       {% render 'heading-section', sub_position: sst.subheading_position, class: 'mb-0' %}
       {% if sst.show_nav and sst.arrow_postion == 'arrow_on_top' and sst.layout != 'hover_image' %}
         <div class="block-nav {{ sst.arrow_color }} {{ sst.arrow_postion }} d-flex justify-content-center">
@@ -45,7 +45,7 @@
     <div class="container-inner{{ bg_class_contain }} {{ sst.dots_color }} {{ sst.arrow_color }} {{ sst.arrow_postion }} relative"> 
       {% if sst.layout == 'hover_image' %}
         <div class="blog-hover-image-layout row">
-          <div class="col-lg-6 col-12 blog-hover-image-left">
+          <div class="col-xl-6 col-12 blog-hover-image-left">
             <div class="active-image-wrapper position-relative overflow_hidden" style="--corner-radius: {{ sst.corner_radius | append: 'px' }}">
               {% for article in collection_blog.articles limit: blog_limit %}
                 <div class="blog-image-item absolute t-0 l-0 w-100 h-100 duration-500{% if forloop.first %} active{% endif %}" data-blog-index="{{ forloop.index0 }}">
@@ -68,7 +68,7 @@
               {% endfor %}
             </div>
           </div>
-          <div class="col-lg-6 col-12 blog-hover-image-right d-flex flex-column">
+          <div class="col-xl-6 col-12 blog-hover-image-right d-flex flex-column mt-lg-30">
             <div class="blog-titles-list w-100">
               {% for article in collection_blog.articles limit: blog_limit %}
                 <div class="blog-title-row item-article d-flex align-items-center justify-content-between duration-300{% if forloop.first %} active{% endif %}" data-blog-index="{{ forloop.index0 }}" style="{% if section.settings.layout == 'hover_image' %}--bg: {{ sst.bg }};--bg-hover: {{ sst.bg_hover }};{% endif %}--corner-radius: {{ sst.corner_radius | append: 'px' }};--border-style: {{ sst.border_style }};--border-size: {{ sst.border_size | append: 'px' }};">

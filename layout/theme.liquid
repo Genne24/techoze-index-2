@@ -146,18 +146,13 @@
           }, 0);
         }
       });
-      {% case settings.header_layout %}
-        {% when 'header-1' %}
-          {% if template.name == "index" %}
-            var hasVerticalMenu = document.querySelector('.shopify-section-group-nov-system-group.section-vertical-menu');
-            var wbWp = document.querySelector('.btn-vertical-desktop');
-            var wbMb = document.querySelector('.btn-vertical-mobile');
-            if (hasVerticalMenu) {
-              if (wbWp) wbWp.classList.add('open');
-              if (wbMb) wbMb.classList.add('active');
-            }
-          {% endif %}
-      {% endcase %}
+      var hasVerticalMenu = document.querySelector('.shopify-section-group-nov-system-group.section-vertical-menu');
+      var wbWp = document.querySelector('.btn-vertical-desktop');
+      var wbMb = document.querySelector('.btn-vertical-mobile');
+      if (hasVerticalMenu) {
+        if (wbWp) wbWp.classList.add('open');
+        if (wbMb) wbMb.classList.add('active');
+      }
       document.querySelectorAll('.btn-alternate').forEach((btn) => {
         btn.addEventListener('mouseenter', () => {
             btn.classList.remove('is-leave');

@@ -305,7 +305,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		@media(max-width: 575px) {
-			bottom: clamp(-50px, var(--vertical), 20px);
+			bottom: clamp(-50px, var(--vertical), 50px);
 		}
 	}
 	&.center-center {
