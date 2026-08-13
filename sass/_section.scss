@@ -6937,6 +6937,9 @@ html:has(.menu-service) {
 		.section-product-bundle .nov-bundle-right {
 			padding-block-end: 40px;
 		}
+		.item-product.type-quick-add-text .btn-add-to-bundle {
+			bottom: 5px;
+		}
 	}
 }
 
@@ -7055,6 +7058,7 @@ html:has(.menu-service) {
 		.nov-banner-showcase {
 			.showcase-top-title-wrapper {margin-bottom: -50px;}
 			.showcase-top-title {font-size: 8vw;}
+			.showcase-ticker {padding: 10px 20px;}
 		}
 	}
 }

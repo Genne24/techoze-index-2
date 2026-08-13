@@ -43,15 +43,15 @@
         {% endif %}
 
         <div class="showcase-card position-relative overflow_hidden">
-          {% if sst.link != blank %}
-            <a href="{{ sst.link }}" class="showcase-card__link position-absolute t-0 l-0 w-100 h-100" aria-label="{{ sst.top_title | escape }}"></a>
-          {% endif %}
-
-          <div class="showcase-card__image-wrapper">
+          
+          <div class="showcase-card__image-wrapper nov-sh-image-2">
             {% if sst.image != blank %}
               {% render 'nov-imgset', image: sst.image %}
             {% else %}
               {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg showcase-card__placeholder' }}
+            {% endif %}
+            {% if sst.link != blank %}
+              <a href="{{ sst.link }}" class="showcase-card__link position-absolute t-0 l-0 w-100 h-100" aria-label="{{ sst.top_title | escape }}"></a>
             {% endif %}
           </div>
 
