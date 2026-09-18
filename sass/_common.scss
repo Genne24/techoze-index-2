@@ -1,3 +1,7 @@
+@use "sass:math";
+@use "sass:list";
+@use "mixin" as *;
+
 a,
 button,
 input,
@@ -30,8 +34,13 @@ input, select, textarea {
 	max-width: 100%;
 	line-height: 1.2;
 	font-family: inherit;
+	font-size: 12px;
 	border-radius: 0;
 	padding: 13px 15px;
+	@include placeholder {
+		font-size: 14px;
+		color: var(--color-placeholder);
+	}
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 

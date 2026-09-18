@@ -6,26 +6,106 @@
 		height: 100%;
 	}
 }
+@media (min-width: 768px) {
+	.template-index .site-header {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+}
+.header-content {
+	.site-nav .site-nav__link--main {
+		padding: var(--pt-hd-center) 18px var(--pb-hd-center);
+	}
+}
+.header-top-icon-text {
+	width: 15px;
+	margin-inline-end: 6px;
+}
+.header-top {
+	.header-link-item{
+		position: relative;
+		padding: 10px 0;
+		&:not(:last-child) {
+			margin-inline-end: 2rem;
+		}
+		&:after {
+			content: '';
+			position: absolute;
+			inset-inline-start: 0;
+			bottom: -1px;
+			width: 0%;
+			height: 1px;
+			background-color: var(--color-text);
+			transition: width var(--animation-speed);
+		}
+		a {
+			color: var(--color-text);
+		}
+		&:hover{
+			&::after {
+				width: 100%;
+			}
+			a {
+				color: var(--color-hover);
+			}
+		}
+	} 
+	.block_social::after {
+		content: '';
+		display: block;
+		clear: both;
+		width: 1px;
+		height: 50%;
+		background-color: var(--color-text);
+		z-index: 9;
+		position: absolute;
+		inset-inline-end: 0;
+		top: 50%;
+		@include translateY(-50%);
+	}
+	.header_text {
+		.highlight {
+			min-width: 40px;
+			min-height: 10px;
+			line-height: 10px;
+			text-align: center;
+			margin-inline-end: 8px;
+		}
+		@media (max-width: 991px) {
+			border-top: 1px solid var(--color-border);
+    	padding: 10px 0;
+		}
+	}
+}
+@media (min-width: 768px) {
+	.site-header__cart {
+		.site-header__cart-icon {
+			min-width: 13rem;
+			min-height: 5rem;
+			background: #f7f7f7;
+			border-radius: 10px;
+			padding-inline-start: 2rem;
+			padding-inline-end: 1.5rem;
+		}
+		.site-header__cart-count {
+			position: static;
+			min-width: 2rem;
+			height: 2rem;
+		}
+	}
+}
 @media (max-width: 1440px) {
 	.site-nav .site-nav__link--main {
-		padding-inline: 15px;
+		padding-inline: 12px;
 	}
 	#header-sticky .site-nav__link--main {
 		padding-inline: 10px;
 	}
 }
-.header-top {
-	padding-block: 11px;
-}
-.block_social {
-	display: flex;
-	.list-inline-item:not(:last-child) {
-		margin-inline-end: 2rem;
-	}
-	a {
-		@include square(initial);
-		svg {
-			width: 20px;
-		}
+@media (max-width: 1199px) {
+	.header-content .header-bg {
+		padding-block: 10px;
 	}
 }

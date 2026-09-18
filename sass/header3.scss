@@ -12,6 +12,101 @@
     margin-inline-start: 8px;
   }
 }
+.header-top-icon-text {
+	width: 15px;
+	margin-inline-end: 6px;
+}
+.header-top {
+	.header-link-item{
+		position: relative;
+		padding: 10px 0;
+		&:not(:last-child) {
+			margin-inline-end: 2rem;
+		}
+		&:after {
+			content: '';
+			position: absolute;
+			inset-inline-start: 0;
+			bottom: -1px;
+			width: 0%;
+			height: 1px;
+			background-color: var(--color-text);
+			transition: width var(--animation-speed);
+		}
+		a {
+			color: var(--color-text);
+		}
+		&:hover{
+			&::after {
+				width: 100%;
+			}
+			a {
+				color: var(--color-hover);
+			}
+		}
+	} 
+	.block_social::after {
+		content: '';
+		display: block;
+		clear: both;
+		width: 1px;
+		height: 50%;
+		background-color: var(--color-text);
+		z-index: 9;
+		position: absolute;
+		inset-inline-end: 0;
+		top: 50%;
+		@include translateY(-50%);
+	}
+	.header_text {
+		.highlight {
+			min-width: 40px;
+			min-height: 10px;
+			line-height: 10px;
+			text-align: center;
+			margin-inline-end: 8px;
+		}
+		@media (max-width: 991px) {
+			border-top: 1px solid var(--color-text);
+    	padding: 10px 0;
+		}
+	}
+}
+.header-content {
+  border-radius: 80px 80px 0 0;
+  .header-cart {
+    .site-header__cart-icon {
+      border: 1px solid #e7e7e7;
+      background-color: rgba(255, 255, 255, 1);
+      min-width: 9rem;
+      min-height: 4rem;
+      border-radius: 40px;
+      padding-inline-start: 17px;
+      padding-inline-end: 10px;
+      .site-header__cart-count {
+        position: initial;
+        width: 2rem;
+        height: 2rem;
+        font-size: 12px;
+      }
+      &:hover {
+        border-color: var(--color-secondary-button-border) !important;
+        background-color: var(--color-secondary-button) !important;
+        color: var(--color-secondary-button-text);
+        svg {
+          fill: var(--color-secondary-button-text-hover);
+        }
+        .site-header__cart-count {
+          color: var(--color-secondary-button-text-hover);
+          background-color: var(--color-secondary-button-hover);
+        }
+      }
+    }
+  }
+}
+.site-nav .site-nav__link--main {
+  padding: 28px 14px;
+}
 @media (max-width: 1440px) {
 	.site-nav .site-nav__link--main {
 		padding-inline: 12px;
@@ -48,5 +143,17 @@
         background-color: var(--color-hover);
       }
     }
+  }
+}
+@media (min-width: 1200px) and (max-width: 1600px) {
+  .site-header {
+    .header-top, .header-content {
+      padding-inline: 65px;
+    }
+  }
+}
+@media (max-width: 1199px) {
+  .header-content {
+    border-radius: 40px 40px 0 0;
   }
 }

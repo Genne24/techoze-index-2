@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -15,56 +6,56 @@
         "list_collection_T9gidL": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-1.jpg",
+            "image": "shopify:\/\/shop_images\/cate-1.jpg",
             "collection": "mobile-tablet"
           }
         },
         "list_collection_UXEHUr": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-2.jpg",
+            "image": "shopify:\/\/shop_images\/cate-2.jpg",
             "collection": "camera"
           }
         },
         "list_collection_3Q9Ldz": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-3.jpg",
+            "image": "shopify:\/\/shop_images\/cate-3.jpg",
             "collection": "laptop"
           }
         },
         "list_collection_N4DEiC": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-4.jpg",
+            "image": "shopify:\/\/shop_images\/cate-4.jpg",
             "collection": "headphone"
           }
         },
         "list_collection_DNYkzP": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-8.jpg",
+            "image": "shopify:\/\/shop_images\/cate-8.jpg",
             "collection": "computer"
           }
         },
         "list_collection_drWmdB": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-5.jpg",
+            "image": "shopify:\/\/shop_images\/cate-5.jpg",
             "collection": "keyboard"
           }
         },
         "list_collection_j8CnHQ": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-6.jpg",
+            "image": "shopify:\/\/shop_images\/cate-6.jpg",
             "collection": "game"
           }
         },
         "list_collection_RDhUQz": {
           "type": "list_collection",
           "settings": {
-            "image": "shopify://shop_images/cate-7.jpg",
+            "image": "shopify:\/\/shop_images\/cate-7.jpg",
             "collection": "electronics"
           }
         }
@@ -107,7 +98,7 @@
         "item_policy_Tn6Hfa": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-1.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-1.svg",
             "title_policy": "Free Shipping",
             "stitle_policy": "Free Shipping for orders over $99",
             "desc_policy": "",
@@ -123,7 +114,7 @@
         "item_policy_ynUJzQ": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-2.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-2.svg",
             "title_policy": "Money Guarantee",
             "stitle_policy": "Within 30 days for an exchange",
             "desc_policy": "",
@@ -139,7 +130,7 @@
         "item_policy_KcRKdP": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-3.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-3.svg",
             "title_policy": "Online Support",
             "stitle_policy": "24 hours a day, 7 days on week",
             "desc_policy": "",
@@ -155,7 +146,7 @@
         "item_policy_akcCDy": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-4.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-4.svg",
             "title_policy": "Flexible Payment",
             "stitle_policy": "Pay with Multiple Credit Cards",
             "desc_policy": "",
@@ -258,7 +249,7 @@
     "recently-viewed-ajax": {
       "type": "recently-viewed-ajax",
       "settings": {
-        "heading": "<p>Recently Viewed Products</p>",
+        "heading": "<p>Recently Viewed Products<\/p>",
         "heading_color": "#132742",
         "subheading": "",
         "subheading_color": "rgba(0,0,0,0)",

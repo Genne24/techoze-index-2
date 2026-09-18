@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -20,7 +11,7 @@
           "type": "text",
           "name": "Text",
           "settings": {
-            "text": "<p>Samsung Galaxy Z TriFold is Coming Soon.</p>",
+            "text": "<p>Samsung Galaxy Z TriFold is Coming Soon.<\/p>",
             "color": "#ffffff",
             "color_link": "#ffffff",
             "color_link_hover": "#ffffff",
@@ -70,7 +61,7 @@
           "type": "text",
           "name": "Text",
           "settings": {
-            "text": "<p>The smartphone the whole world has been<br/>waiting for is about to arrive at our store.</p>",
+            "text": "<p>The smartphone the whole world has been<br\/>waiting for is about to arrive at our store.<\/p>",
             "color": "#ffffff",
             "color_link": "#ffffff",
             "color_link_hover": "#ffffff",
@@ -120,7 +111,7 @@
           "type": "text",
           "name": "Text",
           "settings": {
-            "text": "<p>We will launch at</p>",
+            "text": "<p>We will launch at<\/p>",
             "color": "#ffffff",
             "color_link": "#ffffff",
             "color_link_hover": "#ffffff",
@@ -212,7 +203,7 @@
           "type": "text",
           "name": "Text",
           "settings": {
-            "text": "<p>Sign up to receive notifications</p>",
+            "text": "<p>Sign up to receive notifications<\/p>",
             "color": "#ffffff",
             "color_link": "#ffffff",
             "color_link_hover": "#ffffff",
@@ -328,7 +319,7 @@
         "class_section": "",
         "ss_bg_enable": true,
         "background_color": "rgba(0,0,0,0)",
-        "background_image": "shopify://shop_images/comingsoon.jpg",
+        "background_image": "shopify:\/\/shop_images\/comingsoon.jpg",
         "background_gradient": "",
         "background_img_size": "cover",
         "enable_background_img_size_custom": false,

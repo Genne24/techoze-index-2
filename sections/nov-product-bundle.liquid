@@ -36,9 +36,9 @@
 {% endstyle %}
 
 
-<div class="{{ bg_class_full }}" data-section-id="{{ section.id }}" >
+<div class="{{ bg_class_full }}" data-section-id="{{ section.id }}" style="--bg-w: {{ sst.background_width | append: 'px' }}">
   <div class="{{ sst.container }}">
-    <div class="container-inner{{ bg_class_contain }} position-relative" style="{% if sst.enable_custom_style %}{% if sst.product_border_enable %} item-product-show-bd{% endif %}{% if sst.product_bg_enable %} item-product-show-bg{% endif %}{% endif %}">
+    <div class="container-inner{{ bg_class_contain }} position-relative{% if sst.background_size == 'custom' %} bg-custom overflow-initial{% endif %}" style="{% if sst.enable_custom_style %}{% if sst.product_border_enable %} item-product-show-bd{% endif %}{% if sst.product_bg_enable %} item-product-show-bg{% endif %}{% endif %}">
       {% render 'heading-section', sub_position: sst.subheading_position, color_strong: sst.color_strong %}
       <div class="position-relative section-product-bundle" 
         data-section-id="{{ section.id }}" 
@@ -55,7 +55,7 @@
               {% if bundle_products != blank %}
                 {% assign grid_num = sst.grid_number | default: 3 %}
                 {% for product in bundle_products limit: product_limit %}
-                  <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-xl-4 col-lg-6 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-lg-3 col-lg-6 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %}{% if forloop.rindex > grid_num %} mb-{{ sst.spacing }}{% endif %} mb-lg-{{ sst.spacing }}">
+                  <div class="sp-item item {% if sst.grid_number == 1 %}col-12{% elsif sst.grid_number == 2 %}col-md-6 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 3 %}col-xl-4 col-lg-6 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 4 %}col-xl-3 col-lg-6 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 5 %}col-lg-20 col-md-4 col-{{ sst.grid_mobile }}{% elsif sst.grid_number == 6 %}col-lg-2 col-md-4 col-{{ sst.grid_mobile }}{% else %}col-lg-4 col-md-6 col-{{ sst.grid_mobile }}{% endif %}{% if forloop.rindex > grid_num %} mb-{{ sst.spacing }}{% endif %} mb-lg-{{ sst.spacing }}">
                     {% render 'product-grid-item-style-bundle', product: product, section_id: section.id %}
                   </div>
                 {% endfor %}
@@ -130,6 +130,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  var bundle = {
+    icon_close: `{% render 'icon-close' %}`
+  }
+</script>
 
 {% schema %}
   {
@@ -451,7 +457,7 @@
         "type": "range",
         "id": "background_corner",
         "min": 0,
-        "max": 50,
+        "max": 100,
         "step": 1,
         "label": "Corner background",
         "unit": "px",
@@ -470,17 +476,26 @@
         ],
         "visible_if": "{{ section.settings.ss_bg_enable }}"
       },
-      {
-        "type": "select",
-        "id": "background_size",
-        "label": "Background size",
-        "default": "full",
-        "options": [
-          { "value": "full", "label": "Full" },
-          { "value": "contain", "label": "Contain"}
-        ],
-        "visible_if": "{{ section.settings.ss_bg_enable }}"
-      },
+			{
+				"type": "select",
+				"id": "background_size",
+				"label": "Background size",
+				"default": "full",
+				"options": [
+					{ "value": "full", "label": "Full" },
+					{ "value": "contain", "label": "Contain"},
+					{ "value": "custom", "label": "Custom"}
+				],
+				"visible_if": "{{ section.settings.ss_bg_enable }}"
+			},
+			{
+				"type": "number",
+				"id": "background_width",
+				"label": "Background width",
+				"default": 1570,
+				"info": "px",
+				"visible_if": "{{ section.settings.ss_bg_enable and section.settings.background_size == 'custom' }}"
+			},
       {
         "type": "range",
         "id": "background_padding_horizontal",
@@ -631,7 +646,63 @@
     "presets": [
       {
         "name": "Product bundle",
-        "category": "Collection"
+        "category": "Collection",
+        "settings": {
+          "heading": "<p>Buy 3 Products and <strong>Save up to 30%<\/strong><\/p>",
+          "heading_color": "#000000",
+          "color_strong": "#f43777",
+          "subheading": "",
+          "subheading_color": "#666666",
+          "subheading_position": "bottom",
+          "collection": "upsell",
+          "product_list": [],
+          "limit": 9,
+          "grid_number": 3,
+          "grid_mobile": "6",
+          "spacing": 30,
+          "show_type": true,
+          "enable_custom_style": true,
+          "product_border_enable": true,
+          "product_border_color": "#ffffff",
+          "product_bg_enable": true,
+          "product_background_color": "#ffffff",
+          "heading_discount": "<p>Your bundle<\/p>",
+          "subheading_discount": "<p>Add 3 products and save 30%<\/p>",
+          "min_items": 3,
+          "max_items": 3,
+          "prevent_duplicate": true,
+          "allow_qty_change": false,
+          "qty_increment": 1,
+          "qty_min": 1,
+          "color_box_bundle": "scheme-0d9d1001-321f-4dc4-9f61-2b70676d240a",
+          "animate": true,
+          "container": "container",
+          "class_section": "",
+          "ss_bg_enable": true,
+          "background_color": "#f7f7f7",
+          "background_img_size": "cover",
+          "enable_background_img_size_custom": false,
+          "background_img_size_custom": "",
+          "background_img_position": "center center",
+          "background_corner": 0,
+          "background_position": "bg-center",
+          "background_size": "full",
+          "background_padding_horizontal": 1,
+          "height_background_xxl": 100,
+          "height_background_xl": 100,
+          "height_background_lg": 100,
+          "height_background_md": 100,
+          "height_background_sm": 100,
+          "height_background_xs": 100,
+          "distance_top_xl": 70,
+          "distance_top_lg": 70,
+          "distance_top_md": 70,
+          "distance_top_sm": 70,
+          "distance_bottom_xl": 80,
+          "distance_bottom_lg": 80,
+          "distance_bottom_md": 80,
+          "distance_bottom_sm": 80
+        }
       } 
     ]
   }

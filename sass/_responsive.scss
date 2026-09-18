@@ -172,7 +172,11 @@
 			font-size: 21px;
 			color: var(--color-icons);
 			line-height: 1;
-			display: flex
+			display: flex;
+			svg {
+				width: 24px;
+				height: auto;
+			}
 		}
 		.cart-count {
 			@include square(16px);

@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -16,14 +7,14 @@
           "type": "block_text",
           "settings": {
             "custom_title": "Delivery policy",
-            "custom_content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vulputate, lectus ac pretium maximus, magna neque fermentum arcu, ut pulvinar arcu erat vel massa. Pellentesque ac arcu blandit, vestibulum tortor eget, dictum magna. Curabitur sit amet metus nulla. Pellentesque et augue et urna volutpat vestibulum vitae eget ligula. Maecenas mi augue, faucibus scelerisque facilisis in, dignissim vitae justo. Sed venenatis lectus et leo malesuada iaculis. Nunc lacinia arcu id elementum rhoncus. Duis tempor, enim vel vulputate interdum, magna sapien lacinia enim, nec lobortis quam enim eu erat. Aenean faucibus ex vitae nibh accumsan ullamcorper. Sed a orci augue. Maecenas porttitor venenatis semper.</p>"
+            "custom_content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vulputate, lectus ac pretium maximus, magna neque fermentum arcu, ut pulvinar arcu erat vel massa. Pellentesque ac arcu blandit, vestibulum tortor eget, dictum magna. Curabitur sit amet metus nulla. Pellentesque et augue et urna volutpat vestibulum vitae eget ligula. Maecenas mi augue, faucibus scelerisque facilisis in, dignissim vitae justo. Sed venenatis lectus et leo malesuada iaculis. Nunc lacinia arcu id elementum rhoncus. Duis tempor, enim vel vulputate interdum, magna sapien lacinia enim, nec lobortis quam enim eu erat. Aenean faucibus ex vitae nibh accumsan ullamcorper. Sed a orci augue. Maecenas porttitor venenatis semper.<\/p>"
           }
         },
         "a3d01db6-4304-4e3d-b6f3-f75fc7a51212": {
           "type": "block_text",
           "settings": {
             "custom_title": "Shipping & Return",
-            "custom_content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus libero quis mauris vestibulum dapibus.</p><p>Maecenas ullamcorper erat mi, vel consequat enim suscipit at. Pellentesque a elit at elit</p>"
+            "custom_content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus libero quis mauris vestibulum dapibus.<\/p><p>Maecenas ullamcorper erat mi, vel consequat enim suscipit at. Pellentesque a elit at elit<\/p>"
           }
         },
         "03b6d121-b452-4ee2-beed-a6128ccc6fd5": {
@@ -31,15 +22,15 @@
           "settings": {
             "custom_title": "Custom Tab",
             "t1": "Lorem ipsum dolor sit amet",
-            "c1": "<p>Maecenas ullamcorper erat mi, vel consequat enim suscipit at.</p>",
+            "c1": "<p>Maecenas ullamcorper erat mi, vel consequat enim suscipit at.<\/p>",
             "t2": "Quisque in felis ut tellus",
-            "c2": "<p>Pellentesque a elit at elit auctor tempus sed vitae mi</p>",
+            "c2": "<p>Pellentesque a elit at elit auctor tempus sed vitae mi<\/p>",
             "t3": "Morbi blandit auctor",
-            "c3": "<p>Vestibulum sollicitudin tortor dui, quis aliquet sapien convallis sed.</p>",
+            "c3": "<p>Vestibulum sollicitudin tortor dui, quis aliquet sapien convallis sed.<\/p>",
             "t4": "Sed sit amet risus quis velit lacinia gravida.",
-            "c4": "<p>Aenean interdum elementum arcu. Vivamus purus lorem, semper quis libero et.</p>",
+            "c4": "<p>Aenean interdum elementum arcu. Vivamus purus lorem, semper quis libero et.<\/p>",
             "t5": "Morbi dictum orci neque.",
-            "c5": "<p>Curabitur vehicula tellus sit amet neque placerat, vel sagittis.</p>",
+            "c5": "<p>Curabitur vehicula tellus sit amet neque placerat, vel sagittis.<\/p>",
             "t6": "",
             "c6": "",
             "t7": "",
@@ -69,7 +60,7 @@
         "show_share": true,
         "show_ask": true,
         "show_faq": true,
-        "faq": "shopify://pages/faqs",
+        "faq": "shopify:\/\/pages\/faqs",
         "show_vendor": false,
         "show_sku": true,
         "show_categories": true,
@@ -120,7 +111,7 @@
         "item_policy_JVPQHg": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-1.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-1.svg",
             "title_policy": "Free Shipping",
             "stitle_policy": "Free Shipping for orders over $99",
             "desc_policy": "",
@@ -136,7 +127,7 @@
         "item_policy_mfeR4W": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-2.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-2.svg",
             "title_policy": "Money Guarantee",
             "stitle_policy": "Within 30 days for an exchange",
             "desc_policy": "",
@@ -152,7 +143,7 @@
         "item_policy_nPyhch": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-3.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-3.svg",
             "title_policy": "Online Support",
             "stitle_policy": "24 hours a day, 7 days on week",
             "desc_policy": "",
@@ -168,7 +159,7 @@
         "item_policy_kHdtgd": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/policy-4.svg",
+            "policy_icon": "shopify:\/\/shop_images\/policy-4.svg",
             "title_policy": "Flexible Payment",
             "stitle_policy": "Pay with Multiple Credit Cards",
             "desc_policy": "",
@@ -292,7 +283,7 @@
       "type": "apps",
       "blocks": {
         "ag_product_reviews_app_block_review_list_yJXXEp": {
-          "type": "shopify://apps/ag-product-reviews/blocks/app-block-review-list/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
+          "type": "shopify:\/\/apps\/ag-product-reviews\/blocks\/app-block-review-list\/c4e1e9ca-4d46-4e76-bc39-7e42417cb327",
           "settings": {
             "air_blockreviews_summaryHeading": "Reviews",
             "air_blockreviews_layout": "list",
@@ -329,7 +320,7 @@
     "2046dd06-c8ff-4d5c-9e09-e8c21ef98855": {
       "type": "nov-product-template-related",
       "settings": {
-        "heading": "<p>Product Related</p>",
+        "heading": "<p>Product Related<\/p>",
         "heading_color": "#181818",
         "subheading": "",
         "subheading_color": "#666666",
@@ -364,9 +355,9 @@
     "recently-viewed-ajax": {
       "type": "recently-viewed-ajax",
       "settings": {
-        "heading": "<p>Recently Viewed Products</p>",
+        "heading": "<p>Recently Viewed Products<\/p>",
         "heading_color": "#222222",
-        "subheading": "<p></p>",
+        "subheading": "<p><\/p>",
         "subheading_color": "#666666",
         "alignment": "center",
         "grid_number_xxl": 4,

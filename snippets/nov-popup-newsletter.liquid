@@ -13,7 +13,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header pointer color-icons color-hover fs-22" data-dismiss="modal"><i class="zmdi zmdi-close"></i></div>
-          <div class="modal-body{% if settings.newsletter_type == 'promotion' %} text-center{% else %} row spacing-0 align-items-md-end align-items-center{% endif %} overflow-hidden">
+          <div class="modal-body{% if settings.newsletter_type == 'promotion' %} text-center{% else %} row spacing-0 align-items-center{% endif %} overflow-hidden">
             {% if settings.newsletter_type == 'promotion' %}
               {% if settings.newsletter_promoimg_link != blank %}
                 <a href="{{ settings.newsletter_promoimg_link }}">
@@ -43,7 +43,7 @@
               </div>
               <div class="col-md-6 modal-body_content pb-20">
                 {% if settings.sub_title_newsletter != blank %}
-                  <div class="sub_title_block fs-12 color-title font-500 mb-10">{{ settings.sub_title_newsletter }}</div>
+                  <div class="sub_title_block fs-14 color-title font-500 mb-10">{{ settings.sub_title_newsletter }}</div>
                 {% endif %}
                 <div class="title_block h2 fs-32 fs-md-24 color-title mb-10">{{ settings.title_newsletter }}</div>
                 <div class="desc mb-25 fs-14 fs-md-12 color-text">{{ settings.desc_newsletter }}</div>
@@ -76,12 +76,12 @@
                 {% if settings.news_social %}
                   {% render 'nov-social' %}
                 {% endif %}
-                <div class="checkbox mt-60 mt-md-30">
+                <div class="checkbox mt-60 mt-md-30" style="position: absolute;bottom: 30px;">
                   <label class="d-inline-flex">
                     <span class="custom-checkbox">
                       <input name="no-view" class="no-view" type="checkbox">
                     </span>
-                    <span id="text" class="fs-10 color-title">{{ settings.notify_newsletter }}</span>
+                    <span id="text" class="fs-12 color-title">{{ settings.notify_newsletter }}</span>
                   </label>
                 </div>
               </div>

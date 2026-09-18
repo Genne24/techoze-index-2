@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -68,7 +59,7 @@
           "type": "text",
           "settings": {
             "item_1": true,
-            "text_content_1": "I’m very satisfied with this theme, especially its design freedom for users choices: so many possibilities at any step you can imagine for your business. But beyond such qualities (that anyone can see just looking theme page/demo), I must to mention my satisfaction with the support team: very professional. They clarified many doubts, solved little problems in my configuration and made easier and safer all the process. Thank you!",
+            "text_content_1": "I’m very satisfied with this theme, especially its design freedom for users choices: so many possibilities at any step you can imagine for your business. But beyond such qualities (that anyone can see just looking theme page\/demo), I must to mention my satisfaction with the support team: very professional. They clarified many doubts, solved little problems in my configuration and made easier and safer all the process. Thank you!",
             "info_name_1": "Customer",
             "info_trade_1": "Customer",
             "item_2": true,
@@ -94,11 +85,11 @@
           "type": "text",
           "settings": {
             "item_1": true,
-            "text_content_1": "<p class=\"mb-0\">Now i am really happy with My purchase.</p>\n<br>\nFirst of all sorry what i early say about theme.This theme is really good with excellent support.the team members are very helping and very fast to solve whatever issue i face.",
+            "text_content_1": "<p class=\"mb-0\">Now i am really happy with My purchase.<\/p>\n<br>\nFirst of all sorry what i early say about theme.This theme is really good with excellent support.the team members are very helping and very fast to solve whatever issue i face.",
             "info_name_1": "Customer",
             "info_trade_1": "Customer",
             "item_2": true,
-            "text_content_2": "<p class=\"mb-0\">Truly elegant theme built with customer in mind, excellent design that facilitates navigation across the many categories of skin and hair care.</p>\n<br>\n<p class=\"mb-0\">\nFancy looking with elegant animations and subtle touches here and there.\n</p>\n<br>\n<p class=\"mb-0\">and the support is A class. I contacted them many many times and they always deliver, and they actually made some customizations for me for free !</p>\n<br>\nI think this theme is essential if you're in the beauty industry with large collections and many categories.",
+            "text_content_2": "<p class=\"mb-0\">Truly elegant theme built with customer in mind, excellent design that facilitates navigation across the many categories of skin and hair care.<\/p>\n<br>\n<p class=\"mb-0\">\nFancy looking with elegant animations and subtle touches here and there.\n<\/p>\n<br>\n<p class=\"mb-0\">and the support is A class. I contacted them many many times and they always deliver, and they actually made some customizations for me for free !<\/p>\n<br>\nI think this theme is essential if you're in the beauty industry with large collections and many categories.",
             "info_name_2": "Customer",
             "info_trade_2": "From Envato",
             "item_3": true,
@@ -126,11 +117,11 @@
       "settings": {
         "color_quote": "background-1",
         "background_quote": "#f1f1f1",
-        "image_quote": "shopify://shop_images/quote.png",
-        "icon_quotes": "shopify://shop_images/icon_quote.png",
-        "text_content": "<p>what's happy customers say</p>",
+        "image_quote": "shopify:\/\/shop_images\/quote.png",
+        "icon_quotes": "shopify:\/\/shop_images\/icon_quote.png",
+        "text_content": "<p>what's happy customers say<\/p>",
         "author": "See Why Thousands of Customer Love Us!",
-        "icon_item": "shopify://shop_images/icon_quote.png",
+        "icon_item": "shopify:\/\/shop_images\/icon_quote.png",
         "class": ""
       }
     }

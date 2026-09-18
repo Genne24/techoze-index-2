@@ -3,9 +3,44 @@
     "name": "theme_info",
     "theme_name": "Config Techoze",
     "theme_author": "Vinovatheme",
-    "theme_version": "1.0.0",
+    "theme_version": "1.1.0",
     "theme_documentation_url": "https:\/\/documents.vinovathemes.com\/Techoze-documentation\/",
     "theme_support_email": "vinova.shopify@gmail.com"
+  },
+  {
+    "name": "Purchase Code",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Enter Your Purchase Code Then Click “SAVE” Button"
+      },
+      {
+        "type": "paragraph",
+        "content": "Reminder ! One registration per Website. If registered elsewhere please deactivate that registration first."
+      },
+      {
+        "type": "select",
+        "id": "purchase_action",
+        "label": "Purchase code action",
+        "options": [
+          {
+            "value": "active",
+            "label": "Activate purchase code"
+          },
+          {
+            "value": "remove",
+            "label": "Remove purchase code"
+          }
+        ],
+        "default": "active"
+      },
+      {
+        "type": "textarea",
+        "id": "license",
+        "label": "Purchase Code from Envato",
+        "info": "[Where Is My Purchase Code?](https:\/\/documents.vinovathemes.com\/techoze-documentation\/installation\/where-is-my-purchase-code)"
+      }
+    ]
   },
   {
     "name": "Config Layout Width",
@@ -126,18 +161,6 @@
           {
             "value": "header-6",
             "label": "Header Layout 6"
-          },
-          {
-            "value": "header-7",
-            "label": "Header Layout 7"
-          },
-          {
-            "value": "header-8",
-            "label": "Header Layout 8"
-          },
-          {
-            "value": "header-9",
-            "label": "Header Layout 9"
           }
         ]
       },
@@ -166,18 +189,6 @@
           {
             "value": "footer-5",
             "label": "Footer Layout 5"
-          },
-          {
-            "value": "footer-6",
-            "label": "Footer Layout 6"
-          },
-          {
-            "value": "footer-7",
-            "label": "Footer Layout 7"
-          },
-          {
-            "value": "footer-8",
-            "label": "Footer Layout 8"
           }
         ]
       },
@@ -570,7 +581,7 @@
         "id": "type_header_family_google",
         "label": "Headings font",
         "default": "Spartan",
-        "info": "[Find the font here](https://fonts.google.com/)",
+        "info": "[Find the font here](https:\/\/fonts.google.com\/)",
         "visible_if": "{{ settings.type_google }}"
       },
       {
@@ -578,7 +589,7 @@
         "id": "type_base_family_google",
         "label": "Body font",
         "default": "Roboto",
-        "info": "[Find the font here](https://fonts.google.com/)",
+        "info": "[Find the font here](https:\/\/fonts.google.com\/)",
         "visible_if": "{{ settings.type_google }}"
       },
       {
@@ -1390,7 +1401,7 @@
         "type": "richtext",
         "id": "title_newsletter",
         "label": "Title Newsletter Popup",
-        "default": "<p>Newsletter</p>"
+        "default": "<p>Newsletter<\/p>"
       },
       {
         "type": "text",
@@ -1449,7 +1460,7 @@
         "id": "show_language",
         "label": "Show multiple language",
         "default": true,
-        "info": "Displayed when the store has more than one language\n[Manage languages](/admin/settings/languages)"
+        "info": "Displayed when the store has more than one language\n[Manage languages](\/admin\/settings\/languages)"
       },
       {
         "type": "checkbox",
@@ -1530,7 +1541,7 @@
         "type": "checkbox",
         "id": "show_multiple_currencies",
         "label": "Show currency selector",
-        "info": "[Manage currencies](/admin/settings/markets)",
+        "info": "[Manage currencies](\/admin\/settings\/markets)",
         "default": true
       },
       {
@@ -1621,12 +1632,12 @@
         "info": "Color button primary or secondary",
         "options": [
           {
-          "value": "btn-primary",
-          "label": "Primary"
+            "value": "btn-primary",
+            "label": "Primary"
           },
           {
-          "value": "btn-secondary",
-          "label": "Secondary"
+            "value": "btn-secondary",
+            "label": "Secondary"
           }
         ],
         "default": "btn-primary"
@@ -2256,15 +2267,15 @@
             "label": "auto"
           },
           {
-            "value": "1/1",
+            "value": "1\/1",
             "label": "1\/1"
           },
           {
-            "value": "3/4",
+            "value": "3\/4",
             "label": "3\/4"
           },
           {
-            "value": "4/3",
+            "value": "4\/3",
             "label": "4\/3"
           }
         ]
@@ -2482,7 +2493,7 @@
       },
       {
         "type": "select",
-        "id": "quickadd_type",                                                                                                                                       
+        "id": "quickadd_type",
         "label": "Quick Add Type",
         "default": "text",
         "options": [
@@ -2946,17 +2957,44 @@
         "type": "select",
         "id": "wishlist_icon",
         "label": "Wishlist icon",
-        "default": "rbb-icon-wishlist-10",                    
+        "default": "rbb-icon-wishlist-10",
         "options": [
-          {"value": "rbb-icon-wishlist-7", "label": "Wishlist 1"},
-          {"value": "rbb-icon-wishlist-8", "label": "Wishlist 2"},
-          {"value": "rbb-icon-wishlist-9", "label": "Wishlist 3"},
-          {"value": "rbb-icon-wishlist-10", "label": "Wishlist 4"},
-          {"value": "rbb-icon-wishlist-14", "label": "Wishlist 5"},
-          {"value": "rbb-icon-wishlist-16", "label": "Wishlist 6"},
-          {"value": "rbb-icon-wishlist-17", "label": "Wishlist 7"},
-          {"value": "rbb-icon-rating-start-outline-1", "label": "Wishlist 8"},
-          {"value": "rbb-icon-rating-start-outline-2", "label": "Wishlist 9"}
+          {
+            "value": "rbb-icon-wishlist-7",
+            "label": "Wishlist 1"
+          },
+          {
+            "value": "rbb-icon-wishlist-8",
+            "label": "Wishlist 2"
+          },
+          {
+            "value": "rbb-icon-wishlist-9",
+            "label": "Wishlist 3"
+          },
+          {
+            "value": "rbb-icon-wishlist-10",
+            "label": "Wishlist 4"
+          },
+          {
+            "value": "rbb-icon-wishlist-14",
+            "label": "Wishlist 5"
+          },
+          {
+            "value": "rbb-icon-wishlist-16",
+            "label": "Wishlist 6"
+          },
+          {
+            "value": "rbb-icon-wishlist-17",
+            "label": "Wishlist 7"
+          },
+          {
+            "value": "rbb-icon-rating-start-outline-1",
+            "label": "Wishlist 8"
+          },
+          {
+            "value": "rbb-icon-rating-start-outline-2",
+            "label": "Wishlist 9"
+          }
         ]
       },
       {
@@ -2998,15 +3036,36 @@
         "type": "select",
         "id": "quickview_icon",
         "label": "Quickview icon",
-        "default": "rbb-icon-search-10",                    
+        "default": "rbb-icon-search-10",
         "options": [
-          {"value": "rbb-icon-quickview-eye-1", "label": "Quickview 1"},
-          {"value": "rbb-icon-quickview-eye-2", "label": "Quickview 2"},
-          {"value": "rbb-icon-quickview-eye-3", "label": "Quickview 3"},
-          {"value": "rbb-icon-quickview-eye-4", "label": "Quickview 4"},
-          {"value": "rbb-icon-quickview-popup-1", "label": "Quickview 5"},
-          {"value": "rbb-icon-quickview-popup-2", "label": "Quickview 6"},
-          {"value": "rbb-icon-search-10", "label": "Quickview 7"}
+          {
+            "value": "rbb-icon-quickview-eye-1",
+            "label": "Quickview 1"
+          },
+          {
+            "value": "rbb-icon-quickview-eye-2",
+            "label": "Quickview 2"
+          },
+          {
+            "value": "rbb-icon-quickview-eye-3",
+            "label": "Quickview 3"
+          },
+          {
+            "value": "rbb-icon-quickview-eye-4",
+            "label": "Quickview 4"
+          },
+          {
+            "value": "rbb-icon-quickview-popup-1",
+            "label": "Quickview 5"
+          },
+          {
+            "value": "rbb-icon-quickview-popup-2",
+            "label": "Quickview 6"
+          },
+          {
+            "value": "rbb-icon-search-10",
+            "label": "Quickview 7"
+          }
         ]
       },
       {
@@ -3069,7 +3128,8 @@
         "default": true
       }
     ]
-  },{
+  },
+  {
     "name": "Config Reviews",
     "settings": [
       {
@@ -3333,7 +3393,7 @@
         "label": "Corner radius",
         "default": 50
       },
-      { 
+      {
         "type": "range",
         "id": "slider_dot_border_size",
         "min": 0,

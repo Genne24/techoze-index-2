@@ -1,18 +1,8 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "nov-page",
-      "settings": {
-      }
+      "settings": {}
     },
     "nov_custom_section_idYedV": {
       "type": "nov-custom-section",
@@ -124,7 +114,7 @@
                   "type": "image",
                   "name": "Image",
                   "settings": {
-                    "image": "shopify://shop_images/about-us.jpg",
+                    "image": "shopify:\/\/shop_images\/about-us.jpg",
                     "link": "#",
                     "width_custom": false,
                     "image_width_unit": "%",
@@ -265,7 +255,7 @@
           "type": "text",
           "name": "Text",
           "settings": {
-            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam consequat ut ex vel finibus. Nunc eget molestie purus. Fusce imperdiet pulvinar est, eget fermentum nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae<br/><br/>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris. Integer congue, sem elementum varius tristique, erat nulla rutrum risus, a imperdiet nulla lorem fermentum erat. Pellentesque elementum justo at velit fringilla, eu feugiat erat fermentum. Vivamus libero dolor, porta eget vehicula eu, iaculis id lacus. Sed interdum convallis sapien, eget faucibus sapien. Proin hendrerit lacus turpis.<br/><br/>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris.</p>",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam consequat ut ex vel finibus. Nunc eget molestie purus. Fusce imperdiet pulvinar est, eget fermentum nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae<br\/><br\/>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris. Integer congue, sem elementum varius tristique, erat nulla rutrum risus, a imperdiet nulla lorem fermentum erat. Pellentesque elementum justo at velit fringilla, eu feugiat erat fermentum. Vivamus libero dolor, porta eget vehicula eu, iaculis id lacus. Sed interdum convallis sapien, eget faucibus sapien. Proin hendrerit lacus turpis.<br\/><br\/>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris.<\/p>",
             "color": "#535353",
             "color_link": "#000000",
             "color_link_hover": "#000000",
@@ -382,12 +372,12 @@
                 "muted": true,
                 "controls": false,
                 "show_video_popup": true,
-                "video_url": "https://www.youtube.com/watch?v=XHOmBV4js_E",
+                "video_url": "https:\/\/www.youtube.com\/watch?v=XHOmBV4js_E",
                 "btn_play_style": "style1",
                 "icon_play_text": "Press play and immerse yourself in video!",
                 "btn_play_color": "background-2",
                 "btn_play_type_color": "btn-secondary",
-                "img_cover": "shopify://shop_images/about-us-video-1.jpg",
+                "img_cover": "shopify:\/\/shop_images\/about-us-video-1.jpg",
                 "radius": 10,
                 "enable_mh": false,
                 "height_unit": "px",
@@ -430,12 +420,12 @@
                 "muted": true,
                 "controls": false,
                 "show_video_popup": true,
-                "video_url": "https://www.youtube.com/watch?v=XHOmBV4js_E",
+                "video_url": "https:\/\/www.youtube.com\/watch?v=XHOmBV4js_E",
                 "btn_play_style": "style1",
                 "icon_play_text": "Press play and immerse yourself in video!",
                 "btn_play_color": "background-2",
                 "btn_play_type_color": "btn-secondary",
-                "img_cover": "shopify://shop_images/about-us-video-2.jpg",
+                "img_cover": "shopify:\/\/shop_images\/about-us-video-2.jpg",
                 "radius": 10,
                 "enable_mh": false,
                 "height_unit": "px",
@@ -478,12 +468,12 @@
                 "muted": true,
                 "controls": false,
                 "show_video_popup": true,
-                "video_url": "https://www.youtube.com/watch?v=XHOmBV4js_E",
+                "video_url": "https:\/\/www.youtube.com\/watch?v=XHOmBV4js_E",
                 "btn_play_style": "style1",
                 "icon_play_text": "Press play and immerse yourself in video!",
                 "btn_play_color": "background-2",
                 "btn_play_type_color": "btn-secondary",
-                "img_cover": "shopify://shop_images/about-us-video-3.jpg",
+                "img_cover": "shopify:\/\/shop_images\/about-us-video-3.jpg",
                 "radius": 10,
                 "enable_mh": false,
                 "height_unit": "px",
@@ -526,12 +516,12 @@
                 "muted": true,
                 "controls": false,
                 "show_video_popup": true,
-                "video_url": "https://www.youtube.com/watch?v=XHOmBV4js_E",
+                "video_url": "https:\/\/www.youtube.com\/watch?v=XHOmBV4js_E",
                 "btn_play_style": "style1",
                 "icon_play_text": "Press play and immerse yourself in video!",
                 "btn_play_color": "background-2",
                 "btn_play_type_color": "btn-secondary",
-                "img_cover": "shopify://shop_images/about-us-video-4.jpg",
+                "img_cover": "shopify:\/\/shop_images\/about-us-video-4.jpg",
                 "radius": 10,
                 "enable_mh": false,
                 "height_unit": "px",
@@ -574,12 +564,12 @@
                 "muted": true,
                 "controls": false,
                 "show_video_popup": true,
-                "video_url": "https://www.youtube.com/watch?v=XHOmBV4js_E",
+                "video_url": "https:\/\/www.youtube.com\/watch?v=XHOmBV4js_E",
                 "btn_play_style": "style1",
                 "icon_play_text": "Press play and immerse yourself in video!",
                 "btn_play_color": "background-2",
                 "btn_play_type_color": "btn-secondary",
-                "img_cover": "shopify://shop_images/about-us-video-5.jpg",
+                "img_cover": "shopify:\/\/shop_images\/about-us-video-5.jpg",
                 "radius": 10,
                 "enable_mh": false,
                 "height_unit": "px",
@@ -621,9 +611,9 @@
       ],
       "name": "Vinova Slider",
       "settings": {
-        "heading": "<h1>Videos From Our Clients</h1>",
+        "heading": "<h1>Videos From Our Clients<\/h1>",
         "heading_color": "#181818",
-        "subheading": "<p>Real Customer Experience</p>",
+        "subheading": "<p>Real Customer Experience<\/p>",
         "subheading_color": "#535353",
         "subheading_position": "top",
         "descheading": "",
@@ -713,7 +703,7 @@
         "item_policy_J7tkep": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/about-us-icon-1.svg",
+            "policy_icon": "shopify:\/\/shop_images\/about-us-icon-1.svg",
             "title_policy": "Choose A Theme",
             "stitle_policy": "",
             "desc_policy": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam consequat ut ex vel finibus. Nunc eget molestie purus.",
@@ -729,7 +719,7 @@
         "item_policy_Xta7LQ": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/about-us-icon-2.svg",
+            "policy_icon": "shopify:\/\/shop_images\/about-us-icon-2.svg",
             "title_policy": "Add Products",
             "stitle_policy": "",
             "desc_policy": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam consequat ut ex vel finibus. Nunc eget molestie purus.",
@@ -745,7 +735,7 @@
         "item_policy_NVJhU8": {
           "type": "item_policy",
           "settings": {
-            "policy_icon": "shopify://shop_images/about-us-icon-3.svg",
+            "policy_icon": "shopify:\/\/shop_images\/about-us-icon-3.svg",
             "title_policy": "Start Selling",
             "stitle_policy": "",
             "desc_policy": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam consequat ut ex vel finibus. Nunc eget molestie purus.",
@@ -770,9 +760,9 @@
       ],
       "name": "Vinova Policy",
       "settings": {
-        "heading": "<h1>We Give You The Power To Create Spaces That Are Just Right For You</h1>",
+        "heading": "<h1>We Give You The Power To Create Spaces That Are Just Right For You<\/h1>",
         "heading_color": "#181818",
-        "subheading": "<p>How We Work</p>",
+        "subheading": "<p>How We Work<\/p>",
         "subheading_color": "#535353",
         "subheading_position": "top",
         "descheading": "",
@@ -958,7 +948,7 @@
                   "type": "image",
                   "name": "Image",
                   "settings": {
-                    "image": "shopify://shop_images/about-us-why-choose-us.gif",
+                    "image": "shopify:\/\/shop_images\/about-us-why-choose-us.gif",
                     "link": "#",
                     "width_custom": false,
                     "image_width_unit": "%",
@@ -1112,7 +1102,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Why choose us ?</p>",
+                    "text": "<p>Why choose us ?<\/p>",
                     "color": "#181818",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -1162,7 +1152,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris. Integer congue, sem elementum varius tristique.</p>",
+                    "text": "<p>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris. Integer congue, sem elementum varius tristique.<\/p>",
                     "color": "#535353",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -1383,7 +1373,7 @@
                   "type": "image",
                   "name": "Image",
                   "settings": {
-                    "image": "shopify://shop_images/about-us-trusted-online.gif",
+                    "image": "shopify:\/\/shop_images\/about-us-trusted-online.gif",
                     "link": "#",
                     "width_custom": false,
                     "image_width_unit": "%",
@@ -1537,7 +1527,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Trusted Online Shopping</p>",
+                    "text": "<p>Trusted Online Shopping<\/p>",
                     "color": "#181818",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -1587,7 +1577,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris. Integer congue, sem elementum varius tristique.</p>",
+                    "text": "<p>Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum, lobortis sed mauris. Integer congue, sem elementum varius tristique.<\/p>",
                     "color": "#535353",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -1712,7 +1702,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-tes-1.jpg",
+                "image": "shopify:\/\/shop_images\/about-tes-1.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -1786,7 +1776,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Customer</p>",
+                    "text": "<p>Customer<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -1836,7 +1826,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Verified Purchase</p>",
+                    "text": "<p>Verified Purchase<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -1904,7 +1894,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-tes-2.jpg",
+                "image": "shopify:\/\/shop_images\/about-tes-2.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -1978,7 +1968,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Customer</p>",
+                    "text": "<p>Customer<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2028,7 +2018,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Verified Purchase</p>",
+                    "text": "<p>Verified Purchase<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2096,7 +2086,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-tes-3.jpg",
+                "image": "shopify:\/\/shop_images\/about-tes-3.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -2170,7 +2160,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Customer</p>",
+                    "text": "<p>Customer<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2220,7 +2210,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Verified Purchase</p>",
+                    "text": "<p>Verified Purchase<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2288,7 +2278,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-tes-4.jpg",
+                "image": "shopify:\/\/shop_images\/about-tes-4.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -2362,7 +2352,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Customer</p>",
+                    "text": "<p>Customer<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2412,7 +2402,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Verified Purchase</p>",
+                    "text": "<p>Verified Purchase<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2480,7 +2470,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-tes-5.jpg",
+                "image": "shopify:\/\/shop_images\/about-tes-5.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -2554,7 +2544,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Customer</p>",
+                    "text": "<p>Customer<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2604,7 +2594,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Verified Purchase</p>",
+                    "text": "<p>Verified Purchase<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2672,7 +2662,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-tes-6.jpg",
+                "image": "shopify:\/\/shop_images\/about-tes-6.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -2746,7 +2736,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Customer</p>",
+                    "text": "<p>Customer<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2796,7 +2786,7 @@
                   "type": "text",
                   "name": "Text",
                   "settings": {
-                    "text": "<p>Verified Purchase</p>",
+                    "text": "<p>Verified Purchase<\/p>",
                     "color": "#ffffff",
                     "color_link": "#000000",
                     "color_link_hover": "#000000",
@@ -2867,9 +2857,9 @@
       ],
       "name": "Vinova Slider",
       "settings": {
-        "heading": "<h1>The Passionate Team Bringing Our Designs to Life</h1>",
+        "heading": "<h1>The Passionate Team Bringing Our Designs to Life<\/h1>",
         "heading_color": "#181818",
-        "subheading": "<p>Our Teams</p>",
+        "subheading": "<p>Our Teams<\/p>",
         "subheading_color": "#535353",
         "subheading_position": "top",
         "descheading": "",
@@ -2967,7 +2957,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-local-1.jpg",
+                "image": "shopify:\/\/shop_images\/about-local-1.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -3042,7 +3032,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>Los Angeles</p>",
+                "text": "<p>Los Angeles<\/p>",
                 "color": "#181818",
                 "color_link": "#000000",
                 "color_link_hover": "#000000",
@@ -3092,7 +3082,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>3123 Canis Heights Drive, Marina, CA 90071</p>",
+                "text": "<p>3123 Canis Heights Drive, Marina, CA 90071<\/p>",
                 "color": "#535353",
                 "color_link": "#000000",
                 "color_link_hover": "#000000",
@@ -3156,7 +3146,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-local-2.jpg",
+                "image": "shopify:\/\/shop_images\/about-local-2.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -3231,7 +3221,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>New York</p>",
+                "text": "<p>New York<\/p>",
                 "color": "#181818",
                 "color_link": "#000000",
                 "color_link_hover": "#000000",
@@ -3281,7 +3271,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>1904 James Street, Rochester, NY 14604</p>",
+                "text": "<p>1904 James Street, Rochester, NY 14604<\/p>",
                 "color": "#535353",
                 "color_link": "#000000",
                 "color_link_hover": "#000000",
@@ -3345,7 +3335,7 @@
               "type": "image",
               "name": "Image",
               "settings": {
-                "image": "shopify://shop_images/about-local-3.jpg",
+                "image": "shopify:\/\/shop_images\/about-local-3.jpg",
                 "link": "#",
                 "width_custom": false,
                 "image_width_unit": "%",
@@ -3420,7 +3410,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>California</p>",
+                "text": "<p>California<\/p>",
                 "color": "#181818",
                 "color_link": "#000000",
                 "color_link_hover": "#000000",
@@ -3470,7 +3460,7 @@
               "type": "text",
               "name": "Text",
               "settings": {
-                "text": "<p>3605 Martha Street, Phoenix, AZ 86040</p>",
+                "text": "<p>3605 Martha Street, Phoenix, AZ 86040<\/p>",
                 "color": "#535353",
                 "color_link": "#000000",
                 "color_link_hover": "#000000",
@@ -3534,9 +3524,9 @@
       ],
       "name": "Vinova Slider",
       "settings": {
-        "heading": "<h1>Stores System</h1>",
+        "heading": "<h1>Stores System<\/h1>",
         "heading_color": "#181818",
-        "subheading": "<p>Our Locations</p>",
+        "subheading": "<p>Our Locations<\/p>",
         "subheading_color": "#535353",
         "subheading_position": "top",
         "descheading": "",

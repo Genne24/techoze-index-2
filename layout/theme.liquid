@@ -53,12 +53,6 @@
           {% sections 'header-group-5' %}
         {% when 'header-6' %}
           {% sections 'header-group-6' %}
-        {% when 'header-7' %}
-          {% sections 'header-group-7' %}
-        {% when 'header-8' %}
-          {% sections 'header-group-8' %}
-        {% when 'header-9' %}
-          {% sections 'header-group-9' %}
       {% endcase %}
       <!-- BEGIN sections: Breadcrumb -->
       {% if template.name != 'index' %}
@@ -164,5 +158,8 @@
         });
       });
     </script>
+    {% comment %} {% if request.design_mode %}
+      {% render 'nov-purchasecode' %}
+    {% endif %} {% endcomment %}
   </body>
 </html>
